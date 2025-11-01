@@ -10,171 +10,180 @@
         }
     </script>
 
-    <style>
-        /* === Базовые стили для экрана === */
-        body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 16px; /* Больше 12px min для читаемости */
-            line-height: 1.6;
-            margin: 0 auto;
-            padding: 2cm 1.5cm;
-            max-width: 800px;
-            color: #333;
-        }
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 30px;
-            font-weight: bold;
-        }
-        h2 {
-            font-size: 2em;
-            border-bottom: 2px solid #555;
-            padding-bottom: 5px;
-            margin-top: 30px;
-            font-weight: bold;
-        }
-        h3 {
-            font-size: 1.5em;
-            margin-top: 25px;
-            font-style: italic;
-            font-weight: bold;
-            color: #444;
-        }
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-        blockquote {
-            font-style: italic;
-            margin-left: 25px;
-            padding-left: 20px;
-            border-left: 4px solid #ccc;
-            color: #555;
-            font-size: 1.1em;
-        }
-        blockquote cite {
-            display: block;
-            text-align: right;
-            margin-top: 10px;
-            font-style: normal;
-        }
-        .prayer {
-            font-style: italic;
-            text-align: left;
-            margin: 20px 40px;
-        }
-        .chapter-title-page {
-            text-align: center;
-            padding-top: 200px; /* Сдвиг для титульной страницы */
-            height: 600px; /* Задать высоту для разрыва страницы */
-        }
-        .authors {
-            margin-top: 50px;
-            font-size: 1.2em;
-            font-style: italic;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #000;
-            padding: 10px;
-            text-align: left;
-            vertical-align: top;
-        }
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        ol li {
-            margin-bottom: 15px; 
-            text-align: justify;
-        }
-        .placeholder-image {
-            text-align: center;
-            border: 2px dashed #ccc;
-            padding: 50px;
-            margin: 20px 0;
-            font-style: italic;
-            color: #777;
-        }
+   <style>
+        /* === Базовые стили для экрана (ОБНОВЛЕНО ДЛЯ ЧИТАЕМОСТИ) === */
+        body {
+            font-family: Arial, Helvetica, sans-serif; /* ИЗМЕНЕНИЕ 1: Шрифт без засечек */
+            font-size: 16px; 
+            line-height: 1.6;
+            margin: 0 auto;
+            padding: 2cm 1.5cm;
+            max-width: 700px; /* ИЗМЕНЕНИЕ 2: Уменьшена ширина строки */
+            color: #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        h2 {
+            font-size: 2em;
+            border-bottom: 2px solid #555;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        h3 {
+            font-size: 1.5em;
+            margin-top: 25px;
+            font-style: italic;
+            font-weight: bold;
+            color: #444;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: left; /* ИЗМЕНЕНИЕ 3: Убрано выравнивание по ширине */
+        }
+        blockquote {
+            font-style: italic;
+            margin-left: 25px;
+            padding-left: 20px;
+            border-left: 4px solid #ccc;
+            color: #555;
+            font-size: 1.1em;
+        }
+        blockquote cite {
+            display: block;
+            text-align: right;
+            margin-top: 10px;
+            font-style: normal;
+        }
+        .prayer {
+            font-style: italic;
+            text-align: left;
+            margin: 20px 40px;
+        }
+        .chapter-title-page {
+            text-align: center;
+            padding-top: 200px; /* Сдвиг для титульной страницы */
+            height: 600px; /* Задать высоту для разрыва страницы */
+        }
+        .authors {
+            margin-top: 50px;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        ol li {
+            margin-bottom: 15px; 
+            text-align: left; /* ИЗМЕНЕНИЕ 3 (для списков): Убрано выравнивание по ширине */
+        }
+        .placeholder-image {
+            text-align: center;
+            border: 2px dashed #ccc;
+            padding: 50px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #777;
+        }
 
-        /* === Стили для интерактивных ответов === */
-        .fill-in {
-            cursor: pointer;
-            font-weight: bold;
-            color: #00008b; /* Темно-синий */
-            text-decoration: underline;
-            text-decoration-style: dotted;
-        }
-        .fill-in .answer {
-            display: none; /* Ответ по умолчанию скрыт */
-        }
-        .fill-in.revealed .answer {
-            display: inline; /* Показать ответ */
-            font-style: italic;
-            color: #d9534f; /* Красный */
-        }
-        .fill-in.revealed .placeholder {
-            display: none; /* Скрыть прочерк */
-        }
+        /* === Стили для интерактивных ответов === */
+        .fill-in {
+            cursor: pointer;
+            font-weight: bold;
+            color: #00008b; /* Темно-синий */
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        .fill-in .answer {
+            display: none; /* Ответ по умолчанию скрыт */
+        }
+        .fill-in.revealed .answer {
+            display: inline; /* Показать ответ */
+            font-style: italic;
+            color: #d9534f; /* Красный */
+        }
+        .fill-in.revealed .placeholder {
+            display: none; /* Скрыть прочерк */
+        }
 
-        /* === Стили для ПЕЧАТИ (A4 и Нумерация) === */
-        @media print {
-            body {
-                font-size: 12pt; /* Стандартный размер для печати */
-                max-width: none;
-                padding: 0;
-                margin: 0;
-            }
-            
-            /* Настройка страницы A4 с полями и нумерацией */
-            @page {
-                size: A4;
-                margin: 2.5cm 1.5cm; /* Поля страницы */
-                
-                /* Добавление номеров страниц внизу */
-                @bottom-center {
-                    content: "Страница " counter(page);
-                    font-family: 'Times New Roman', Times, serif;
-                    font-size: 11pt;
-                }
-            }
+        /* === Стили для ПЕЧАТИ (Остаются без изменений) === */
+        @media print {
+            body {
+                font-family: 'Times New Roman', Times, serif; /* Возвращаем Times для печати */
+                font-size: 12pt; 
+                max-width: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            p {
+                text-align: justify; /* Возвращаем justify для печати */
+            }
+            
+            ol li {
+                text-align: justify; /* Возвращаем justify для печати */
+            }
+            
+            /* Настройка страницы A4 с полями и нумерацией */
+            @page {
+                size: A4;
+                margin: 2.5cm 1.5cm; /* Поля страницы */
+                
+                /* Добавление номеров страниц внизу */
+                @bottom-center {
+                    content: "Страница " counter(page);
+                    font-family: 'Times New Roman', Times, serif;
+                    font-size: 11pt;
+                }
+            }
 
-            h1, h2 {
-                page-break-before: always; /* Новая страница перед каждой главой / разделом */
-                page-break-after: avoid; /* Не отрывать заголовок от текста */
-            }
-            
-            .chapter-title-page {
-                page-break-before: always;
-            }
+            h1, h2 {
+                page-break-before: always; /* Новая страница перед каждой главой / разделом */
+                page-break-after: avoid; /* Не отрывать заголовок от текста */
+            }
+            
+            .chapter-title-page {
+                page-break-before: always;
+            }
 
-            blockquote, table, ol, .placeholder-image {
-                page-break-inside: avoid; /* Запретить разрыв таблиц, списков и блоков */
-            }
+            blockquote, table, ol, .placeholder-image {
+                page-break-inside: avoid; /* Запретить разрыв таблиц, списков и блоков */
+            }
 
-            /* Как ответы будут выглядеть при печати */
-            .fill-in {
-                font-weight: normal;
-                color: #000;
-                text-decoration: none;
-            }
-            .fill-in .placeholder {
-                text-decoration: underline;
-            }
-            .fill-in.revealed .answer {
-                color: #000; /* Ответы печатаются черным */
-                font-weight: bold;
-                text-decoration: underline;
-            }
-        }
-    </style>
+            /* Как ответы будут выглядеть при печати */
+            .fill-in {
+                font-weight: normal;
+                color: #000;
+                text-decoration: none;
+            }
+            .fill-in .placeholder {
+                text-decoration: underline;
+            }
+            .fill-in.revealed .answer {
+                color: #000; /* Ответы печатаются черным */
+                font-weight: bold;
+                text-decoration: underline;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -947,7 +956,26 @@
             <br>Во-вторых, вы — новое творение, у вас совершенно новая идентичность.
         </li>
 
-        <li><strong>«Итак, кто <span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>____</span><span class='answer'>во</span></span> Христе, тот <span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>_________</span><span class='answer'>новое</span></span> <span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>_________</span><span class='answer'>творение</span></span>; древнее прошло, теперь <span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>_________</span><span class='answer'>всё</span></span> <span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>_________</span><span class='answer'>новое</span></span>» (2 Коринфянам 5:17).
+        <li> «Итак, кто <span class='fill-in' onclick='toggleAnswer(this)'>
+                            <span class='placeholder'>____</span>
+                            <span class='answer'>во</span>
+                        </span> Христе, тот
+                        <span class='fill-in' onclick='toggleAnswer(this)'>
+                            <span class='placeholder'>_________</span>
+                            <span class='answer'>новое</span>
+                        </span> 
+                        <span class='fill-in' onclick='toggleAnswer(this)'>
+                            <span class='placeholder'>_________</span>
+                            <span class='answer'>творение</span>
+                        </span>; древнее прошло, теперь 
+                        <span class='fill-in' onclick='toggleAnswer(this)'>
+                            <span class='placeholder'>_________</span>
+                            <span class='answer'>всё</span>
+                        </span> 
+                        <span class='fill-in' onclick='toggleAnswer(this)'>
+                            <span class='placeholder'>_________</span>
+                            <span class='answer'>новое</span>
+                        </span>» (2 Коринфянам 5:17).
             <br>Наконец, вы больше не сирота; теперь вы — один из детей Божьих. Вы — часть Божьей семьи «во Христе». Вы полностью приняты.
         </li>
 
