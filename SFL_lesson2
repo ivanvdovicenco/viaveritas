@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Жизнь во Христе — Урок 2</title>
+<style>
+  :root{
+    --accent:#ff880d;     /* Via Veritas акцент */
+    --teal:#62bbbf;       /* вторичный */
+    --coral:#f87b4f;      /* теплый коралловый */
+    --slate:#768f93;      /* серо-синий */
+    --bg:#f9f9f9;         /* светлый фон */
+    --ink:#333333;        /* основной текст */
+  }
+  /* Базовая типографика */
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  body{font-family: "Georgia", serif; line-height:1.6;}
+  main{
+    max-width: 860px; margin: 36px auto; background:#fff;
+    padding: 48px 56px; border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,.06);
+  }
+  /* Шапка: заголовок + логотип на одной линии */
+  .topbar{
+    display:flex; align-items:center; gap:16px; margin-bottom:10px;
+  }
+  .topbar h1{
+    flex:1 1 auto; margin:0; font-size:28px; color:var(--accent);
+    line-height:1.2; letter-spacing:.2px;
+  }
+  .logo{
+    flex:0 0 auto; display:flex; align-items:center; justify-content:flex-end;
+    min-width:160px;
+  }
+  .logo img{max-height:64px; width:auto; object-fit:contain;}
+  .subtitle{margin:6px 0 24px 0; color:var(--slate); font-size:18px;}
+
+  /* Разделы */
+  h2{
+    margin:30px 0 10px; padding-left:12px; border-left:5px solid var(--accent);
+    color:var(--accent); font-size:22px;
+  }
+  h3{margin:18px 0 8px; color:#444; font-size:18px;}
+  p{margin:10px 0;}
+  ul{margin:10px 0 10px 22px;}
+  ol{margin:10px 0 10px 22px;}
+
+  /* Вставки */
+  .quote{
+    font-style:italic; color:#444; background:#fff5e9;
+    border-left:4px solid var(--accent);
+    padding:12px 14px; margin:14px 0;
+  }
+  .key{
+    background:#f4faf8; border-left:4px solid var(--teal);
+    padding:12px 14px; margin:14px 0; color:#26433a;
+  }
+  .warning{
+    background:#fff1ea; border-left:4px solid var(--coral);
+    padding:12px 14px; margin:14px 0; color:#663b2f; font-weight:600;
+  }
+  .badge{color:var(--accent); font-weight:700;}
+  .muted{color:var(--slate);}
+
+  /* Плейсхолдеры диаграмм */
+  figure.diagram{
+    margin:16px auto; padding:14px; border:2px dashed #d9d9d9;
+    border-radius:10px; background:#fcfcfc;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  figure.diagram header{
+    font-weight:700; color:#444; display:flex; align-items:center; gap:8px;
+  }
+  figure.diagram .dropzone{
+    background:#fff; border:1px solid #e7e7e7; border-radius:10px;
+    min-height:220px; display:flex; align-items:center; justify-content:center;
+    font-size:14px; color:#9aa5ad; text-align:center; padding:14px;
+  }
+  figure.diagram img{
+    max-width:100%; height:auto; display:block; margin:0 auto;
+  }
+  figcaption{font-size:13px; color:#6f7b82;}
+
+  /* Блоки Q&A/ДЗ */
+  .qa{
+    background:#f7fbff; border-left:4px solid #5a7ea3;
+    padding:12px 14px; margin:14px 0;
+  }
+  .homework{
+    background:#fffaf3; border-left:4px solid var(--coral);
+    padding:12px 14px; margin:14px 0;
+  }
+  .memory{
+    background:#f3fff9; border-left:4px solid var(--teal);
+    padding:12px 14px; margin:14px 0;
+  }
+
+  hr{border:none; border-top:1px solid #eee; margin:24px 0;}
+
+  footer{
+    text-align:center; color:var(--slate); font-size:12px; margin-top:36px;
+  }
+
+  /* Печать (PDF) */
+  @media print{
+    body{background:#fff;}
+    main{box-shadow:none; border-radius:0; padding:36px 40px;}
+    a[href^="http"]::after{content:"";}
+    .page-break{break-before: page;}
+    h2{break-after: avoid;}
+    figure{break-inside: avoid;}
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ШАПКА: Заголовок + логотип справа -->
+  <div class="topbar">
+    <h1>Жизнь во Христе — Урок 2</h1>
+    <div class="logo">
+      <!-- Замените src на путь к вашему логотипу -->
+      <img src="logo.png" alt="Via Veritas">
+    </div>
+  </div>
+  <div class="subtitle">Тема: <span class="muted">Особенное творение. Победоносная христианская жизнь. Побеждённые в Адаме — и обмен на жизнь Христа</span></div>
+
+  <div class="key">
+    <span class="badge">Главная истина:</span> Вечная жизнь — это сама жизнь Христа. Победоносная христианская жизнь — не имитация, а выражение Его жизни в нас. Плоть (жизнь «я») — главный барьер, и Божий ответ — обмен плоти на жизнь Христа.
+  </div>
+
+  <div class="qa">
+    <strong>Цель урока:</strong>
+    <ol>
+      <li>Показать библейскую антропологию: дух–душа–тело; зачем это важно для ученичества.</li>
+      <li>Пояснить разницу между «имитировать Христа» и «жить Христом» (Ин 15:5; Гал 2:20).</li>
+      <li>Показать отождествление «в Адаме» и необходимость обмена на жизнь Христа.</li>
+    </ol>
+  </div>
+
+  <hr/>
+
+  <!-- I. ОСОБЕННОЕ ТВОРЕНИЕ -->
+  <h2>I. Особенное творение: дух — душа — тело</h2>
+  <p>Бог создал нас <em>цельными</em>, но различимыми: <strong>дух</strong>, <strong>душа</strong>, <strong>тело</strong> (1 Фес 5:23; Евр 4:12). Мы — дух, у нас есть душа, и мы живём в теле (Быт 2:7; Ин 4:24).</p>
+
+  <figure class="diagram" id="fig-ssb">
+    <header>Диаграмма: Дух — Душа — Тело</header>
+    <div class="dropzone">
+      <!-- ВСТАВИТЬ ИЗОБРАЖЕНИЕ 1 (дух–душа–тело). Пример:
+      <img src="01_spirit_soul_body.png" alt="Дух–душа–тело">
+      -->
+      Замените этот блок на &lt;img src="ВАШ_ФАЙЛ.png" alt="Дух–душа–тело"&gt;
+    </div>
+    <figcaption>Душа включает разум, волю, эмоции; дух — место общения с Богом; тело — взаимодействие с материальным миром.</figcaption>
+  </figure>
+
+  <div class="quote">«Слово Божие… проникает до разделения души и духа» (Евр 4:12).</div>
+
+  <p class="muted">Практический вывод: если не видим себя так, как видит Бог (в первую очередь — дух, живущий от Бога), будем искать ресурсов в душе/теле (то есть сеять в плоть; Гал 6:8).</p>
+
+  <hr class="page-break"/>
+
+  <!-- II. ДВЕ ПРОГРАММАЦИИ ПЛОТИ -->
+  <h2>II. Две «программы» плоти: отрицательная и положительная</h2>
+  <p><strong>Плоть</strong> — это выработанные модели «как справляться с жизнью» без зависимости от Бога. Она бывает:
+  <br/>— <em>отрицательно запрограммированная</em> (из ранних травм/отвержений → тревога, никчемность, эскапизм, контроль и т.п.),
+  <br/>— <em>положительно запрограммированная</em> (из успеха/самодисциплины → самонадеянность, самоправедность, осуждение и т.п.).</p>
+
+  <figure class="diagram" id="fig-neg-flesh">
+    <header>Схема: Отрицательно запрограммированная плоть</header>
+    <div class="dropzone">
+      <!-- ВСТАВИТЬ ИЗОБРАЖЕНИЕ 2 (негативная плоть) -->
+      Замените этот блок на &lt;img src="03_negative_programmed_flesh.png" alt="Отрицательная плоть"&gt;
+    </div>
+    <figcaption>Искажённый взгляд → деструктивные эмоции → выбор полагаться на плоть → защитные механизмы → конфликт и фрустрация.</figcaption>
+  </figure>
+
+  <figure class="diagram" id="fig-pos-flesh">
+    <header>Схема: Положительно запрограммированная плоть</header>
+    <div class="dropzone">
+      <!-- ВСТАВИТЬ ИЗОБРАЖЕНИЕ 3 (позитивная плоть) -->
+      Замените этот блок на &lt;img src="04_positive_programmed_flesh.png" alt="Положительная плоть"&gt;
+    </div>
+    <figcaption>Самодостаточность/гордость → контроль/осуждение → те же конфликты и фрустрация (Гал 5:17).</figcaption>
+  </figure>
+
+  <div class="warning">Важно: обе «плоти» одинаково неадекватны — обе живут из «я», а не из Христа.</div>
+
+  <hr/>
+
+  <!-- III. ПОБЕДОНОСНАЯ ЖИЗНЬ: НЕ ИМИТАЦИЯ, А ВЫРАЖЕНИЕ -->
+  <h2>III. Победоносная христианская жизнь: не имитация, а выражение</h2>
+  <p>Иисус жил в совершенной зависимости от Отца (Ин 5:19, 30; 6:57). Аналогично, ветвь приносит плод только пребывая на лозе (Ин 15:5). Апостол Павел переживает: «<strong>уже не я живу, но живёт во мне Христос</strong>» (Гал 2:20).</p>
+
+  <div class="quote">«…Бог производит в вас и хотение и действие по Своему благоволению» (Флп 2:13).</div>
+
+  <p class="muted">Следствие: Победоносная жизнь — это когда Христос выражает Свою жизнь через нас, а не когда мы «подражаем» Ему из плоти.</p>
+
+  <hr class="page-break"/>
+
+  <!-- IV. В АДАМЕ / ОБМЕН НА ХРИСТА -->
+  <h2>IV. «В Адаме» — рождён мёртвым. Божий обмен на жизнь Христа</h2>
+  <p>В Адаме все согрешили и умерли духовно (Рим 5:12, 15–19). Это отождествление означает: родившись «в Адаме», человек имеет функционирующие тело и душу, но дух — мёртв для Бога.</p>
+
+  <figure class="diagram" id="fig-in-adam">
+    <header>Диаграмма: «В Адаме» — линия человечества</header>
+    <div class="dropzone">
+      <!-- ВСТАВИТЬ ИЗОБРАЖЕНИЕ 4 (в Адаме) -->
+      Замените этот блок на &lt;img src="02_in_adam_timeline.png" alt="В Адаме"&gt;
+    </div>
+    <figcaption>Что было истинно для Адама, стало истинно «в нём» для всех его потомков (отождествление).</figcaption>
+  </figure>
+
+  <p>Божий ответ — Личность: <strong>Христос</strong>. Бог:</p>
+  <ul>
+    <li><strong>Отдал Свою жизнь за тебя</strong> (Рим 5:8);</li>
+    <li><strong>Забрал твою старую жизнь</strong> — «ветхий человек распят» (Рим 6:6);</li>
+    <li><strong>Дал тебе Свою жизнь</strong> (Рим 5:10; 1 Ин 5:11–12);</li>
+    <li><strong>Живёт Своей жизнью через тебя</strong> (Флп 2:13; Гал 2:20).</li>
+  </ul>
+
+  <figure class="diagram" id="fig-eternal-life">
+    <header>Диаграмма: Вечная жизнь — это жизнь Христа</header>
+    <div class="dropzone">
+      <!-- ВСТАВИТЬ ИЗОБРАЖЕНИЕ 5 (таймлайн жизни Христа) -->
+      Замените этот блок на &lt;img src="05_eternal_life_is_Christ.png" alt="Жизнь Христа — вечная жизнь"&gt;
+    </div>
+    <figcaption>«Вечная» — без начала и конца: мы становимся причастниками (2 Пет 1:4), а не «запускаем» её.</figcaption>
+  </figure>
+
+  <hr/>
+
+  <!-- V. ОБСУЖДЕНИЕ / ПРИМЕНЕНИЕ -->
+  <h2>V. Обсуждение и применение</h2>
+  <ol>
+    <li><strong>Где я полагался на «положительную» или «отрицательную» плоть?</strong> Примеры из своей недели.</li>
+    <li><strong>Что для меня значит «жить Христом, а не имитировать»?</strong> Конкретные шаги веры (Ин 15:4–5).</li>
+    <li><strong>Как истина об «отождествлении» меняет мой взгляд на себя и Бога?</strong> (Рим 6; 1 Ин 5:11–12).</li>
+  </ol>
+
+  <div class="memory">
+    <strong>Стих недели (на память):</strong>
+    <br/>«Я есмь Лоза, а вы ветви; кто пребывает во Мне, и Я в нём, тот приносит много плода; ибо без Меня не можете делать ничего» (Иоанна 15:5).
+  </div>
+
+  <div class="homework">
+    <strong>Домашнее задание:</strong>
+    <ol>
+      <li>Прочитать Римлянам 5–6 и выписать, что Бог <em>сделал</em> с твоей «старой жизнью» и что <em>дал</em> во Христе.</li>
+      <li>Отметить 2–3 типичных «механизма плоти» (контроль, угождение, эскапизм и т.д.) и молитвенно обменять их на доверие Христу в конкретной ситуации.</li>
+      <li>Молиться по Еф 1:17–19 о духе премудрости и откровения, чтобы видеть «Христа во мне — надежду славы» (Кол 1:27).</li>
+    </ol>
+  </div>
+
+  <hr class="page-break"/>
+
+  <!-- ПРИЛОЖЕНИЕ: Плейсхолдеры под остальные схемы, если понадобятся -->
+  <h2>Приложение: плейсхолдеры под дополнительные диаграммы</h2>
+
+  <figure class="diagram" id="fig-after-salvation">
+    <header>Диаграмма: «После спасения» (общение с Богом)</header>
+    <div class="dropzone">
+      <!-- ВСТАВИТЬ ИЗОБРАЖЕНИЕ 6 (состояние после спасения) -->
+      Замените этот блок на &lt;img src="06_after_salvation.png" alt="После спасения"&gt;
+    </div>
+    <figcaption>Крест «снимает» барьер греха; дух соединён с Богом; Христос — источник жизни.</figcaption>
+  </figure>
+
+  <figure class="diagram" id="fig-flesh-checklist">
+    <header>Чек-лист наблюдаемых проявлений плоти (для самодиагностики)</header>
+    <div class="dropzone">
+      <!-- МОЖНО ВСТАВИТЬ ИНФОГРАФИКУ / ТАБЛИЦУ -->
+      Здесь можно вставить инфографику/таблицу с проявлениями плоти и евангельской альтернативой во Христе.
+    </div>
+    <figcaption>Используйте на малых группах/в парном наставничестве.</figcaption>
+  </figure>
+
+  <footer>© Via Veritas | Жизнь во Христе — Урок 2</footer>
+</main>
+</body>
+</html>
