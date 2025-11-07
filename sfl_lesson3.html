@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Жизнь Полученная Взамен - Урок 3</title>
+<style>
+  /* 1. ШРИФТЫ И БАЗА */
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+  :root{
+    --accent:#ff880d;     /* Via Veritas акцент */
+    --teal:#62bbbf;       /* вторичный */
+    --coral:#f87b4f;      /* теплый коралловый */
+    --slate:#768f93;      /* серо-синий */
+    --bg:#f9f9f9;         /* светлый фон */
+    --ink:#333333;        /* основной текст */
+  }
+
+  body {
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    font-size: 16px; /* Базовый размер шрифта */
+  }
+
+  main {
+    max-width: 860px; /* Как в Уроке 2 */
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 48px 56px; /* Как в Уроке 2 */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  /* --- Шапка (Стиль Урока 2) --- */
+  .topbar{
+    display:flex; align-items:center; gap:16px; margin-bottom:10px;
+    border-bottom: 3px solid #ff880d; /* Добавил линию из Урока 1 */
+    padding-bottom: 10px;
+  }
+  .topbar h1{
+    flex:1 1 auto; margin:0; font-size:28px; color:var(--accent);
+    line-height:1.2; letter-spacing:.2px;
+  }
+  .logo{
+    flex:0 0 auto; display:flex; align-items:center; justify-content:flex-end;
+    min-width:160px;
+  }
+  .logo img{max-height:64px; width:auto; object-fit:contain;}
+  .subtitle{margin:6px 0 24px 0; color:var(--slate); font-size:18px;}
+
+
+  /* --- Стили контента --- */
+  /* H2 - Основной заголовок раздела */
+  h2 {
+    color: var(--accent);
+    border-left: 5px solid var(--accent); /* Стиль Урока 2 */
+    padding-left: 12px;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    font-size: 1.9em;
+    font-weight: 700;
+  }
+  /* H3 - Подзаголовок темы */
+  h3 {
+    color: #343a40;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 1.5em;
+  }
+  /* H4 - Заголовок для списков/уточнений */
+  h4 {
+    font-weight: 500;
+    color: #495057;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-style: italic;
+  }
+
+  p { margin: 10px 0 15px 0; text-align: justify;}
+  ul, ol { padding-left: 25px; margin-bottom: 15px; text-align: justify;}
+  li { margin-bottom: 8px; }
+
+  /* --- Блоки Вставки (Стили Урока 2) --- */
+  .quote{
+    font-style:italic; color:#444; background:#fffaf3; /* Как в Уроке 1 (теплее) */
+    border-left:4px solid var(--accent);
+    padding:12px 14px; margin:14px 0;
+  }
+  .quote cite { display: block; text-align: right; margin-top: 10px; font-style: normal; font-weight: bold; }
+  
+  .key{
+    background:#f4faf8; border-left:4px solid var(--teal);
+    padding:12px 14px; margin:14px 0; color:#26433a;
+  }
+  .qa{
+    background:#f7fbff; border-left:4px solid #5a7ea3;
+    padding:12px 14px; margin:14px 0;
+  }
+  .homework{
+    background:#fffaf3; border-left:4px solid var(--coral);
+    padding:12px 14px; margin:14px 0;
+  }
+  .memory{
+    background:#f3fff9; border-left:4px solid var(--teal);
+    padding:12px 14px; margin:14px 0;
+  }
+  .teacher-box { /* Взят из Урока 1 */
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+  .prayer { /* Взят из Урока 1 */
+    font-style: italic;
+    text-align: left;
+    margin: 20px 0; /* Убрал отступ слева/справа */
+    background: #fffaf3;
+    color: #555;
+    padding: 20px 25px;
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+  }
+  .prayer p { text-align: left; margin-bottom: 10px; }
+  .prayer p:last-child { margin-bottom: 0; }
+
+  /* --- Стили для интерактивных библейских ссылок --- */
+  .bible-ref-toggle {
+    cursor: pointer;
+    color: #00008b; /* Темно-синий, как ссылки */
+    text-decoration: underline;
+    margin-bottom: 5px; /* Небольшой отступ снизу */
+    font-weight: bold; /* Сделать саму ссылку жирной */
+    display: inline-block; /* Чтобы отступы работали корректно */
+  }
+  .bible-ref-toggle .indicator {
+    font-weight: bold;
+    margin-left: 5px;
+    display: inline-block;
+    user-select: none; /* Чтобы [+] не выделялся при клике */
+  }
+  .bible-text {
+    display: none; /* Скрыто по умолчанию */
+    padding-left: 25px; /* Небольшой отступ слева для текста */
+    border-left: 3px solid #e9ecef; /* Светло-серая линия слева */
+    margin-top: 5px;
+    margin-bottom: 20px; /* Отступ после текста */
+    font-size: 0.95em; /* Чуть меньше основного текста */
+    color: #495057; /* Темно-серый цвет */
+    text-align: justify; /* Выравнивание текста */
+  }
+  .bible-text p { margin-bottom: 8px; }
+  .bible-text p b { color: #343a40; font-weight: bold; margin-right: 5px; }
+
+  hr { border: none; border-top: 1px solid #eee; margin: 24px 0; }
+  footer { text-align: center; color: #adb5bd; font-size: 12px; margin-top: 40px; padding-bottom: 20px; }
+
+  /* --- Стили для интерактивных ответов (из Урока 1) --- */
+  .fill-in {
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-decoration-color: #6c757d;
+      color: inherit;
+      font-weight: normal;
+  }
+  .fill-in .answer { display: none; }
+  .fill-in.revealed .answer {
+      display: inline;
+      font-style: italic;
+      color: #d9534f;
+      font-weight: normal;
+      text-decoration: none;
+  }
+  .fill-in.revealed .placeholder { display: none; }
+  
+  /* --- Стили для диаграмм (из Урока 2) --- */
+  figure.diagram{
+    margin:16px auto; padding:14px; border:2px dashed #d9d9d9;
+    border-radius:10px; background:#fcfcfc;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  figure.diagram header{
+    font-weight:700; color:#444; display:flex; align-items:center; gap:8px;
+  }
+  figure.diagram .dropzone{
+    background:#fff; border:1px solid #e7e7e7; border-radius:10px;
+    min-height:220px; display:flex; align-items:center; justify-content:center;
+    font-size:14px; color:#9aa5ad; text-align:center; padding:14px;
+  }
+  figure.diagram img{
+    max-width:100%; height:auto; display:block; margin:0 auto;
+  }
+  figcaption{
+    font-size:14px; /* Увеличил шрифт для читаемости */
+    color:#6f7b82; 
+    text-align: center; /* Центрировал подпись */
+    font-style: italic; /* Добавил курсив */
+    margin-top: 8px;
+  }
+
+  /* --- Разметка для PDF-печати (из Урока 1) --- */
+  @media print {
+      body {
+          background: white; margin: 0; font-family: "Georgia", serif; font-size: 12pt;
+          max-width: none; /* ИСПРАВЛЕНО: Убираем ограничение ширины для body */
+      }
+      
+      main {
+          box-shadow: none; border-radius: 0; padding: 0; 
+          max-width: none; /* ИСПРАВЛЕНО: Убираем ограничение ширины для main */
+      }
+      
+      p {
+          text-align: justify; /* Возвращаем justify для печати */
+      }
+      
+      ol li {
+          text-align: justify; /* Возвращаем justify для печати */
+      }
+      
+      ul {
+         column-count: 1; /* ИСПРАВЛЕНО: Отключаем 2 колонки для ВСЕХ списков при печати */
+         text-align: justify;
+      }
+      
+      .teacher-box, .quote, table, ol, figure.diagram, .prayer { 
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+      }
+      h2, h3, h4 {
+          page-break-after: avoid !important;
+      }
+      p, li {
+          page-break-before: avoid !important;
+      }
+      .header, .topbar { page-break-after: avoid; }
+      .teacher-box { border: 1px solid #ccc; background: #f9f9f9 !important; }
+      h2 { color: #000; border-left: 5px solid #000; }
+      hr { border-top: 1px solid #ccc; margin: 20px 0; }
+      .page-break { page-break-before: always; }
+      
+      .fill-in { font-weight: normal; color: #000; text-decoration: none; }
+      .fill-in .placeholder { text-decoration: underline; text-decoration-color: #000;}
+      .fill-in.revealed .answer { color: #000; font-weight: normal; font-style: italic; text-decoration: underline; }
+      .fill-in.revealed .placeholder { display: none; }
+
+      .bible-ref-toggle { color: #000; text-decoration: none; cursor: default; font-weight: bold; }
+      .bible-ref-toggle .indicator { display: none; }
+      .bible-text { display: none !important; border: none; padding-left: 0; font-size: 11pt; color: #000; }
+      .bible-text p b { color: #000; }
+      
+      figure.diagram img {
+         max-width: 90% !important; /* Уменьшаем диаграммы, чтобы они точно влезали */
+      }
+
+      @page {
+          size: A4;
+          margin: 2.5cm 1.5cm;
+          @bottom-center {
+              content: counter(page);
+              font-family: 'Times New Roman', Times, serif;
+              font-size: 11pt;
+              color: #555;
+          }
+      }
+</style>
+<script>
+    function toggleAnswer(element) {
+        element.classList.toggle('revealed');
+    }
+  function toggleBibleText(element) {
+    var textElement = element.nextElementSibling;
+    var indicator = element.querySelector('.indicator');
+    
+    while(textElement && textElement.nodeType !== 1) { // Игнорируем текстовые узлы
+        textElement = textElement.nextSibling;
+    }
+
+    if (textElement && textElement.classList.contains('bible-text')) {
+      if (textElement.style.display === 'block') {
+        textElement.style.display = 'none';
+        if(indicator) indicator.textContent = '[+]';
+      } else {
+        textElement.style.display = 'block';
+        if(indicator) indicator.textContent = '[-]';
+      }
+    }
+  }
+</script>
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <h1>Жизнь во Христе — Урок 3</h1>
+    <div class="logo">
+      <img src="logo.png" alt="Via Veritas"/>
+    </div>
+  </div>
+  <div class="subtitle">Тема: <span class="muted">Жить в соответствии с решением: Путешествие ко кресту и Сокрушенность</span></div>
+
+  <div class="key">
+    <span class="badge">Главная истина:</span> Сокрушенность — это Божий процесс, который подводит нас к осознанию своего бессилия (банкротства плоти) и к отказу от своих "прав", чтобы мы могли жить в полной зависимости от Христа.
+  </div>
+
+  <div class="qa">
+    <strong>Цель урока:</strong>
+    <ol>
+      <li>Понять цель страданий и Божьего процесса сокрушенности.</li>
+      <li>Определить, что такое "признаки сокрушенности" (наши "права", за которые мы держимся).</li>
+      <li>Осознать разницу между жизнью, основанной на правах, и жизнью, отданной Христу.</li>
+      <li>Привести к личной молитве-посвящению (отказу от своих прав).</li>
+    </ol>
+  </div>
+  
+  <hr/>
+  <p>В предыдущих уроках мы увидели, что Божье Решение — это Христос, живущий в нас. Теперь мы должны рассмотреть главное препятствие, которое мешает нам жить этой новой жизнью. Это препятствие — <strong>«плоть»</strong>.</p>
+  <p>Важно понимать, что «плоть» — это не просто «плохие поступки». <strong>«Плоть» — это наш выученный способ жить независимо от Бога, полагаясь на свои собственные ресурсы</strong>. Это то, что мы называем «жизнью от своего „я“».</p>
+  <p>Мы рождаемся с Богом данными потребностями — в <strong>любви</strong>, <strong>принятии</strong> и <strong>значимости</strong>. Но, будучи в Адаме, мы отделены от Бога. «Плоть» — это любая стратегия, которую мы выработали с детства, чтобы удовлетворить эти нужды *без Него*. Мы учимся полагаться на свои силы, интеллект, достижения или отношения, чтобы чувствовать себя в безопасности. Основная черта плоти — это <strong>контроль</strong>. Мы пытаемся контролировать Бога, обстоятельства и других, чтобы защитить свое «я» и самим обеспечить себе безопасность.</p>
+  <p>Это препятствие проявляется в двух формах:</p>
+  <ul>
+    <li><strong>«Отрицательная плоть»</strong> (гнев, страх, зависимости, уход в себя).</li>
+    <li><strong>«Положительная плоть»</strong> (наша "хорошая" сторона — религиозность, перфекционизм, трудоголизм, которыми мы пытаемся *заслужить* одобрение).</li>
+  </ul>
+  <p>Оба эти проявления — плоть, так как оба основаны на самодостаточности. В этом уроке мы увидим, как это главное препятствие поддерживается тремя столпами:</p>
+  <ol>
+    <li><b>Незнание нашей истинной идентичности</b> (мы не знаем, кто мы во Христе).</li>
+    <li><b>Неверие в совершенную работу Христа</b> (мы не верим, что наша старая жизнь *уже* распята).</li>
+    <li><b>Желание держаться за «свои права»</b> (это и есть «плоть» в действии — наше "право" на репутацию, успех, комфорт и т.д.).</li>
+  </ol>
+  <p>Божий путь к победе — это не улучшение «плоти», а <strong>«сокрушенность»</strong>: процесс, в котором мы осознаем свое банкротство и перестаем цепляться за эти «права», позволяя Христу быть нашей единственной жизнью.</p>
+  <hr/>
+
+  <h2>I. Препятствия к жизни во Христе</h2>
+  <div class="teacher-box">
+    <ol type="A" style="list-style-type: upper-alpha; padding-left: 20px;">
+        <li><span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>[Препятствие A...]</span><span class='answer'>Незнание нашей истинной идентичности во Христе.</span></span></li>
+        <li><span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>[Препятствие Б...]</span><span class='answer'>Непонимание или неверие в завершенную работу Христа (наша смерть с Ним).</span></span></li>
+        <li><span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>[Препятствие В...]</span><span class='answer'>Желание держаться за "свои права" и жить независимо (плоть/жизнь "я").</span></span></li>
+    </ol>
+  </div>
+  
+  
+
+  <h2>II. Положение и Отношения со Христом</h2>
+  <p>Чтобы понять, как мы можем преодолеть препятствия «плоти» и жить в свободе, важно четко различать наше **положение** во Христе и наши повседневные **отношения со Христом**. Наше положение — это неизменная реальность того, кем Бог видит нас благодаря Христу, а наши отношения со Христом — это наш личный опыт, который может меняться в зависимости от наших решений и веры.</p>
+  <div class="teacher-box">
+    <h4>А. Положение (объективная реальность)</h4>
+    <p><span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>____________________________</span><span class='answer'>Наша <b>позиция</b> (положение) во Христе - это объективная, неизменная <b>истина</b> (мы святы, праведны, посажены на небесах). Это то, что Бог совершил.</span></span></p>
+
+    <h4>Б. Отношения со Христом (субъективный опыт)</h4>
+    <p><span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>____________________________</span><span class='answer'>Наши <b>отношения со Христом</b> - это наш субъективный, повседневный <b>опыт</b>. Он изменчив и зависит от того, живем ли мы верой в нашу позицию (по Духу) или по старым привычкам (по плоти).</span></span></p>
+  </div>
+  
+  <figure class="diagram" id="fig-two-realities">
+    <header>Диаграмма: Две стороны спасения</header>
+    <div class="dropzone">
+      <img src="2sides.png" alt="Две стороны спасения: Положение (Еф. 2:8-9) и Отношения (Кол. 2:6)"/>
+    </div>
+    <figcaption>Мы спасены (Положение) даром, а теперь призваны "ходить в Нем" (Отношения).</figcaption>
+  </figure>
+
+  
+  
+  <h2>III. Удивительное путешествие: Процесс сокрушенности</h2>
+
+  <h3>A. Цель страданий - сокрушенность</h3>
+  <p>Бог допускает в нашей жизни трудности и страдания не для того, чтобы наказать нас, а для того, чтобы привести нас к <span class="static-answer">сокрушенности</span>.</p>
+  <div class="teacher-box">
+    <p><strong>Сокрушенность (англ. Brokenness)</strong> — это не самоуничижение или ненависть к себе. Это осознание и принятие нашего <span class="static-answer">полного банкротства</span> и неспособности жить христианской жизнью своими силами. Это точка, где мы перестаем полагаться на плоть (и "хорошую", и "плохую") и начинаем полностью зависеть от Христа, живущего в нас.</p>
+  </div>
+
+  <h3>B. Процесс сокрушенности</h3>
+  <p>Этот процесс часто включает в себя ситуации, в которых Бог позволяет нашим собственным силам иссякнуть, чтобы мы надеялись не на себя, а на Него.</p>
+  
+  <div class="bible-ref-toggle" onclick="toggleBibleText(this)">
+    2 Коринфянам 1:9-10 (Библейское основание) <span class="indicator">[+]</span>
+  </div>
+  <div class="bible-text">
+    <p><b>9</b> Но сами в себе имели приговор к смерти, для того, чтобы надеяться не на самих себя, но на Бога, воскрешающего мертвых,</p>
+    <p><b>10</b> Который и избавил нас от столь [близкой] смерти, и избавляет, и [на] Которого надеемся, что и еще избавит,</p>
+  </div>
+  <br>
+  <div class="bible-ref-toggle" onclick="toggleBibleText(this)">
+    2 Коринфянам 4:7-12 <span class="indicator">[+]</span>
+  </div>
+  <div class="bible-text">
+    <p><b>7</b> Но сокровище сие мы носим в глиняных сосудах, чтобы преизбыточная сила была [приписываема] Богу, а не нам.</p>
+    <p><b>8</b> Мы отовсюду притесняемы, но не стеснены; мы в отчаянных обстоятельствах, но не отчаиваемся;</p>
+    <p><b>9</b> мы гонимы, но не оставлены; низлагаемы, но не погибаем.</p>
+    <p><b>10</b> Всегда носим в теле мертвость Господа Иисуса, чтобы и жизнь Иисусова открылась в теле нашем.</p>
+    <p><b>11</b> Ибо мы живые непрестанно предаемся на смерть ради Иисуса, чтобы и жизнь Иисусова открылась в смертной плоти нашей,</p>
+    <p><b>12</b> так что смерть действует в нас, а жизнь в вас.</p>
+  </div>
+  <br>
+  <div class="bible-ref-toggle" onclick="toggleBibleText(this)">
+    1 Петра 4:12-13 <span class="indicator">[+]</span>
+  </div>
+  <div class="bible-text">
+    <p><b>12</b> Возлюбленные! огненного искушения, для испытания вам посылаемого, не чуждайтесь, как приключения для вас странного,</p>
+    <p><b>13</b> но как вы участвуете в Христовых страданиях, радуйтесь, да и в явление славы Его возрадуетесь и восторжествуете.</p>
+  </div>
+  <div class="teacher-box">
+      <p>Страдания/Трудности -> Банкротство 'Я' (Плоть не работает) -> Сокрушенность (Отчаяние в себе) -> Полная зависимость от Христа (2 Кор 1:9) -> Жизнь Христа (2 Кор 4:10-11)
+        </p>
+  </div>
+  <h4 style="margin-top: 30px;">2. Соответствие между страданиями Христа и нашими</h4>
+  <p>Эта диаграмма помогает нам понять, как наши трудности связаны с тем, что пережил Иисус. Иисус показал нам совершенный <strong>пример</strong> жизни, когда Он полностью доверял Отцу, а не Своим силам, даже в страданиях. Для нас же наши трудности — это <strong>инструмент</strong> от Бога. Он использует их, чтобы помочь нам отказаться от нашей гордости (нашей «плоти») и перестать цепляться за свои «права». В этом и состоит **связь**: через наши страдания Бог учит нас жить так же, как Иисус — полностью полагаясь только на Него.</p>
+
+  <figure class="diagram" id="fig-brokenness-process">
+    <header>Диаграмма: Путь к сокрушенности и соответствие страданий</header>
+    <div class="dropzone">
+      <img src="jesusforus.png" alt="Схема: "/>
+    </div>
+    <figcaption>Через трудности (наши страдания) Бог ведет нас к той же зависимости от Отца, которую явил Христос (Его страдания).</figcaption>
+  </figure>
+
+  <h3>C. Признаки сокрушенности</h3>
+  <p>Сокрушенность становится очевидной, когда мы больше не обращаемся к своим старым механизмам защиты (плоти) и добровольно отказываемся от наших "прав".</p>
+  <div class="teacher-box">
+    <h4>1. "Права", от которых мы отказываемся:</h4>
+    <p>Сокрушенность проявляется, когда мы перестаем цепляться за...</p>
+    <ul style="column-count: 2; column-gap: 30px; text-align: left;">
+      <li>Право на собственность.</li>
+      <li>Право на хорошую репутацию.</li>
+      <li>Право на признание.</li>
+      <li>Право на успех.</li>
+      <li>Право на приятные обстоятельства.</li>
+      <li>Право предполагать Божью волю.</li>
+      <li>Право на саму жизнь.</li>
+      <li>Право на силу или красоту.</li>
+      <li>Право иметь друзей.</li>
+      <li>Право быть выслушанным.</li>
+      <li>Право обижаться.</li>
+      <li>Право избегать последствий своих посевов.</li>
+      <li>Право на свою правоту.</li>
+      <li>Право видеть результаты.</li>
+      <li>Право быть любимым другими.</li>
+      <li><span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>[Право...]</span><span class='answer'>Право на комфорт</span></span></li>
+      <li><span class='fill-in' onclick='toggleAnswer(this)'><span class='placeholder'>[Право...]</span><span class='answer'>Право на то, чтобы меня понимали</span></span></li>
+    </ul>
+
+    <hr style="border-top: 1px solid #e0e0e0; margin: 25px 0 15px 0;">
+    
+    <h4>2. Альтернативный список (Признаки сокрушенного духа):</h4>
+    <p>Я...
+    <ul style="column-count: 2; column-gap: 30px; text-align: left;">
+      <li>...отказался от всех своих прав.</li>
+      <li>...не хочу властвовать ни над кем.</li>
+      <li>...не живу, руководствуясь чувствами или прежними моделями поведения, но руководим только Христом, живущим внутри.</li>
+      <li>...послушен из любви, потому что *хочу*, а не потому что *должен*.</li>
+      <li>...не стараюсь выслужиться пред Богом, но активно позволяю Христу действовать во мне и через меня.</li>
+      <li>...готов к неудачам.</li>
+      <li>...согласен быть слабым.</li>
+      <li>...знаю о полной неспособности справляться со всем своими силами (2 Кор. 3:5).</li>
+      <li>...имею силу во Христе, благодаря Его силе (Флп. 4:13).</li>
+      <li>...признаю Божью силу в своих слабостях (2 Кор. 12:10).</li>
+      <li>...завишу только от Христа в удовлетворении своих основных нужд.</li>
+      <li>...верю Богу во всем и покоюсь в Нем, даже когда мир вокруг полон хаоса.</li>
+      <li>...больше ищу Самого Христа, нежели Его даров.</li>
+      <li>...всем прощаю (Ефес. 4:32).</li>
+      <li>...не против быть отверженным.</li>
+      <li>...открыт людям и хочу делиться своими неудачами.</li>
+      <li>...уязвим и хочу делить с другими их неудачи.</li>
+      <li>...готов отдать другим почести и похвалу.</li>
+      <li>...искренне смирен.</li>
+      <li>...ценю тех, кто не имеет для меня никакой "ценности".</li>
+      <li>...готов поддерживать других, быть им опорой.</li>
+      <li>...открыт для научения.</li>
+      <li>...не против, чтобы меня неправильно понимали.</li>
+      <li>...не против, чтобы меня еще больше смиряли.</li>
+    </ul>
+  </div>
+
+
+  <h2>IV. Молитва-посвящение</h2>
+  <p>Эта молитва — практический шаг отказа от своих "прав" и принятия жизни, полностью зависимой от Христа.</p>
+
+  <div class="prayer">
+    <p style="text-align: center; font-weight: bold; font-style: normal; font-size: 1.1em;">МОЛИТВА ПОЛАГАВШЕГОСЯ НА СЕБЯ</p>
+    <p>Дорогой Отец,</p>
+    <p>Благодарю Тебя за избавление меня от жизни в Адаме и за то, что Ты поместил меня во Христа Иисуса. Я признаю, что полагался на себя, и у меня ничего не получалось. Я пытался жить христианской жизнью своими собственными силами.</p>
+    <p>Признаю, что пытался удовлетворить свои нужды через людей, достижения и обладание вещами. Я отрекаюсь от своей самодостаточности и с этого момента безо всяких условий отдаю свою жизнь в Твои руки.</p>
+    <p>Я отрекаюсь от всех своих прав и ожиданий и даю Тебе позволение сделать меня таким человеком, каким Ты хочешь меня видеть.</p>
+    <p>Я верю Твоему Слову, что я был распят со Христом, погребен и воскрешен с Ним для новой жизни. Я признаю жизнь воскресения своей собственной жизнью. Я поднят на небеса и сейчас сижу по правую руку от Бога Отца.</p>
+    <p>Актом своей воли я принимаю, что Христос теперь - моя жизнь, моя сила и моя сущность. Я благодарю Тебя, что во Христе Ты меня полностью принимаешь, и что все мои нужды удовлетворяются Христом Иисусом.</p>
+    <p>Всего себя я подчиняю живущему во мне Христу. Сделай со мной, что захочешь. Прославь и яви Своего Сына в моей жизни.</p>
+    <p>Во Имя Его,</p>
+    <p style="text-align: left; margin-top: 20px;">_________________</p>
+  </div>
+
+  <h2>V. Обсуждение и применение</h2>
+  <ol>
+    <li><strong>Какие из "прав" в списке "Признаки сокрушенности" тебе труднее всего "отпустить"?</strong> (Напр., "право на свою правоту", "право на хорошую репутацию", "право на приятные обстоятельства").</li>
+    <li><strong>Вспомни недавнюю трудную ситуацию (страдание).</strong> Как ты на нее отреагировал: из "плоти" (контроль, гнев, уныние) или из "духа" (признавая свою слабость и Божью силу, 2 Кор 1:9)?</li>
+    <li><strong>Что для тебя практически означает "отказаться от своих прав"</strong> в семье? На работе? В церкви?</li>
+  </ol>
+
+  <div class="memory">
+    <strong>Стих недели (на память):</strong>
+    <br/>«...чтобы надеяться не на самих себя, но на Бога, воскрешающего мертвых...» (2 Коринфянам 1:9б).
+  </div>
+
+  <div class="homework">
+    <strong>Домашнее задание:</strong>
+    <ol>
+      <li>В течение недели отслеживай свою реакцию на трудности. Когда чувствуешь гнев, страх или желание контролировать, остановись и спроси: "За какое 'право' я сейчас борюсь?"</li>
+      <li>Прочитай 2 Коринфянам 12:7-10. Поразмышляй, почему Павел "хвалился немощами".</li>
+      <li>Молитвенно пройдись по списку "Признаки сокрушенности" и сознательно "отдай" каждое "право" Богу.</li>
+    </ol>
+  </div>
+
+  <footer>© Via Veritas | Жизнь во Христе — Урок 3</footer>
+</main>
+</body>
+</html>
