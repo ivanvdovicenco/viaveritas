@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 4: Идентичность Верующего</title>
+<style>
+  /* 1. ШРИФТЫ И БАЗА */
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+  :root{
+    --accent:#ff880d;      /* Via Veritas акцент */
+    --teal:#62bbbf;        /* вторичный */
+    --coral:#f87b4f;       /* теплый коралловый */
+    --slate:#768f93;       /* серо-синий */
+    --bg:#f9f9f9;          /* светлый фон */
+    --ink:#333333;         /* основной текст */
+  }
+
+  body {
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    font-size: 16px; /* Базовый размер шрифта */
+  }
+
+  main {
+    max-width: 860px; /* Как в Уроке 2 */
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 48px 56px; /* Как в Уроке 2 */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  /* --- Шапка (Стиль Урока 2) --- */
+  .topbar{
+    display:flex; align-items:center; gap:16px; margin-bottom:10px;
+    border-bottom: 3px solid #ff880d; /* Добавил линию из Урока 1 */
+    padding-bottom: 10px;
+  }
+  .topbar h1{
+    flex:1 1 auto; margin:0; font-size:28px; color:var(--accent);
+    line-height:1.2; letter-spacing:.2px;
+  }
+  .logo{
+    flex:0 0 auto; display:flex; align-items:center; justify-content:flex-end;
+    min-width:160px;
+  }
+  .logo img{max-height:64px; width:auto; object-fit:contain;}
+  .subtitle{margin:6px 0 24px 0; color:var(--slate); font-size:18px;}
+
+
+  /* --- Стили контента --- */
+  /* H2 - Основной заголовок раздела */
+  h2 {
+    color: var(--accent);
+    border-left: 5px solid var(--accent); /* Стиль Урока 2 */
+    padding-left: 12px;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    font-size: 1.9em;
+    font-weight: 700;
+  }
+  /* H3 - Подзаголовок темы */
+  h3 {
+    color: #343a40;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 1.5em;
+  }
+  /* H4 - Заголовок для списков/уточнений */
+  h4 {
+    font-weight: 500;
+    color: #495057;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-style: italic;
+  }
+
+  p { margin: 10px 0 15px 0; text-align: justify;}
+  ul, ol { padding-left: 25px; margin-bottom: 15px; text-align: justify;}
+  li { margin-bottom: 8px; }
+
+  /* --- Блоки Вставки (Стили Урока 2) --- */
+  .quote{
+    font-style:italic; color:#444; background:#fffaf3; /* Как в Уроке 1 (теплее) */
+    border-left:4px solid var(--accent);
+    padding:12px 14px; margin:14px 0;
+  }
+  .quote cite { display: block; text-align: right; margin-top: 10px; font-style: normal; font-weight: bold; }
+  
+  .key{
+    background:#f4faf8; border-left:4px solid var(--teal);
+    padding:12px 14px; margin:14px 0; color:#26433a;
+  }
+  .qa{
+    background:#f7fbff; border-left:4px solid #5a7ea3;
+    padding:12px 14px; margin:14px 0;
+  }
+  .homework{
+    background:#fffaf3; border-left:4px solid var(--coral);
+    padding:12px 14px; margin:14px 0;
+  }
+  .memory{
+    background:#f3fff9; border-left:4px solid var(--teal);
+    padding:12px 14px; margin:14px 0;
+  }
+  .teacher-box { /* Взят из Урока 1 */
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+  .prayer { /* Взят из Урока 1 */
+    font-style: italic;
+    text-align: left;
+    margin: 20px 0; /* Убрал отступ слева/справа */
+    background: #fffaf3;
+    color: #555;
+    padding: 20px 25px;
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+  }
+  .prayer p { text-align: left; margin-bottom: 10px; }
+  .prayer p:last-child { margin-bottom: 0; }
+
+  /* --- Стили для интерактивных библейских ссылок --- */
+  .bible-ref-toggle {
+    cursor: pointer;
+    color: #00008b; /* Темно-синий, как ссылки */
+    text-decoration: underline;
+    margin-bottom: 5px; /* Небольшой отступ снизу */
+    font-weight: bold; /* Сделать саму ссылку жирной */
+    display: inline-block; /* Чтобы отступы работали корректно */
+  }
+  .bible-ref-toggle .indicator {
+    font-weight: bold;
+    margin-left: 5px;
+    display: inline-block;
+    user-select: none; /* Чтобы [+] не выделялся при клике */
+  }
+  .bible-text {
+    display: none; /* Скрыто по умолчанию */
+    padding-left: 25px; /* Небольшой отступ слева для текста */
+    border-left: 3px solid #e9ecef; /* Светло-серая линия слева */
+    margin-top: 5px;
+    margin-bottom: 20px; /* Отступ после текста */
+    font-size: 0.95em; /* Чуть меньше основного текста */
+    color: #495057; /* Темно-серый цвет */
+    text-align: justify; /* Выравнивание текста */
+  }
+  .bible-text p { margin-bottom: 8px; }
+  .bible-text p b { color: #343a40; font-weight: bold; margin-right: 5px; }
+
+  hr { border: none; border-top: 1px solid #eee; margin: 24px 0; }
+  footer { text-align: center; color: #adb5bd; font-size: 12px; margin-top: 40px; padding-bottom: 20px; }
+
+  /* --- Стили для интерактивных ответов (из Урока 1) --- */
+  .fill-in {
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-decoration-color: #6c757d;
+      color: inherit;
+      font-weight: normal;
+  }
+  .fill-in .answer { display: none; }
+  .fill-in.revealed .answer {
+      display: inline;
+      font-style: italic;
+      color: #d9534f;
+      font-weight: normal;
+      text-decoration: none;
+  }
+  .fill-in.revealed .placeholder { display: none; }
+  
+  /* --- Стили для диаграмм (из Урока 2) --- */
+  figure.diagram{
+    margin:16px auto; padding:14px; border:2px dashed #d9d9d9;
+    border-radius:10px; background:#fcfcfc;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  figure.diagram header{
+    font-weight:700; color:#444; display:flex; align-items:center; gap:8px;
+  }
+  figure.diagram .dropzone{
+    background:#fff; border:1px solid #e7e7e7; border-radius:10px;
+    min-height:220px; display:flex; align-items:center; justify-content:center;
+    font-size:14px; color:#9aa5ad; text-align:center; padding:14px;
+  }
+  figure.diagram img{
+    max-width:100%; height:auto; display:block; margin:0 auto;
+  }
+  figcaption{
+    font-size:14px; /* Увеличил шрифт для читаемости */
+    color:#6f7b82; 
+    text-align: center; /* Центрировал подпись */
+    font-style: italic; /* Добавил курсив */
+    margin-top: 8px;
+  }
+
+  /* --- Разметка для PDF-печати (из Урока 1) --- */
+  @media print {
+      body {
+          background: white; margin: 0; font-family: "Georgia", serif; font-size: 12pt;
+          max-width: none; /* ИСПРАВЛЕНО: Убираем ограничение ширины для body */
+      }
+      
+      main {
+          box-shadow: none; border-radius: 0; padding: 0; 
+          max-width: none; /* ИСПРАВЛЕНО: Убираем ограничение ширины для main */
+      }
+      
+      p {
+          text-align: justify; /* Возвращаем justify для печати */
+      }
+      
+      ol li {
+          text-align: justify; /* Возвращаем justify для печати */
+      }
+      
+      ul {
+          column-count: 1; /* ИСПРАВЛЕНО: Отключаем 2 колонки для ВСЕХ списков при печати */
+          text-align: justify;
+      }
+      
+      .teacher-box, .quote, table, ol, figure.diagram, .prayer { 
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+      }
+      h2, h3, h4 {
+          page-break-after: avoid !important;
+      }
+      p, li {
+          page-break-before: avoid !important;
+      }
+      .header, .topbar { page-break-after: avoid; }
+      .teacher-box { border: 1px solid #ccc; background: #f9f9f9 !important; }
+      h2 { color: #000; border-left: 5px solid #000; }
+      hr { border-top: 1px solid #ccc; margin: 20px 0; }
+      .page-break { page-break-before: always; }
+      
+      .fill-in { font-weight: normal; color: #000; text-decoration: none; }
+      .fill-in .placeholder { text-decoration: underline; text-decoration-color: #000;}
+      .fill-in.revealed .answer { color: #000; font-weight: normal; font-style: italic; text-decoration: underline; }
+      .fill-in.revealed .placeholder { display: none; }
+
+      .bible-ref-toggle { color: #000; text-decoration: none; cursor: default; font-weight: bold; }
+      .bible-ref-toggle .indicator { display: none; }
+      .bible-text { display: none !important; border: none; padding-left: 0; font-size: 11pt; color: #000; }
+      .bible-text p b { color: #000; }
+      
+      figure.diagram img {
+          max-width: 90% !important; /* Уменьшаем диаграммы, чтобы они точно влезали */
+      }
+
+      @page {
+          size: A4;
+          margin: 2.5cm 1.5cm;
+          @bottom-center {
+              content: counter(page);
+              font-family: 'Times New Roman', Times, serif;
+              font-size: 11pt;
+              color: #555;
+          }
+      }
+  }
+</style>
+<script>
+    function toggleAnswer(element) {
+        element.classList.toggle('revealed');
+    }
+  function toggleBibleText(element) {
+    var textElement = element.nextElementSibling;
+    var indicator = element.querySelector('.indicator');
+    
+    while(textElement && textElement.nodeType !== 1) { // Игнорируем текстовые узлы
+        textElement = textElement.nextSibling;
+    }
+
+    if (textElement && textElement.classList.contains('bible-text')) {
+      if (textElement.style.display === 'block') {
+        textElement.style.display = 'none';
+        if(indicator) indicator.textContent = '[+]';
+      } else {
+        textElement.style.display = 'block';
+        if(indicator) indicator.textContent = '[-]';
+      }
+    }
+  }
+</script>
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <h1>Жизнь во Христе — Урок 4</h1>
+    <div class="logo">
+      <img src="logo.png" alt="Via Veritas"/>
+    </div>
+  </div>
+  <div class="subtitle">Тема: <span class="muted">Новое творение (Идентичность верующего)</span></div>
+
+  <div class="key">
+    <span class="badge">Главная истина:</span> Наша идентичность и праведность определяются не нашими делами или чувствами, а нашим рождением "во Христе". Мы не просто "прощенные грешники", а "новые творения", святые и праведные в Нем.
+  </div>
+
+  <div class="qa">
+    <strong>Цель урока:</strong>
+    <ol>
+      <li>Понять разницу между самооценкой, основанной на "естественной основе" (делах), и самооценкой, основанной на "духовной основе" (Библии).</li>
+      <li>Осознать, что праведность — это не то, чего мы достигаем, а "дар", который мы получаем по вере.</li>
+      <li>Разобрать "возможные заблуждения" относительно нашей праведности.</li>
+      <li>Утвердиться в своей истинной идентичности ("Кто я такой?") на основании Писания.</li>
+    </ol>
+  </div>
+  
+  <hr/>
+
+  <h2>I. Введение: Вопрос об идентичности</h2>
+  <div class="teacher-box">
+    <p>Вопрос о собственной идентичности - один из самых важных в жизни личности, особенно в контексте победы. Идентичность верующего тем более важна, поскольку исторически на христиан часто смотрели только как на "прощенных грешников". Из-за этого их самооценка складывалась по меркам, принятым в мире, а не по Слову Божьему.</p>
+    
+    <h3>А. Самооценка на естественной основе</h3>
+    <p>Обычные методы развития самооценки основаны на:</p>
+    <ul>
+      <li>физической привлекательности человека,</li>
+      <li>успехе или неудачах в выполнении задач,</li>
+      <li>отношении родителей к детям,</li>
+      <li>нашем представлении об отношении Бога к нам,</li>
+      <li>популярности или неуспехе у сверстников.</li>
+    </ul>
+    
+    <h3>Б. Самооценка на духовной основе</h3>
+    <p>Представление о себе верующий должен строить на основе Библии. Решающим моментом здесь является учение о <strong>праведности верующего</strong>.</p>
+  </div>
+
+  <h2>II. Закон и Благодать (Диаграмма "Белка в колесе")</h2>
+  <div class="teacher-box">
+    <p><strong>Закон</strong> — это система "достижений", основанная на ожиданиях и стандартах. Мы пытаемся "заслужить" принятие Бога своими силами (исповедь -> новая попытка -> пытаться усердней). Это "белка в колесе", приносящая "плоды смерти": неполноценность, небезопасность, ревность, усталость.</p>
+    <p><strong>Благодать</strong> — это система "получения". Она основана не на наших делах, а на том, что сделал Христос. Мы получаем <strong>дар праведности</strong> (Рим. 5:17). С нашего духа течет Живая Вода и плоды для Господа: хвала, радость, молитва.</p>
+  </div>
+  
+  <figure class="diagram" id="fig-law-grace">
+    <header>Диаграмма: Закон и Благодать</header>
+    <div class="dropzone">
+      <img src="law-grace.png" alt="Схема, показывающая 'беличье колесо' Закона в сравнении с потоком Благодати"/>
+    </div>
+    <figcaption>Ожидания для принятия (Закон) в сравнении с даром праведности (Благодать).</figcaption>
+  </figure>
+  
+  <h2>III. Метод получения идентичности</h2>
+  <div class="teacher-box">
+    <p>Наша новая идентичность во Христе получена двумя путями, и оба они - не наши заслуги:</p>
+    <ul>
+      <li><strong>А. По праву рождения</strong> (Мы рождены свыше, 1 Иоан. 3:1-2)</li>
+      <li><strong>Б. По праву дарения</strong> (Это дар праведности, Рим. 5:17)</li>
+    </ul>
+  </div>
+
+  <h2>IV. Возможные заблуждения в отношении праведности</h2>
+  <div class="teacher-box">
+    <h4>Заблуждение 1: "Я просто грешник, спасенный по благодати".</h4>
+    <p><strong>Истина:</strong> Вы – святой (согласно Писанию), который, к сожалению, иногда грешит. Ваша <i>идентичность</i> изменилась. "Святой" – это ваша новая должность, а "грешник" – старая.</p>
+    
+    <h4>Заблуждение 2: "Я просто одет в праведность Христа".</h4>
+    <p><strong>Истина:</strong> Вы не просто "одеты" в праведность, как в пальто, которое скрывает гниль. Бог не покрывает проблему, Он ее решает. Ваш старый дух был распят, и вы стали новым творением, соединенным с Ним. "Соединенный с Господом есть один дух с Ним" (1 Кор. 6:17).</p>
+
+    <h4>Заблуждение 3: "Это просто 'позиционная' праведность, а не 'реальная'".</h4>
+    <p><strong>Истина:</strong> Ваша позиция во Христе и есть ваша новая реальность. Библия говорит: "...каков Он (Христос), таковы и мы в этом мире" (1 Иоан. 4:17).</p>
+    
+    <h4>Заблуждение 4: "Бог просто видит меня 'как будто' я праведный".</h4>
+    <p><strong>Истина:</strong> Бог не обманывает Себя. Он видит вас таким, каким Он вас <i>сделал</i>. "...чтобы мы в Нем сделались праведными пред Богом" (2 Кор. 5:21). Он видит вас в Истине – как новое творение, созданное "в праведности и святости истины" (Еф. 4:24).</p>
+  </div>
+
+  <h2>V. Молитва веры</h2>
+  <p>Эта молитва помогает нам перейти от "попыток заслужить" к "вере и принятию" нашего дара праведности.</p>
+
+  <div class="prayer">
+    <p style="text-align: center; font-weight: bold; font-style: normal; font-size: 1.1em;">МОЛИТВА ВЕРЫ</p>
+    <p>«Отче, я признаю, что занимался бегом на месте, пытаясь заслужить признание, принося плоды смерти.</p>
+    <p>Я благодарен Тебе, что, когда я был распят со Христом, Ты поставил меня вне необходимости достигать самому, но дал мне право получать.</p>
+    <p>С этого момента я получаю дар Твоей праведности, которая теперь стала моей праведностью.</p>
+    <p>С этого момента, какими бы ни были мои чувства, воспоминания, поведение или что бы ни говорил мне мир сатаны, я соглашаюсь с Твоим Словом, что я есть праведность Божия во Христе Иисусе.</p>
+    <p>Божьей милостью, Аминь».</p>
+    <p style="text-align: left; margin-top: 20px;">Подписано: _________________</p>
+  </div>
+
+  <h2>VI. КТО Я ТАКОЙ? (Наша истинная идентичность)</h2>
+  <div class="teacher-box">
+    <ul style="column-count: 2; column-gap: 30px; text-align: left;">
+      <li><strong>Матф. 5:13</strong> – я – соль земли.</li>
+      <li><strong>Матф. 5:14</strong> – я – свет мира.</li>
+      <li><strong>Иоан. 1:12</strong> – я – чадо Божье.</li>
+      <li><strong>Иоан. 15:1,5</strong> – я – часть истинной виноградной Лозы.</li>
+      <li><strong>Иоан. 15:15</strong> – я – друг Христа.</li>
+      <li><strong>Иоан. 15:16</strong> – я избран и поставлен Христом.</li>
+      <li><strong>Деян. 1:8</strong> – я – свидетель Христу.</li>
+      <li><strong>Римл. 6:18</strong> – я – раб праведности.</li>
+      <li><strong>Римл. 6:22</strong> – я – раб Богу.</li>
+      <li><strong>Римл. 8:14,15</strong> – я – сын Божий.</li>
+      <li><strong>Римл. 8:17</strong> – я – сонаследник Христу.</li>
+      <li><strong>1 Кор. 3:16</strong> – я – храм (дом) Божий.</li>
+      <li><strong>1 Кор. 6:17</strong> – я один дух с Господом.</li>
+      <li><strong>1 Кор. 12:27</strong> – я член тела Христова.</li>
+      <li><strong>2 Кор. 5:17</strong> – я – новое творение.</li>
+      <li><strong>2 Кор. 5:18,19</strong> – я примирен с Богом.</li>
+      <li><strong>Гал. 3:26,28</strong> – я – сын Божий, я одно во Христе.</li>
+      <li><strong>Гал. 4:6,7</strong> – я – наследник Божий.</li>
+      <li><strong>Еф. 1:1</strong> – я - святой.</li>
+      <li><strong>Еф. 2:10</strong> – я – Его творение (создан на добрые дела).</li>
+      <li><strong>Еф. 2:19</strong> – я – соотечественник святым.</li>
+      <li><strong>Еф. 4:24</strong> – я - праведный и святой.</li>
+      <li><strong>Фил. 3:20</strong> – я – гражданин небес.</li>
+      <li><strong>Кол. 3:3</strong> – я сокрыт со Христом в Боге.</li>
+      <li><strong>Кол. 3:4</strong> – Христос – моя жизнь.</li>
+      <li><strong>Кол. 3:12</strong> – я – избранник Божий, святой и возлюбленный.</li>
+      <li><strong>1 Фесс. 1:4</strong> – я – избранный и возлюбленный Богом.</li>
+      <li><strong>1 Фесс. 5:5</strong> – я – сын света.</li>
+      <li><strong>Евр. 3:1</strong> – я – святой брат, участник в небесном звании.</li>
+      <li><strong>Евр. 3:14</strong> – я – причастник Христу.</li>
+      <li><strong>1 Петра 2:5</strong> – я – живой камень, дом духовный.</li>
+      <li><strong>1 Петра 2:9,10</strong> – я – род избранный, царственное священство.</li>
+      <li><strong>1 Петра 2:11</strong> – я – пришелец и странник.</li>
+      <li><strong>1 Петра 5:8</strong> – я – противник диаволу.</li>
+      <li><strong>1 Иоан. 3:1,2</strong> – я – дитя Божье.</li>
+      <li><strong>1 Иоан. 5:18</strong> – я рожден от Бога, и лукавый не прикасается ко мне.</li>
+    </ul>
+  </div>
+
+  <hr/>
+
+  <h2>VII. Обсуждение и применение</h2>
+  <ol>
+    <li><strong>Какой из пунктов в списке "Кто я такой?" вам труднее всего принять на веру в данный момент?</strong> Почему?</li>
+    <li><strong>Опишите, как работает "белка в колесе" (попытки заслужить принятие)</strong> в вашей повседневной жизни (на работе, в семье, в служении).</li>
+    <li><strong>Что практически изменится на этой неделе,</strong> если вы будете реагировать на критику или неудачу не из позиции "я - грешник", а из позиции "я - праведность Божья во Христе"?</li>
+  </ol>
+
+  <div class="memory">
+    <strong>Стих недели (на память):</strong>
+    <br/>«Ибо не знавшего греха Он сделал для нас жертвою за грех, чтобы мы в Нем сделались праведными пред Богом». (2 Коринфянам 5:21).
+  </div>
+
+  <div class="homework">
+    <strong>Домашнее задание:</strong>
+    <ol>
+      <li>В течение недели отслеживай свою реакцию на трудности. Когда чувствуешь гнев, страх или желание контролировать, остановись и спроси: "За какое 'право' я сейчас борюсь?"</li>
+      <li>Прочитай 2 Коринфянам 12:7-10. Поразмышляй, почему Павел "хвалился немощами".</li>
+      <li>Молитвенно пройдись по списку "Признаки сокрушенности" и сознательно "отдай" каждое "право" Богу.</li>
+    </ol>
+  </div>
+
+</main>
+
+<footer>© Via Veritas | Жизнь во Христе — Урок 4</footer>
+</body>
+</html>
