@@ -34,13 +34,19 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* Стили для вкладок Служений */
         .ministry-tab-content { display: none; }
         .ministry-tab-content.active { display: block; }
         .ministry-tab-button.active { background-color: var(--primary-color); color: white; }
 
-        .resource-tab-content { display: none; }
-        .resource-tab-content.active { display: block; }
-        .resource-tab-button.active { border-color: var(--primary-color); color: var(--primary-color); }
+        /* Стили для вкладок Ресурсов и Лидерства */
+        .resource-tab-content, .leadership-tab-content { display: none; }
+        .resource-tab-content.active, .leadership-tab-content.active { display: block; }
+        
+        .resource-tab-button.active, .leadership-tab-button.active { 
+            border-color: var(--primary-color); 
+            color: var(--primary-color); 
+        }
 
         .gantt-bar {
             background-color: #3B82F6; /* blue-500 */
@@ -53,7 +59,7 @@
 <body class="bg-slate-50">
 
     <header class="bg-gray-900 shadow-lg">
-        <div class="relative min-h-screen flex flex-col items-center justify-center text-white text-center px-4" style="background: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url('https://placehold.co/1920x1080/111827/111827?text=') no-repeat center center/cover;">
+        <div class="relative min-h-screen flex flex-col items-center justify-center text-white text-center px-4" style="background: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url('https://placehold.co/1920x1080/111827/111827?text=Via+Veritas') no-repeat center center/cover;">
             <div class="absolute top-0 left-0 w-full p-6 z-10">
                 <div class="container mx-auto flex justify-between items-center">
                     <h1 class="text-3xl font-extrabold">Via Veritas</h1>
@@ -448,7 +454,7 @@
 
         </div>
     </div>
-</div>
+                </div>
             </div>
         </section>
 
@@ -598,13 +604,13 @@
             <div class="bg-white p-8 rounded-2xl shadow-lg" data-aos="fade-up">
                 <div class="border-b border-gray-200 mb-6">
                     <nav class="-mb-px flex space-x-6 overflow-x-auto">
-                         <button class="resource-tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tool1">✅ План Проекта</button>
-                         <button class="resource-tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tool2">🤝 3D-Оценка Лидера</button>
-                         <button class="resource-tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tool3">🪞 "Зеркало" Служения</button>
+                         <button class="leadership-tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tool1">✅ План Проекта</button>
+                         <button class="leadership-tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tool2">🤝 3D-Оценка Лидера</button>
+                         <button class="leadership-tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="tool3">🪞 "Зеркало" Служения</button>
                     </nav>
                 </div>
 
-                <div id="tool1" class="resource-tab-content active space-y-8">
+                <div id="tool1" class="leadership-tab-content active space-y-8">
                     <div class="bg-slate-50 p-6 rounded-xl">
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">План Проекта</h3>
                         <p class="mb-6 text-gray-600">Это инструмент для планирования различных мероприятий, который вносит ясность в подготовку и подотчетность.</p>
@@ -689,8 +695,8 @@
                     </div>
                 </div>
 
-                 <div id="tool2" class="resource-tab-content space-y-8">
-                       <div class="bg-slate-50 p-6 rounded-xl">
+                 <div id="tool2" class="leadership-tab-content space-y-8">
+                        <div class="bg-slate-50 p-6 rounded-xl">
                             <h3 class="text-2xl font-bold text-gray-900 mb-4">Инструмент: 3D-Оценка лидера</h3>
                             <p class="mb-4">Дать пастору и лидеру служения простую структуру для регулярных личных встреч.</p>
                             
@@ -703,7 +709,7 @@
                        </div>
                  </div>
                  
-                 <div id="tool3" class="resource-tab-content space-y-8">
+                 <div id="tool3" class="leadership-tab-content space-y-8">
                        <div class="bg-slate-50 p-6 rounded-xl">
                             <h3 class="text-2xl font-bold text-gray-900 mb-4">Инструмент: “ЗЕРКАЛО служения”</h3>
                             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"Каждое служение периодически смотрится в зеркало — не чтобы осудить себя, а чтобы увидеть, что Бог делает и что требует внимания."</blockquote>
@@ -732,13 +738,13 @@
             mirror: false,
         });
         
-        const allTabButtons = document.querySelectorAll('.ministry-tab-button, .resource-tab-button');
-        const allTabContents = document.querySelectorAll('.ministry-tab-content, .resource-tab-content');
-
         function showTab(tabId, buttonClass, contentClass) {
+            // Убираем активность у всех кнопок ЭТОЙ группы
             document.querySelectorAll(`.${buttonClass}`).forEach(btn => btn.classList.remove('active'));
+            // Скрываем весь контент ЭТОЙ группы
             document.querySelectorAll(`.${contentClass}`).forEach(content => content.classList.remove('active'));
             
+            // Активируем нажатую кнопку и нужный контент
             const targetButton = document.querySelector(`.${buttonClass}[data-tab="${tabId}"]`);
             const targetContent = document.getElementById(tabId);
             
@@ -746,21 +752,28 @@
             if (targetContent) targetContent.classList.add('active');
         }
 
-        // Click handler for ministry tabs
+        // 1. Вкладки Служений
         document.querySelectorAll('.ministry-tab-button').forEach(button => {
             button.addEventListener('click', () => {
                 showTab(button.dataset.tab, 'ministry-tab-button', 'ministry-tab-content');
             });
         });
 
-        // Click handler for resource/leadership tabs
+        // 2. Вкладки Ресурсов
         document.querySelectorAll('.resource-tab-button').forEach(button => {
             button.addEventListener('click', () => {
                 showTab(button.dataset.tab, 'resource-tab-button', 'resource-tab-content');
             });
         });
         
-        // This function is for the onclick attributes from the ministry section to open the correct resource tab
+        // 3. Вкладки Лидерства (Новые уникальные классы)
+        document.querySelectorAll('.leadership-tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                showTab(button.dataset.tab, 'leadership-tab-button', 'leadership-tab-content');
+            });
+        });
+
+        // Функция для перекрестных ссылок (из текста в ресурсы)
         function showResourceTab(tabId) {
             showTab(tabId, 'resource-tab-button', 'resource-tab-content');
             const resourcesSection = document.getElementById('resources');
