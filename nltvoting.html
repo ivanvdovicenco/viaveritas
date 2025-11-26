@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLT Voting </title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #f4f7f9;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --card-radius: 20px;
+            
+            /* Цвета */
+            --primary-soft: #4a90e2;
+            --success-soft: #66bb6a;
+            --danger-soft: #ef5350;
+            --warning-soft: #ffb74d;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        /* --- HEADER --- */
+        header {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        h1 { 
+            margin: 0; 
+            font-size: 22px; 
+            font-weight: 800; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            color: var(--text-dark); 
+        }
+        
+        .header-controls { 
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: wrap; 
+        }
+
+        .status-indicator {
+            font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+            background: #e8f5e9; color: var(--success-soft); padding: 8px 15px; border-radius: 30px;
+        }
+
+        .btn-control {
+            border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer;
+            font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px;
+            transition: all 0.2s ease; font-family: inherit;
+        }
+
+        .btn-reset { background-color: #fee2e2; color: var(--danger-soft); }
+        .btn-reset:hover { background-color: var(--danger-soft); color: white; transform: translateY(-2px); }
+
+        .btn-show-all { background-color: #e3f2fd; color: var(--primary-soft); }
+        .btn-show-all:hover { background-color: var(--primary-soft); color: white; transform: translateY(-2px); }
+
+        /* --- FLEX CONTAINER --- */
+        .cards-container {
+            display: flex;           
+            flex-wrap: wrap;         
+            justify-content: center; 
+            gap: 30px;               
+            max-width: 1240px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        .card-wrapper {
+            flex: 1 1 300px; 
+            max-width: 380px; 
+            min-width: 280px; 
+            perspective: 1000px; 
+            height: 480px; /* Высота под большой текст */
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .card-wrapper.hidden-card {
+            display: none;
+        }
+
+        .card-flipper {
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-style: preserve-3d; position: relative; width: 100%; height: 100%;
+            border-radius: var(--card-radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .card-wrapper.flipped .card-flipper { transform: rotateY(180deg); }
+
+        .card-front, .card-back {
+            backface-visibility: hidden; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: var(--card-radius); background: white; overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        .card-front { z-index: 2; transform: rotateY(0deg); }
+        .card-back { transform: rotateY(180deg); background: #fff; }
+
+        .card-visual-header {
+            padding: 30px 20px; text-align: center; color: white; position: relative;
+            background-image: linear-gradient(to bottom right, rgba(255,255,255,0.15), rgba(0,0,0,0.05));
+            flex-shrink: 0; 
+        }
+
+        /* Кнопка-галочка (для лидера) */
+        .complete-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: white; color: var(--success-soft);
+            width: 44px; height: 44px; border-radius: 50%; border: none;
+            font-size: 20px; cursor: pointer; display: none;
+            align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); z-index: 20;
+            animation: bounceIn 0.5s;
+            transition: transform 0.2s;
+        }
+        .complete-btn:hover { transform: scale(1.15); }
+        @keyframes bounceIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+        .topic-icon-container {
+            height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;
+        }
+        .topic-icon { font-size: 56px; opacity: 0.9; }
+        
+        .flag-pair { display: flex; gap: 10px; justify-content: center; }
+        .flag-img { height: 45px; width: auto; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        .the-four-img { 
+            height: 50px; 
+            width: auto; 
+            filter: brightness(0) invert(1); 
+        }
+
+        .card-title { font-size: 20px; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        .card-time-badge { 
+            display: inline-block; background: rgba(255,255,255,0.25);
+            padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700;
+            margin-top: 12px; backdrop-filter: blur(5px);
+        }
+
+        .card-body-front {
+            flex-grow: 1; 
+            display: flex; justify-content: center; align-items: center;
+            padding: 10px; color: var(--text-light);
+        }
+        .click-hint { font-size: 13px; font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; opacity: 0.8; }
+        
+        .card-footer { 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            flex-shrink: 0; 
+        }
+
+        .vote-btn {
+            background: #edf2f7; color: var(--text-light); border: none;
+            padding: 12px 30px; border-radius: 50px; font-size: 16px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
+            transition: all 0.3s; z-index: 10;
+            font-family: inherit; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .vote-btn:hover { background: #e2e8f0; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+        
+        .vote-btn.voted {
+            background: var(--success-soft); color: white;
+            box-shadow: 0 8px 20px rgba(102, 187, 106, 0.4);
+        }
+        .vote-btn.voted:hover { box-shadow: 0 10px 25px rgba(102, 187, 106, 0.5); }
+        
+        .vote-count-badge {
+            background: white; color: var(--text-dark); min-width: 24px; height: 24px;
+            padding: 2px 6px; display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-size: 14px; font-weight: 800;
+        }
+        .vote-btn.voted .vote-count-badge { color: var(--success-soft); }
+
+        .card-back-header { padding: 20px 25px; border-bottom: 1px solid #eee; }
+        .card-back-header h2 { margin: 0; font-size: 18px; font-weight: 800; }
+        
+        /* Скролл */
+        .card-back-content { 
+            padding: 25px; 
+            overflow-y: auto; 
+            flex-grow: 1; 
+            scrollbar-width: thin;
+        }
+        .card-back-content::-webkit-scrollbar { width: 6px; }
+        .card-back-content::-webkit-scrollbar-thumb { background-color: #cbd5e0; border-radius: 10px; }
+
+        .card-back h3 { color: var(--text-light); margin-top: 0; font-size: 14px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 12px; }
+        .card-back p { font-size: 15px; line-height: 1.6; color: var(--text-dark); margin-bottom: 15px; }
+        .card-back ul { padding-left: 20px; margin: 0; }
+        .card-back li { font-size: 15px; line-height: 1.6; color: var(--text-dark); margin-bottom: 8px; }
+
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            z-index: 100; opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-box {
+            background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px;
+            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: scale(0.9); transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+
+        .modal-icon { font-size: 60px; color: var(--warning-soft); margin-bottom: 20px; }
+        .modal-title { font-size: 22px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-dark); }
+        .modal-text { font-size: 16px; color: var(--text-light); margin-bottom: 25px; line-height: 1.5; }
+        
+        .modal-buttons { display: flex; gap: 15px; justify-content: center; }
+        .modal-btn {
+            border: none; padding: 12px 25px; border-radius: 50px; font-size: 16px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; font-family: inherit; flex: 1;
+        }
+        .btn-cancel { background: #edf2f7; color: var(--text-dark); }
+        .btn-cancel:hover { background: #e2e8f0; }
+        .btn-confirm { background: var(--success-soft); color: white; box-shadow: 0 4px 15px rgba(102, 187, 106, 0.4); }
+        .btn-confirm:hover { background: #57a65b; transform: translateY(-2px); }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>
+        <i class="fa-solid fa-comments" style="color: var(--primary-soft)"></i> Повестка
+        <div class="status-indicator" id="connectionStatus">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Подключение...
+        </div>
+    </h1>
+    <div class="header-controls">
+        <button class="btn-control btn-show-all" id="showAllBtn">
+            <i class="fa-solid fa-eye"></i> Показать все
+        </button>
+        <button class="btn-control btn-reset" id="resetBtn">
+            <i class="fa-solid fa-trash-can"></i> Сброс
+        </button>
+    </div>
+</header>
+
+<main class="cards-container" id="cardsContainer">
+    </main>
+
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-box">
+        <i class="fa-solid fa-circle-question modal-icon"></i>
+        <h2 class="modal-title">Завершить вопрос?</h2>
+        <p class="modal-text" id="modalQuestionText">Вы уверены?</p>
+        <div class="modal-buttons">
+            <button class="modal-btn btn-cancel" id="cancelDeleteBtn">Отмена</button>
+            <button class="modal-btn btn-confirm" id="confirmDeleteBtn">Завершить</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getDatabase, ref, onValue, runTransaction, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+    // -----------------------------------------------------------
+    // КОНФИГУРАЦИЯ
+    // -----------------------------------------------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZuH0pKTmfLbyz9lg1g0cC5S4MM16XpMk",
+      authDomain: "cru-moldova-ivan.firebaseapp.com",
+      databaseURL: "https://cru-moldova-ivan-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "cru-moldova-ivan",
+      storageBucket: "cru-moldova-ivan.appspot.com",
+      messagingSenderId: "913901012780",
+      appId: "1:913901012780:web:aefc6983075e50e4000e89",
+      measurementId: "G-2JYYSMTDER"
+    };
+    
+    // Инициализация Firebase с обработкой ошибок
+    let db;
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getDatabase(app);
+    } catch (error) {
+      console.error("Firebase initialization error:", error);
+    }
+    // -----------------------------------------------------------
+
+    const agendaData = [
+        { 
+            id: 1, 
+            color: "#4a90e2", 
+            icon: "fa-solid fa-list-check", 
+            time: "15 мин", 
+            title: "Обзор всех вопросов", 
+            desc: "Понимать объем вопросов и как они связаны между собой. Будем выбирать вместо вопросы, которые хотим обсудить. Порядок вопросов будет изменен.", 
+            expect: "Синхронизация по повестке." 
+        },
+        { 
+            id: 2, 
+            color: "#ef5350", 
+            customIconHtml: '<div class="flag-pair"><img src="https://flagcdn.com/w80/md.png" class="flag-img" alt="Moldova"><img src="https://flagcdn.com/w80/no.png" class="flag-img" alt="Norway"></div>',
+            time: "30 мин", 
+            title: "Служение в Норвегии", 
+            desc: "Javier объявил что Молдова будет выполнять роль country coach для Норвегии.", 
+            expect: "<ul><li>Начать создание плана отношений Молдова-Норвегия</li><li>Определить ближайшие цели как мы можем им помочь сейчас</li></ul>" 
+        },
+        { 
+            id: 3, 
+            color: "#ffb74d", 
+            customIconHtml: '<img src="https://thefour.com/wp-content/uploads/2024/05/T4_logo_schrift_vert.svg" class="the-four-img" alt="The Four">',
+            time: "40 мин", 
+            title: "Фестиваль TheFour", 
+            desc: "В наших календарях уже стоит дата проекта с BeTheLight. Цель - обучить молодежь современным и релевантным методам благовестия. Желание - вовлечь несколько сотен молодых людей в этот проект. Сделать на высоком уровне. Стас и Иван Гриник - ключевые представители от нас.", 
+            expect: "<ul><li>Договориться о том чего мы хотим для этого проекта. Как лучше всего воспользоваться этой возможностью мобилизовать церковь, развить партнерство..</li><li>Определить: Что NLT и Cru может предложить для реализации этого проекта?</li></ul>" 
+        },
+        { 
+            id: 4, 
+            color: "#66bb6a", 
+            icon: "fa-solid fa-person-running", 
+            time: "30 мин", 
+            title: "AIA Academy", 
+            desc: "Ваня представит текущую реальность - видение, цели, этапы. Проект дошел до очень практичной стадии. Есть возможность запустить проект-пилот в Донченах. Есть несколько партнеров, которые помогают с подготовкой сбора поддержки. Гена согласился быть лидером проекта. Нужно решить если мы решительно настроены и готовы вовлечься в этот проект.", 
+            expect: "<ul><li>Готовы ли мы двигаться быстрыми шагами (философский вопрос)</li><li>Если да, тогда нужно определить: кто конкретно будет частью команды</li><li>Какие ожидания у NLT по отношению к этой команде. Какие границы их полномочий в составлении планов и следующих шагов</li></ul>" 
+        },
+        { 
+            id: 5, 
+            color: "#718096", 
+            icon: "fa-solid fa-building", 
+            time: "1 ч 20 мин", 
+            title: "Bacioi — склад и центр", 
+            desc: "Мы получили смету на перестройку. Очень дорого. Нужно сносить или оставить как есть. Толик, Валера и Ваня имели встречу посвященную обсуждению альтернативных перспектив на этот участок. Мы предлагаем сделать там Конференц Центр для Церквей и Христианских организаций, со складом внутри.", 
+            expect: "<ul><li>Выслушать и обсудить предложение о конференц центре</li><li>Если мы согласны, то выбрать ответственного за этот проект</li><li>Определить ожидания и ближайшие цели, чтобы продвинуться на несколько следующих шагов</li></ul>" 
+        },
+        { 
+            id: 6, 
+            color: "#2d3748", 
+            icon: "fa-solid fa-user-plus", 
+            time: "1 час", 
+            title: "Рекрутинг", 
+            desc: "Нам нужно поставить акцент на этом вопросе. Предложение от Baily о создании \"Год для миссии\" похоже на то что уже начали делать SLM. Как мы можем укрепить и расширить эту стратегию.", 
+            expect: "<ul><li>Ваня расскажет о программе \"год для миссии\"</li><li>Как мы можем расширить эту стратегию за пределы SLM, чтобы вовлечь еще больше людей и получить еще больше потенциала для поиска и рекрутинга новых сотрудников</li><li>Кто ответственный за это?</li><li>Какие ожидания и следующие шаги</li></ul>" 
+        },
+        { 
+            id: 7, 
+            color: "#8e44ad", 
+            icon: "fa-solid fa-handshake", 
+            time: "40 мин", 
+            title: "Развитие партнерства", 
+            desc: "Нужно переходить к практическим шагам в партнерстве для достижения нашего видения. Что мы можем предложить для партнерства, что будет вдохновлять и будет больше чем наши силы по отдельности?", 
+            expect: "<ul><li>Предложение: \"забота о всех пастырях Молдовы\" (counseling, mpd, retreats..)</li><li>Есть ли другие нужды и возможности, которые Бог открывает нам?</li><li>Что мы можем сделать сейчас? С чего начать?</li></ul>" 
+        },
+        { 
+            id: 8, 
+            color: "#4a90e2", 
+            icon: "fa-solid fa-users-gear", 
+            time: "20 мин", 
+            title: "Будущее LDHR", 
+            desc: "Раду предложил нам решить какой LDHR нам нужен в следующем году, чтобы нам было легче выбрать подходящего человека для роли лидера этого служения. Раду уходит, но для того чтобы развивать и готовить людей, нам лучше уже в этом году сформулировать цели и видение будущего этой команды.", 
+            expect: "<ul><li>Обсудить задачу и гипотетические сценарии, чтобы дать пищу для размышлений и молитв</li><li>Договориться о том, когда и как мы будет работать над формированием этого видения</li></ul>" 
+        },
+        { 
+            id: 9, 
+            color: "#ef5350", 
+            icon: "fa-solid fa-id-card", 
+            time: "40 мин", 
+            title: "Федерация коучей", 
+            desc: "Все больше коучей в служении. Некоторые активно используют это в служении, каждый сталкивается с необходимостью брать за услуги деньги + каким-то образом представлять себя. Есть идея, открыть официально в Молдове федерацию христан коучей, для того чтобы дать миссионерам больше инструментов, а также внести ясность в вопрос финансов.", 
+            expect: "<ul><li>Представить видение и объяснить суть вопроса</li><li>Обсудить потенциально как это могло бы выглядеть</li><li>Какие от этого преимущества? Есть ли потенциальные опасности?</li><li>Какие следующие шаги и ответственные лица?</li></ul>" 
+        },
+        { 
+            id: 10, 
+            color: "#66bb6a", 
+            icon: "fa-solid fa-hands-praying", 
+            time: "40 мин", 
+            title: "Молитвенная поддержка", 
+            desc: "У нас растут масштабы, видение и интересы. Есть ли у нас достаточная молитвенная поддержка служения, чтобы быть адектватными на дороге возрастающего духовного противостояния.", 
+            expect: "<ul><li>Каким должно (может быть) быть наше служение в этой сфере?</li><li>В чем нам нужно возрасти чтобы это стало реальностью?</li><li>Какие шаги будут направлять нас в этом росте?</li></ul>" 
+        },
+        { 
+            id: 11, 
+            color: "#ffb74d", 
+            icon: "fa-solid fa-hand-holding-dollar", 
+            time: "40 мин", 
+            title: "Fund Development", 
+            desc: "Большие проекты требуют больших финансов. Как покрыть эти затраты?", 
+            expect: "<ul><li>Предложение: создание стратегии развития отношений от лица команды NLT - все церкви, большие доноры, большие вызовы, стратегия вовлечения их как LIFE partners</li></ul>" 
+        },
+        { 
+            id: 12, 
+            color: "#4a90e2", 
+            icon: "fa-solid fa-book-bible", 
+            time: "15 мин", 
+            title: "IBS Winter", 
+            desc: "Михай спрашивает о том будет ли IBS Зимой.", 
+            expect: "<ul><li>Да или нет. Назвать даты.</li></ul>" 
+        },
+        { 
+            id: 13, 
+            color: "#718096", 
+            icon: "fa-solid fa-calendar-days", 
+            time: "15 мин", 
+            title: "График встреч NLT", 
+            desc: "Планирование встреч.", 
+            expect: "<ul><li>Какой график встреч в этом году?</li></ul>" 
+        }
+    ];
+
+    const container = document.getElementById('cardsContainer');
+    const statusEl = document.getElementById('connectionStatus');
+    // Используем v7_final, чтобы сбросить прошлые тесты
+    let myVotes = JSON.parse(localStorage.getItem('my_votes_v7_final')) || {};
+
+    let cardIdToDelete = null;
+    const modal = document.getElementById('deleteModal');
+    const modalText = document.getElementById('modalQuestionText');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+    function openDeleteModal(id, title) {
+        cardIdToDelete = id;
+        modalText.innerHTML = `Завершить обсуждение вопроса <b>"${title}"</b> и скрыть его?`;
+        modal.classList.add('active');
+    }
+
+    function closeDeleteModal() {
+        modal.classList.remove('active');
+        cardIdToDelete = null;
+    }
+
+    cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+    confirmDeleteBtn.addEventListener('click', () => {
+        if (cardIdToDelete) {
+            hideCard(cardIdToDelete);
+            closeDeleteModal();
+        }
+    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeDeleteModal();
+    });
+
+    function renderCards() {
+        container.innerHTML = '';
+        agendaData.forEach(item => {
+            const isVoted = myVotes[item.id] ? 'voted' : '';
+            const btnText = myVotes[item.id] ? 'Голос отдан' : 'Голосовать';
+            const thumbIcon = myVotes[item.id] ? 'fa-solid fa-check' : 'fa-regular fa-thumbs-up';
+            const iconHtml = item.customIconHtml ? item.customIconHtml : `<i class="topic-icon ${item.icon}"></i>`;
+
+            const cardHTML = `
+                <div class="card-wrapper" id="card-${item.id}" onclick="this.classList.toggle('flipped')">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="card-visual-header" style="background: ${item.color}">
+                                <button class="complete-btn" id="complete-${item.id}" title="Завершить вопрос">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <div class="topic-icon-container">
+                                    ${iconHtml}
+                                </div>
+                                <h2 class="card-title">${item.title}</h2>
+                                <span class="card-time-badge">${item.time}</span>
+                            </div>
+                            <div class="card-body-front">
+                                <div class="click-hint">
+                                    <i class="fa-solid fa-rotate"></i> Нажми, чтобы перевернуть
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="vote-btn ${isVoted}" id="btn-${item.id}">
+                                    <i class="${thumbIcon}" id="icon-${item.id}"></i>
+                                    <span id="text-${item.id}">${btnText}</span>
+                                    <span class="vote-count-badge" id="count-${item.id}">0</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-back-header">
+                                <h2 style="color: ${item.color}">${item.title}</h2>
+                            </div>
+                            <div class="card-back-content">
+                                <h3>Описание</h3>
+                                <p>${item.desc}</p>
+                                <h3>Ожидания</h3>
+                                <div>${item.expect}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', cardHTML);
+
+            setTimeout(() => {
+                document.getElementById(`btn-${item.id}`).addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleVote(item.id);
+                });
+                document.getElementById(`complete-${item.id}`).addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openDeleteModal(item.id, item.title);
+                });
+            }, 0);
+        });
+    }
+
+    renderCards();
+
+    const dbRef = ref(db);
+    onValue(dbRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        const votes = data.votes || {};
+        const hidden = data.hidden || {};
+        
+        statusEl.innerHTML = '<i class="fa-solid fa-wifi"></i> Онлайн';
+        statusEl.style.background = "#e8f5e9"; statusEl.style.color = "#66bb6a";
+        
+        let maxVotes = -1;
+        
+        // 1. Скрываем карты
+        agendaData.forEach(item => {
+            const card = document.getElementById(`card-${item.id}`);
+            const isHidden = hidden[item.id] === true;
+            
+            if (isHidden) {
+                card.classList.add('hidden-card');
+            } else {
+                card.classList.remove('hidden-card');
+                const count = votes[item.id] || 0;
+                if (count > maxVotes) maxVotes = count;
+            }
+        });
+
+        // 2. Обновляем счетчики
+        agendaData.forEach(item => {
+            const isHidden = hidden[item.id] === true;
+            if (isHidden) return;
+
+            const count = votes[item.id] || 0;
+            const badge = document.getElementById(`count-${item.id}`);
+            const completeBtn = document.getElementById(`complete-${item.id}`);
+            
+            if(badge && badge.innerText != count) {
+                badge.innerText = count;
+                badge.style.transform = "scale(1.3)";
+                setTimeout(() => badge.style.transform = "scale(1)", 200);
+            }
+
+            if (maxVotes > 0 && count === maxVotes) {
+                completeBtn.style.display = 'flex';
+            } else {
+                completeBtn.style.display = 'none';
+            }
+        });
+
+    }, (error) => {
+        statusEl.innerHTML = 'Ошибка сети';
+        statusEl.style.background = "#fee2e2"; statusEl.style.color = "#ef5350";
+    });
+
+    // --- ОБНОВЛЕННАЯ ФУНКЦИЯ ГОЛОСОВАНИЯ (БЕЗ УХОДА В МИНУС) ---
+    function toggleVote(id) {
+        const itemRef = ref(db, `votes/${id}`);
+        const btn = document.getElementById(`btn-${id}`);
+        const icon = document.getElementById(`icon-${id}`);
+        const text = document.getElementById(`text-${id}`);
+
+        if (myVotes[id]) {
+            // СНИМАЕМ ГОЛОС (Безопасно)
+            runTransaction(itemRef, (currentVote) => {
+                const val = currentVote || 0;
+                return val > 0 ? val - 1 : 0;
+            });
+
+            delete myVotes[id];
+            localStorage.setItem('my_votes_v7_final', JSON.stringify(myVotes));
+
+            btn.classList.remove('voted');
+            icon.className = 'fa-regular fa-thumbs-up';
+            text.innerText = 'Голосовать';
+        } else {
+            // ДОБАВЛЯЕМ ГОЛОС
+            runTransaction(itemRef, (currentVote) => {
+                const val = currentVote || 0;
+                return val + 1;
+            });
+
+            myVotes[id] = true;
+            localStorage.setItem('my_votes_v7_final', JSON.stringify(myVotes));
+
+            btn.classList.add('voted');
+            icon.className = 'fa-solid fa-check';
+            text.innerText = 'Голос отдан';
+        }
+    }
+
+    function hideCard(id) {
+        set(ref(db, `hidden/${id}`), true);
+    }
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        if(confirm("Сбросить голоса?")) {
+            set(ref(db, 'votes'), {});
+            localStorage.removeItem('my_votes_v7_final');
+            location.reload(); 
+        }
+    });
+
+    document.getElementById('showAllBtn').addEventListener('click', () => {
+        if(confirm("Вернуть завершенные вопросы?")) {
+            set(ref(db, 'hidden'), null);
+        }
+    });
+
+</script>
+
+</body>
+</html>
