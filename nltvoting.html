@@ -3,187 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Builder Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Cru Agenda Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --surface: #ffffff;
-            --primary: #4f46e5; /* Indigo */
-            --primary-hover: #4338ca;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --radius: 12px;
+            /* CRU COLOR PALETTE */
+            --cru-gold: #f9b625;
+            --cru-gold-hover: #e5a00d;
+            --cru-dark: #212121; /* Almost black */
+            --cru-gray: #f4f4f4; /* Background */
+            --cru-blue: #007398;
+            --text-main: #3b3b3b;
+            --text-light: #6e6e6e;
+            --white: #ffffff;
+            --border-radius: 8px; /* Cru uses slightly squarer corners usually */
         }
 
-        body { font-family: 'Nunito', sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: var(--text-dark); }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--cru-gray);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .card-title, .preview-title, label {
+            font-family: 'Montserrat', sans-serif;
+        }
+
         .container { max-width: 1100px; margin: 0 auto; }
         .hidden { display: none !important; }
 
-        /* --- CREATOR DASHBOARD STYLES --- */
-        .dashboard-grid { display: grid; gap: 30px; }
+        /* --- DASHBOARD STYLES (Modern & Clean) --- */
+        .header-logo {
+            text-align: center; margin-bottom: 40px;
+        }
+        .header-logo h1 {
+            font-weight: 800; font-size: 28px; color: var(--cru-dark); text-transform: uppercase; letter-spacing: 1px;
+            display: inline-block; border-bottom: 4px solid var(--cru-gold); padding-bottom: 5px;
+        }
+
+        .dashboard-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; }
+        @media(max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
         
         .panel {
-            background: var(--surface); border-radius: 16px; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 30px;
+            background: var(--white); border-radius: var(--border-radius); 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); padding: 35px;
+            border: 1px solid #eee;
         }
 
-        h1 { margin-top: 0; font-size: 24px; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
-        h2 { font-size: 18px; color: var(--text-light); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        h2 { 
+            font-size: 20px; color: var(--cru-dark); margin-top: 0; margin-bottom: 25px; 
+            font-weight: 700; display: flex; align-items: center; gap: 10px;
+        }
 
-        /* FORM LAYOUT */
-        .editor-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        @media(max-width: 768px) { .editor-layout { grid-template-columns: 1fr; } }
-
+        /* FORM STYLES */
         .form-group { margin-bottom: 20px; }
-        label { display: block; font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        label { display: block; font-size: 12px; font-weight: 700; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         input, textarea {
-            width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px;
-            font-family: inherit; font-size: 15px; transition: 0.2s; box-sizing: border-box;
+            width: 100%; padding: 12px 15px; 
+            border: 1px solid #ddd; background: #fafafa;
+            border-radius: 4px; font-family: inherit; font-size: 15px; 
+            transition: 0.3s; box-sizing: border-box; color: var(--cru-dark);
         }
-        input:focus, textarea:focus { border-color: var(--primary); outline: none; }
+        input:focus, textarea:focus { 
+            border-color: var(--cru-gold); background: #fff; outline: none; 
+            box-shadow: 0 0 0 3px rgba(249, 182, 37, 0.2);
+        }
         textarea { resize: vertical; min-height: 100px; }
 
-        /* ICON GRID SELECTION */
-        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; margin-top: 10px; }
+        /* ICON GRID */
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 8px; margin-top: 10px; }
         .icon-option {
-            height: 50px; display: flex; align-items: center; justify-content: center;
-            border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
-            font-size: 20px; color: var(--text-light); transition: 0.2s;
+            height: 45px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid #eee; border-radius: 4px; cursor: pointer;
+            font-size: 18px; color: var(--text-light); transition: 0.2s;
         }
-        .icon-option:hover { background: #f1f5f9; }
-        .icon-option.selected { border-color: var(--primary); background: #eef2ff; color: var(--primary); }
+        .icon-option:hover { background: #fff8e1; border-color: var(--cru-gold); color: var(--cru-dark); }
+        .icon-option.selected { background: var(--cru-gold); color: var(--cru-dark); border-color: var(--cru-gold); font-weight: bold; }
 
-        .url-input-toggle { font-size: 12px; color: var(--primary); cursor: pointer; margin-top: 5px; text-decoration: underline; }
+        .url-input-toggle { font-size: 12px; color: var(--cru-blue); cursor: pointer; margin-top: 8px; font-weight: 600; }
+        .url-input-toggle:hover { text-decoration: underline; }
 
-        /* ADD BUTTON */
-        .btn-add-card {
-            width: 100%; background: var(--text-dark); color: white; border: none;
-            padding: 15px; border-radius: 10px; font-weight: 800; font-size: 16px;
+        /* BUTTONS (Cru Style) */
+        .btn-primary {
+            width: 100%; background: var(--cru-gold); color: var(--cru-dark); border: none;
+            padding: 16px; border-radius: 4px; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: 0.2s;
+            transition: 0.2s; text-transform: uppercase; font-family: 'Montserrat', sans-serif;
         }
-        .btn-add-card:hover { background: black; transform: translateY(-2px); }
+        .btn-primary:hover { background: var(--cru-gold-hover); transform: translateY(-1px); }
 
-        /* PREVIEW LIST */
-        .preview-list { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .btn-secondary {
+            width: 100%; background: var(--cru-dark); color: white; border: none;
+            padding: 16px; border-radius: 4px; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;
+            cursor: pointer; transition: 0.2s; text-transform: uppercase; font-family: 'Montserrat', sans-serif;
+        }
+        .btn-secondary:hover { background: #333; }
+
+        /* LIST PREVIEW */
+        .preview-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         .preview-item {
-            display: flex; align-items: center; gap: 15px; padding: 15px;
-            background: #f8fafc; border: 1px solid var(--border); border-radius: 10px;
+            display: flex; align-items: center; gap: 15px; padding: 12px 15px;
+            background: #fff; border-left: 4px solid var(--cru-gold); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-radius: 0 4px 4px 0;
         }
-        .preview-icon { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); border: 1px solid var(--border); }
-        .preview-info { flex-grow: 1; }
-        .preview-title { font-weight: 700; color: var(--text-dark); }
-        .preview-time { font-size: 12px; color: var(--text-light); background: #e2e8f0; padding: 2px 6px; border-radius: 4px; }
-        .btn-delete { color: #ef4444; background: none; border: none; cursor: pointer; font-size: 18px; padding: 5px; }
+        .preview-title { font-weight: 700; color: var(--cru-dark); font-size: 14px; }
+        .preview-time { font-size: 11px; color: #888; text-transform: uppercase; margin-top: 2px;}
+        .btn-delete { color: #ccc; background: none; border: none; cursor: pointer; font-size: 16px; padding: 5px; margin-left: auto; transition: 0.2s;}
+        .btn-delete:hover { color: #d32f2f; }
 
-        /* FINAL CREATE ACTION */
-        .create-section { margin-top: 40px; text-align: center; border-top: 2px dashed var(--border); padding-top: 40px;}
-        .slug-input { font-size: 20px; font-weight: bold; text-align: center; max-width: 400px; margin: 0 auto 20px; display: block; }
-        .btn-publish {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white; padding: 18px 40px; border-radius: 50px; border: none;
-            font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
-            transition: 0.3s;
+        .create-section { margin-top: 30px; text-align: center; border-top: 1px solid #eee; padding-top: 30px;}
+        .slug-input { 
+            font-size: 18px; font-weight: bold; text-align: center; max-width: 100%; margin-bottom: 20px; 
+            border: 2px solid var(--cru-gold); background: #fffcf5;
         }
-        .btn-publish:hover { transform: scale(1.05); }
 
-        /* --- VOTING VIEW STYLES (FROM PREVIOUS) --- */
-        /* ... Keeping the clean flex styles ... */
+        /* --- VOTING VIEW --- */
+        .voting-header {
+            background: var(--white); padding: 15px 30px; border-radius: var(--border-radius); 
+            margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--cru-gold);
+        }
+        .meeting-title { font-weight: 800; font-size: 20px; color: var(--cru-dark); text-transform: uppercase; }
+        
+        .header-btn { 
+            border: 1px solid #ddd; background: white; color: var(--text-main);
+            padding: 8px 18px; border-radius: 4px; font-weight: 600; cursor: pointer; 
+            margin-left: 10px; transition: 0.2s; font-size: 13px;
+        }
+        .header-btn:hover { background: #f4f4f4; border-color: #ccc; }
+        .header-btn.danger { color: #d32f2f; border-color: #ffcdd2; background: #fffaf0; }
+        .header-btn.danger:hover { background: #ffebee; }
+
         .cards-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
-        .card-wrapper { flex: 1 1 300px; max-width: 380px; min-width: 280px; height: 480px; perspective: 1000px; cursor: pointer; }
+
+        /* --- CARD DESIGN (PREMIUM) --- */
+        .card-wrapper { flex: 1 1 300px; max-width: 360px; min-width: 280px; height: 500px; perspective: 1000px; cursor: pointer; }
         .card-wrapper.hidden-card { display: none; }
-        .card-flipper { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        
+        .card-flipper { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); transform-style: preserve-3d; border-radius: var(--border-radius); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
         .card-wrapper.flipped .card-flipper { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; background: white; display: flex; flex-direction: column; overflow: hidden; }
-        .card-back { transform: rotateY(180deg); }
+
+        .card-front, .card-back { 
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
+            border-radius: var(--border-radius); background: white; display: flex; flex-direction: column; overflow: hidden; 
+        }
+        .card-back { transform: rotateY(180deg); background: #fff; border: 1px solid #eee; }
+
+        .card-visual-header { 
+            padding: 40px 25px; text-align: center; color: white; flex-shrink: 0; position: relative; 
+            /* Subtle texture overlay */
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+        }
         
-        .card-visual-header { padding: 30px 20px; text-align: center; color: white; flex-shrink: 0; position: relative; background-image: linear-gradient(to bottom right, rgba(255,255,255,0.15), rgba(0,0,0,0.05)); }
-        .topic-icon { font-size: 50px; margin-bottom: 10px; }
-        .custom-img-icon { height: 50px; width: auto; object-fit: contain; margin-bottom: 10px; filter: brightness(0) invert(1); }
+        .topic-icon { font-size: 54px; margin-bottom: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .custom-img-icon { height: 60px; width: auto; object-fit: contain; margin-bottom: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
         
-        .card-title { font-size: 20px; font-weight: 800; margin: 0; line-height: 1.2; }
-        .card-time { background: rgba(255,255,255,0.25); padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 700; display: inline-block; margin-top: 10px; }
-        .card-body { flex-grow: 1; padding: 20px; overflow-y: auto; }
-        .card-footer { padding: 20px; display: flex; justify-content: center; border-top: 1px solid #f0f0f0; }
+        .card-title { font-size: 22px; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .card-time { 
+            background: rgba(33,33,33, 0.7); color: var(--cru-gold);
+            padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; 
+            display: inline-block; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .card-body { flex-grow: 1; padding: 30px; overflow-y: auto; }
+        .click-hint { 
+            text-align: center; color: #ccc; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; 
+            margin-top: auto; padding-bottom: 10px; font-weight: 600;
+        }
         
-        .vote-btn { background: #edf2f7; color: #64748b; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; display: flex; gap: 10px; align-items: center; }
-        .vote-btn.voted { background: #10b981; color: white; }
-        .vote-count-badge { background: white; color: #333; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .card-footer { padding: 25px; display: flex; justify-content: center; border-top: 1px solid #f9f9f9; background: #fff; }
+
+        /* VOTE BUTTON */
+        .vote-btn { 
+            background: white; border: 2px solid #eee; color: var(--text-light); 
+            padding: 12px 30px; border-radius: 50px; font-weight: 700; font-size: 14px;
+            cursor: pointer; display: flex; gap: 10px; align-items: center; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .vote-btn:hover { border-color: var(--cru-gold); color: var(--cru-dark); }
         
-        /* Voting Header */
-        header { background: white; padding: 15px 25px; border-radius: 16px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .header-btn { border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; margin-left:5px;}
+        .vote-btn.voted { 
+            background: var(--cru-gold); border-color: var(--cru-gold); color: var(--cru-dark); 
+            box-shadow: 0 5px 15px rgba(249, 182, 37, 0.4);
+        }
+        .vote-count-badge { background: rgba(0,0,0,0.1); color: inherit; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 800;}
+
+        /* BACK SIDE TEXT */
+        .card-back-header {
+            padding: 20px 30px; border-bottom: 1px solid #eee;
+        }
+        .card-back-header h2 { margin: 0; font-size: 18px; color: var(--cru-dark); }
+
+        .card-back h3 { 
+            color: var(--cru-gold); font-size: 12px; font-weight: 800; letter-spacing: 1px; 
+            text-transform: uppercase; margin-bottom: 10px; margin-top: 0;
+        }
+        .card-back p { font-size: 15px; color: var(--text-main); margin-bottom: 25px; font-weight: 400; }
+        .card-back ul { padding-left: 20px; margin-bottom: 20px; }
+        .card-back li { margin-bottom: 8px; font-size: 14px; }
+
+        /* CHECKMARK OVERLAY */
+        .complete-btn {
+            position: absolute; top: 15px; right: 15px; width: 40px; height: 40px;
+            background: var(--white); color: #27ae60; border-radius: 50%; border: none;
+            font-size: 20px; cursor: pointer; display: none; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 10;
+        }
+
     </style>
 </head>
 <body>
 
 <div id="creatorView" class="container">
-    <h1>🛠️ Конструктор Повестки</h1>
+    <div class="header-logo">
+        <h1>Agenda Builder</h1>
+    </div>
     
     <div class="dashboard-grid">
         
         <div class="panel">
-            <h2>Добавить новую карточку</h2>
-            <div class="editor-layout">
-                
-                <div>
-                    <div style="background:#eef2ff; color:#4f46e5; padding:5px 10px; border-radius:6px; display:inline-block; font-weight:bold; font-size:12px; margin-bottom:15px;">СТОРОНА 1 (Лицо)</div>
-                    
-                    <div class="form-group">
-                        <label>Название вопроса</label>
-                        <input type="text" id="inpTitle" placeholder="Например: Бюджет 2024">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Время (минуты/часы)</label>
-                        <input type="text" id="inpTime" placeholder="Например: 15 мин">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Иконка или Рисунок</label>
-                        <input type="text" id="inpImgUrl" placeholder="Ссылка на картинку (необязательно)" style="display:none; margin-bottom:10px;">
-                        
-                        <div class="icon-grid" id="iconSelector">
-                            </div>
-                        <div class="url-input-toggle" onclick="toggleUrlInput()">+ Вставить ссылку на картинку (лого/флаг)</div>
-                    </div>
-                </div>
-
-                <div>
-                    <div style="background:#f0fdf4; color:#15803d; padding:5px 10px; border-radius:6px; display:inline-block; font-weight:bold; font-size:12px; margin-bottom:15px;">СТОРОНА 2 (Оборот)</div>
-                    
-                    <div class="form-group">
-                        <label>Описание вопроса</label>
-                        <textarea id="inpDesc" placeholder="О чем этот вопрос? Контекст..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Ожидаемый результат</label>
-                        <textarea id="inpExpect" placeholder="Чего мы хотим достичь? (Решение, План, Идеи...)"></textarea>
-                    </div>
-                </div>
+            <h2><i class="fa-solid fa-pen-to-square" style="color:var(--cru-gold)"></i> Новая карточка</h2>
+            
+            <div class="form-group">
+                <label>Название вопроса</label>
+                <input type="text" id="inpTitle" placeholder="Пример: Стратегия 2025">
             </div>
 
-            <button class="btn-add-card" onclick="addCardToList()">
-                <i class="fa-solid fa-plus-circle"></i> ДОБАВИТЬ В СПИСОК
+            <div class="form-group">
+                <label>Время</label>
+                <input type="text" id="inpTime" placeholder="Пример: 30 мин">
+            </div>
+
+            <div class="form-group">
+                <label>Иконка</label>
+                <input type="text" id="inpImgUrl" placeholder="Ссылка на картинку (https://...)" style="display:none; margin-bottom:10px;">
+                <div class="icon-grid" id="iconSelector"></div>
+                <div class="url-input-toggle" onclick="toggleUrlInput()">Использовать свою картинку (URL)</div>
+            </div>
+
+            <div class="form-group">
+                <label>Описание (Контекст)</label>
+                <textarea id="inpDesc" placeholder="О чем пойдет речь?"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Ожидаемый результат</label>
+                <textarea id="inpExpect" placeholder="Какое решение нужно принять?"></textarea>
+            </div>
+
+            <button class="btn-primary" onclick="addCardToList()">
+                <i class="fa-solid fa-plus"></i> Добавить вопрос
             </button>
         </div>
 
         <div class="panel">
-            <h2>Ваш список вопросов (<span id="countDisplay">0</span>)</h2>
+            <h2><i class="fa-solid fa-list-ul" style="color:var(--cru-gold)"></i> Список вопросов (<span id="countDisplay">0</span>)</h2>
             <div id="previewList" class="preview-list">
-                <div style="text-align:center; color:#94a3b8; padding:20px;">Список пока пуст. Добавьте карточки сверху.</div>
+                <div style="text-align:center; color:#ccc; padding:40px 0; font-size: 14px;">
+                    <i class="fa-regular fa-folder-open" style="font-size:30px; display:block; margin-bottom:10px;"></i>
+                    Список пуст
+                </div>
             </div>
 
             <div class="create-section">
-                <label>Придумайте короткую ссылку (ID встречи)</label>
-                <input type="text" id="meetingSlug" class="slug-input" placeholder="team-meeting-nov">
-                <button class="btn-publish" onclick="publishMeeting()">СОЗДАТЬ ВСТРЕЧУ 🚀</button>
+                <label>ID Встречи (ссылка)</label>
+                <input type="text" id="meetingSlug" class="slug-input" placeholder="team-meeting-name">
+                <button class="btn-secondary" onclick="publishMeeting()">Создать встречу</button>
             </div>
         </div>
 
@@ -191,16 +282,17 @@
 </div>
 
 <div id="votingView" class="container hidden">
-    <header>
-        <div style="font-weight:800; font-size:20px; display:flex; gap:10px; align-items:center;">
-            <i class="fa-solid fa-layer-group" style="color:var(--primary)"></i> 
+    <div class="voting-header">
+        <div class="meeting-title">
+            <span style="color:var(--cru-gold); margin-right:5px;">///</span> 
             <span id="meetingTitleDisplay">Meeting</span>
         </div>
         <div>
-            <button class="header-btn" style="background:#e0f2fe; color:#0284c7" onclick="shareLink()">🔗 Ссылка</button>
-            <button class="header-btn" style="background:#fef2f2; color:#ef4444" id="resetBtn">🗑️ Сброс</button>
+            <button class="header-btn" onclick="shareLink()"><i class="fa-solid fa-link"></i> Ссылка</button>
+            <button class="header-btn" id="showAllBtn"><i class="fa-solid fa-eye"></i> Архив</button>
+            <button class="header-btn danger" id="resetBtn"><i class="fa-solid fa-rotate-right"></i> Сброс</button>
         </div>
-    </header>
+    </div>
     <div class="cards-container" id="cardsContainer"></div>
 </div>
 
@@ -208,7 +300,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getDatabase, ref, onValue, runTransaction, set, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-    // --- CONFIG ---
+    // -----------------------------------------------------------
+    // КОНФИГУРАЦИЯ FIREBASE
+    // -----------------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBZuH0pKTmfLbyz9lg1g0cC5S4MM16XpMk",
       authDomain: "cru-moldova-ivan.firebaseapp.com",
@@ -219,6 +313,7 @@
       appId: "1:913901012780:web:aefc6983075e50e4000e89",
       measurementId: "G-2JYYSMTDER"
     };
+    // -----------------------------------------------------------
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
@@ -226,16 +321,25 @@
     // --- STATE ---
     let tempAgenda = [];
     let selectedIcon = "fa-comments";
-    const palette = ["#4f46e5", "#ea580c", "#059669", "#db2777", "#2563eb", "#7c3aed"];
     
-    // --- ICONS LIST ---
+    // Палитра Cru: спокойные, профессиональные цвета для шапок карточек
+    const palette = [
+        "#007398", // Cru Blue
+        "#212121", // Cru Dark
+        "#3B3B3B", // Dark Gray
+        "#546E7A", // Slate
+        "#00695C", // Deep Teal
+        "#AD1457", // Professional Berry (Accent)
+        "#455A64"  // Blue Grey
+    ];
+    
     const icons = [
         "fa-comments", "fa-bullhorn", "fa-users", "fa-chart-pie", "fa-rocket", 
         "fa-hand-holding-dollar", "fa-earth-europe", "fa-lightbulb", "fa-handshake", 
         "fa-calendar-days", "fa-star", "fa-heart", "fa-bolt", "fa-book"
     ];
 
-    // --- INIT CREATOR ---
+    // --- ROUTING ---
     const urlParams = new URLSearchParams(window.location.search);
     const mId = urlParams.get('id');
 
@@ -265,13 +369,13 @@
         document.querySelectorAll('.icon-option').forEach(e => e.classList.remove('selected'));
         el.classList.add('selected');
         selectedIcon = iconClass;
-        // Очищаем поле URL если выбрали иконку
         document.getElementById('inpImgUrl').value = '';
     }
 
     window.toggleUrlInput = () => {
         const input = document.getElementById('inpImgUrl');
         input.style.display = input.style.display === 'none' ? 'block' : 'none';
+        if(input.style.display === 'block') input.focus();
     }
 
     window.addCardToList = () => {
@@ -284,17 +388,17 @@
         if(!title) return alert("Введите название вопроса!");
 
         tempAgenda.push({
-            id: Date.now(), // временно для списка
+            id: Date.now(),
             title,
             time: time || "15 мин",
             desc,
             expect,
             icon: selectedIcon,
-            customUrl: customUrl, // Если есть ссылка, она перекроет иконку
+            customUrl: customUrl,
             color: palette[tempAgenda.length % palette.length]
         });
 
-        // Очистка формы
+        // Reset inputs
         document.getElementById('inpTitle').value = "";
         document.getElementById('inpTime').value = "";
         document.getElementById('inpDesc').value = "";
@@ -309,7 +413,7 @@
         document.getElementById('countDisplay').innerText = tempAgenda.length;
         
         if(tempAgenda.length === 0) {
-            list.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:20px;">Список пока пуст.</div>';
+            list.innerHTML = '<div style="text-align:center; color:#999; padding:20px;">Список пуст</div>';
             return;
         }
 
@@ -322,12 +426,12 @@
             if(item.customUrl) iconDisplay = `<img src="${item.customUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
 
             div.innerHTML = `
-                <div class="preview-icon">${iconDisplay}</div>
-                <div class="preview-info">
+                <div style="width:30px; text-align:center; color:${item.color}">${iconDisplay}</div>
+                <div style="flex-grow:1">
                     <div class="preview-title">${item.title}</div>
-                    <span class="preview-time">${item.time}</span>
+                    <div class="preview-time">${item.time}</div>
                 </div>
-                <button class="btn-delete" onclick="removeCard(${index})"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn-delete" onclick="removeCard(${index})"><i class="fa-solid fa-times"></i></button>
             `;
             list.appendChild(div);
         });
@@ -340,27 +444,21 @@
 
     window.publishMeeting = async () => {
         const slug = document.getElementById('meetingSlug').value.trim() || 'meeting-' + Math.floor(Math.random()*10000);
-        
-        if(tempAgenda.length === 0) return alert("Добавьте хотя бы одну карточку!");
+        if(tempAgenda.length === 0) return alert("Добавьте вопросы!");
 
-        // Переиндексируем ID для порядка
-        const finalAgenda = tempAgenda.map((item, idx) => ({
-            ...item,
-            id: idx + 1
-        }));
-
+        const finalAgenda = tempAgenda.map((item, idx) => ({ ...item, id: idx + 1 }));
         await set(ref(db, `meetings/${slug}/agenda`), finalAgenda);
         window.location.href = `?id=${slug}`;
     }
 
 
-    // --- VOTING FUNCTIONS (VIEW) ---
+    // --- VOTING VIEW ---
     async function initVoting(meetingId) {
         const agendaRef = ref(db, `meetings/${meetingId}/agenda`);
         const snapshot = await get(agendaRef);
         
         if (!snapshot.exists()) {
-            document.getElementById('cardsContainer').innerHTML = '<h2>Встреча не найдена</h2>';
+            document.getElementById('cardsContainer').innerHTML = '<h3 style="color:#666; text-align:center; width:100%">Встреча не найдена</h3>';
             return;
         }
 
@@ -369,14 +467,15 @@
         const myVotes = JSON.parse(localStorage.getItem(`votes_${meetingId}`)) || {};
 
         agendaData.forEach(item => {
-            // Определяем, что показывать в шапке (Иконку или Картинку)
             let visualHeaderContent = `<i class="topic-icon fa-solid ${item.icon}"></i>`;
             if (item.customUrl) {
+                // Если картинка the four или флаг - не инвертируем цвет (убираем filter) если это фото, 
+                // но для SVG лого часто нужна инверсия. Здесь оставим чистое изображение.
                 visualHeaderContent = `<img src="${item.customUrl}" class="custom-img-icon" alt="icon">`;
             }
 
             const isVoted = myVotes[item.id] ? 'voted' : '';
-            const btnText = myVotes[item.id] ? 'Голос отдан' : 'Голосовать';
+            const btnText = myVotes[item.id] ? 'ГОЛОС ПРИНЯТ' : 'ГОЛОСОВАТЬ';
             const iconClass = myVotes[item.id] ? 'fa-solid fa-check' : 'fa-regular fa-thumbs-up';
 
             const html = `
@@ -384,13 +483,16 @@
                 <div class="card-flipper">
                     <div class="card-front">
                         <div class="card-visual-header" style="background: ${item.color}">
+                            <button class="complete-btn" id="complete-${item.id}" title="Завершить">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
                             ${visualHeaderContent}
                             <h2 class="card-title">${item.title}</h2>
                             <span class="card-time">${item.time}</span>
                         </div>
                         <div class="card-body">
-                             <div style="text-align:center; color:#cbd5e1; font-size:13px; margin-top:50px;">
-                                <i class="fa-solid fa-rotate"></i> Нажми, чтобы перевернуть
+                             <div class="click-hint">
+                                <i class="fa-solid fa-rotate"></i> Нажми на карточку, чтобы узнать детали
                              </div>
                         </div>
                         <div class="card-footer">
@@ -402,12 +504,15 @@
                         </div>
                     </div>
                     <div class="card-back">
-                        <div class="card-body" style="border-top: 8px solid ${item.color}">
-                            <h3 style="color:${item.color}">ОПИСАНИЕ</h3>
-                            <p>${(item.desc || '').replace(/\n/g, '<br>')}</p>
+                        <div class="card-back-header">
+                            <h2 style="color: ${item.color}">${item.title}</h2>
+                        </div>
+                        <div class="card-body">
+                            <h3>Контекст</h3>
+                            <p>${(item.desc || 'Нет описания').replace(/\n/g, '<br>')}</p>
                             
-                            <h3 style="color:${item.color}; margin-top:20px;">ОЖИДАНИЯ</h3>
-                            <p>${(item.expect || '').replace(/\n/g, '<br>')}</p>
+                            <h3>Ожидания</h3>
+                            <p>${(item.expect || '...').replace(/\n/g, '<br>')}</p>
                         </div>
                     </div>
                 </div>
@@ -415,32 +520,62 @@
             `;
             container.insertAdjacentHTML('beforeend', html);
 
-            // Logic
             setTimeout(() => {
                 document.getElementById(`btn-${item.id}`).addEventListener('click', (e) => {
                     e.stopPropagation();
                     toggleVote(item.id, meetingId);
                 });
+                document.getElementById(`complete-${item.id}`).addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if(confirm("Скрыть этот вопрос из обсуждения?")) {
+                        set(ref(db, `meetings/${meetingId}/hidden/${item.id}`), true);
+                    }
+                });
             },0);
         });
 
-        // Live Data
-        onValue(ref(db, `meetings/${meetingId}/votes`), (snap) => {
-            const votes = snap.val() || {};
-            agendaData.forEach(item => {
-                const count = votes[item.id] || 0;
-                document.getElementById(`count-${item.id}`).innerText = count;
+        // Realtime Listeners
+        onValue(ref(db, `meetings/${meetingId}`), (snap) => {
+            const data = snap.val() || {};
+            const votes = data.votes || {};
+            const hidden = data.hidden || {};
+            let max = -1;
+
+            agendaData.forEach(i => {
+                const card = document.getElementById(`card-${i.id}`);
+                const isHidden = hidden[i.id] === true;
+                if(isHidden) card.classList.add('hidden-card');
+                else {
+                    card.classList.remove('hidden-card');
+                    if((votes[i.id] || 0) > max) max = votes[i.id] || 0;
+                }
+            });
+
+            agendaData.forEach(i => {
+                if(hidden[i.id]) return;
+                const count = votes[i.id] || 0;
+                document.getElementById(`count-${i.id}`).innerText = count;
+                
+                const completeBtn = document.getElementById(`complete-${i.id}`);
+                // Показываем галочку лидеру, если есть голоса
+                completeBtn.style.display = (max > 0 && count === max) ? 'flex' : 'none';
             });
         });
 
-        // Reset
         document.getElementById('resetBtn').addEventListener('click', () => {
-             if(confirm("Сбросить голоса?")) { 
+             if(confirm("Сбросить все голоса для этой встречи?")) { 
                  set(ref(db, `meetings/${meetingId}/votes`), {}); 
                  localStorage.removeItem(`votes_${meetingId}`); 
                  location.reload(); 
              }
         });
+
+        document.getElementById('showAllBtn').addEventListener('click', () => {
+            if(confirm("Показать скрытые/завершенные вопросы?")) {
+                set(ref(db, `meetings/${meetingId}/hidden`), null);
+            }
+        });
+        
         window.shareLink = () => { navigator.clipboard.writeText(window.location.href); alert("Ссылка скопирована!"); };
     }
 
@@ -456,13 +591,13 @@
             delete myVotes[itemId];
             btn.classList.remove('voted');
             icon.className = 'fa-regular fa-thumbs-up';
-            text.innerText = 'Голосовать';
+            text.innerText = 'ГОЛОСОВАТЬ';
         } else {
             runTransaction(itemRef, (c) => (c || 0) + 1);
             myVotes[itemId] = true;
             btn.classList.add('voted');
             icon.className = 'fa-solid fa-check';
-            text.innerText = 'Голос отдан';
+            text.innerText = 'ГОЛОС ПРИНЯТ';
         }
         localStorage.setItem(`votes_${mId}`, JSON.stringify(myVotes));
     }
@@ -470,14 +605,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
