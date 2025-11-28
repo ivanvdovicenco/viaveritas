@@ -3,296 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NLT Voting </title>
+    <title>Agenda Builder Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-color: #f4f7f9;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --card-radius: 20px;
-            
-            /* Цвета */
-            --primary-soft: #4a90e2;
-            --success-soft: #66bb6a;
-            --danger-soft: #ef5350;
-            --warning-soft: #ffb74d;
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --primary: #4f46e5; /* Indigo */
+            --primary-hover: #4338ca;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
         }
 
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 20px;
-            color: var(--text-dark);
-        }
+        body { font-family: 'Nunito', sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: var(--text-dark); }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .hidden { display: none !important; }
 
-        /* --- HEADER --- */
-        header {
-            max-width: 1200px;
-            margin: 0 auto 30px;
-            background: white;
-            padding: 20px 25px;
-            border-radius: var(--card-radius);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        h1 { 
-            margin: 0; 
-            font-size: 22px; 
-            font-weight: 800; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            color: var(--text-dark); 
-        }
+        /* --- CREATOR DASHBOARD STYLES --- */
+        .dashboard-grid { display: grid; gap: 30px; }
         
-        .header-controls { 
-            display: flex; 
-            gap: 12px; 
-            flex-wrap: wrap; 
+        .panel {
+            background: var(--surface); border-radius: 16px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 30px;
         }
 
-        .status-indicator {
-            font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;
-            background: #e8f5e9; color: var(--success-soft); padding: 8px 15px; border-radius: 30px;
-        }
+        h1 { margin-top: 0; font-size: 24px; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
+        h2 { font-size: 18px; color: var(--text-light); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
 
-        .btn-control {
-            border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer;
-            font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px;
-            transition: all 0.2s ease; font-family: inherit;
-        }
+        /* FORM LAYOUT */
+        .editor-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        @media(max-width: 768px) { .editor-layout { grid-template-columns: 1fr; } }
 
-        .btn-reset { background-color: #fee2e2; color: var(--danger-soft); }
-        .btn-reset:hover { background-color: var(--danger-soft); color: white; transform: translateY(-2px); }
-
-        .btn-show-all { background-color: #e3f2fd; color: var(--primary-soft); }
-        .btn-show-all:hover { background-color: var(--primary-soft); color: white; transform: translateY(-2px); }
-
-        /* --- FLEX CONTAINER --- */
-        .cards-container {
-            display: flex;           
-            flex-wrap: wrap;         
-            justify-content: center; 
-            gap: 30px;               
-            max-width: 1240px;
-            margin: 0 auto;
-            padding-bottom: 60px;
-        }
-
-        .card-wrapper {
-            flex: 1 1 300px; 
-            max-width: 380px; 
-            min-width: 280px; 
-            perspective: 1000px; 
-            height: 480px; /* Высота под большой текст */
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        .card-wrapper.hidden-card {
-            display: none;
+        input, textarea {
+            width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px;
+            font-family: inherit; font-size: 15px; transition: 0.2s; box-sizing: border-box;
         }
+        input:focus, textarea:focus { border-color: var(--primary); outline: none; }
+        textarea { resize: vertical; min-height: 100px; }
 
-        .card-flipper {
-            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
-            transform-style: preserve-3d; position: relative; width: 100%; height: 100%;
-            border-radius: var(--card-radius);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        /* ICON GRID SELECTION */
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; margin-top: 10px; }
+        .icon-option {
+            height: 50px; display: flex; align-items: center; justify-content: center;
+            border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
+            font-size: 20px; color: var(--text-light); transition: 0.2s;
         }
+        .icon-option:hover { background: #f1f5f9; }
+        .icon-option.selected { border-color: var(--primary); background: #eef2ff; color: var(--primary); }
 
+        .url-input-toggle { font-size: 12px; color: var(--primary); cursor: pointer; margin-top: 5px; text-decoration: underline; }
+
+        /* ADD BUTTON */
+        .btn-add-card {
+            width: 100%; background: var(--text-dark); color: white; border: none;
+            padding: 15px; border-radius: 10px; font-weight: 800; font-size: 16px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.2s;
+        }
+        .btn-add-card:hover { background: black; transform: translateY(-2px); }
+
+        /* PREVIEW LIST */
+        .preview-list { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .preview-item {
+            display: flex; align-items: center; gap: 15px; padding: 15px;
+            background: #f8fafc; border: 1px solid var(--border); border-radius: 10px;
+        }
+        .preview-icon { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); border: 1px solid var(--border); }
+        .preview-info { flex-grow: 1; }
+        .preview-title { font-weight: 700; color: var(--text-dark); }
+        .preview-time { font-size: 12px; color: var(--text-light); background: #e2e8f0; padding: 2px 6px; border-radius: 4px; }
+        .btn-delete { color: #ef4444; background: none; border: none; cursor: pointer; font-size: 18px; padding: 5px; }
+
+        /* FINAL CREATE ACTION */
+        .create-section { margin-top: 40px; text-align: center; border-top: 2px dashed var(--border); padding-top: 40px;}
+        .slug-input { font-size: 20px; font-weight: bold; text-align: center; max-width: 400px; margin: 0 auto 20px; display: block; }
+        .btn-publish {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white; padding: 18px 40px; border-radius: 50px; border: none;
+            font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+            transition: 0.3s;
+        }
+        .btn-publish:hover { transform: scale(1.05); }
+
+        /* --- VOTING VIEW STYLES (FROM PREVIOUS) --- */
+        /* ... Keeping the clean flex styles ... */
+        .cards-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
+        .card-wrapper { flex: 1 1 300px; max-width: 380px; min-width: 280px; height: 480px; perspective: 1000px; cursor: pointer; }
+        .card-wrapper.hidden-card { display: none; }
+        .card-flipper { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
         .card-wrapper.flipped .card-flipper { transform: rotateY(180deg); }
-
-        .card-front, .card-back {
-            backface-visibility: hidden; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: var(--card-radius); background: white; overflow: hidden; 
-            display: flex; 
-            flex-direction: column; 
-        }
-
-        .card-front { z-index: 2; transform: rotateY(0deg); }
-        .card-back { transform: rotateY(180deg); background: #fff; }
-
-        .card-visual-header {
-            padding: 30px 20px; text-align: center; color: white; position: relative;
-            background-image: linear-gradient(to bottom right, rgba(255,255,255,0.15), rgba(0,0,0,0.05));
-            flex-shrink: 0; 
-        }
-
-        /* Кнопка-галочка (для лидера) */
-        .complete-btn {
-            position: absolute; top: 20px; right: 20px;
-            background: white; color: var(--success-soft);
-            width: 44px; height: 44px; border-radius: 50%; border: none;
-            font-size: 20px; cursor: pointer; display: none;
-            align-items: center; justify-content: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); z-index: 20;
-            animation: bounceIn 0.5s;
-            transition: transform 0.2s;
-        }
-        .complete-btn:hover { transform: scale(1.15); }
-        @keyframes bounceIn { from { transform: scale(0); } to { transform: scale(1); } }
-
-        .topic-icon-container {
-            height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;
-        }
-        .topic-icon { font-size: 56px; opacity: 0.9; }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; background: white; display: flex; flex-direction: column; overflow: hidden; }
+        .card-back { transform: rotateY(180deg); }
         
-        .flag-pair { display: flex; gap: 10px; justify-content: center; }
-        .flag-img { height: 45px; width: auto; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .card-visual-header { padding: 30px 20px; text-align: center; color: white; flex-shrink: 0; position: relative; background-image: linear-gradient(to bottom right, rgba(255,255,255,0.15), rgba(0,0,0,0.05)); }
+        .topic-icon { font-size: 50px; margin-bottom: 10px; }
+        .custom-img-icon { height: 50px; width: auto; object-fit: contain; margin-bottom: 10px; filter: brightness(0) invert(1); }
         
-        .the-four-img { 
-            height: 50px; 
-            width: auto; 
-            filter: brightness(0) invert(1); 
-        }
-
-        .card-title { font-size: 20px; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .card-title { font-size: 20px; font-weight: 800; margin: 0; line-height: 1.2; }
+        .card-time { background: rgba(255,255,255,0.25); padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 700; display: inline-block; margin-top: 10px; }
+        .card-body { flex-grow: 1; padding: 20px; overflow-y: auto; }
+        .card-footer { padding: 20px; display: flex; justify-content: center; border-top: 1px solid #f0f0f0; }
         
-        .card-time-badge { 
-            display: inline-block; background: rgba(255,255,255,0.25);
-            padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700;
-            margin-top: 12px; backdrop-filter: blur(5px);
-        }
-
-        .card-body-front {
-            flex-grow: 1; 
-            display: flex; justify-content: center; align-items: center;
-            padding: 10px; color: var(--text-light);
-        }
-        .click-hint { font-size: 13px; font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; opacity: 0.8; }
+        .vote-btn { background: #edf2f7; color: #64748b; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; display: flex; gap: 10px; align-items: center; }
+        .vote-btn.voted { background: #10b981; color: white; }
+        .vote-count-badge { background: white; color: #333; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
         
-        .card-footer { 
-            padding: 20px; 
-            display: flex; 
-            justify-content: center; 
-            flex-shrink: 0; 
-        }
-
-        .vote-btn {
-            background: #edf2f7; color: var(--text-light); border: none;
-            padding: 12px 30px; border-radius: 50px; font-size: 16px; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; gap: 12px;
-            transition: all 0.3s; z-index: 10;
-            font-family: inherit; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .vote-btn:hover { background: #e2e8f0; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
-        
-        .vote-btn.voted {
-            background: var(--success-soft); color: white;
-            box-shadow: 0 8px 20px rgba(102, 187, 106, 0.4);
-        }
-        .vote-btn.voted:hover { box-shadow: 0 10px 25px rgba(102, 187, 106, 0.5); }
-        
-        .vote-count-badge {
-            background: white; color: var(--text-dark); min-width: 24px; height: 24px;
-            padding: 2px 6px; display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; font-size: 14px; font-weight: 800;
-        }
-        .vote-btn.voted .vote-count-badge { color: var(--success-soft); }
-
-        .card-back-header { padding: 20px 25px; border-bottom: 1px solid #eee; }
-        .card-back-header h2 { margin: 0; font-size: 18px; font-weight: 800; }
-        
-        /* Скролл */
-        .card-back-content { 
-            padding: 25px; 
-            overflow-y: auto; 
-            flex-grow: 1; 
-            scrollbar-width: thin;
-        }
-        .card-back-content::-webkit-scrollbar { width: 6px; }
-        .card-back-content::-webkit-scrollbar-thumb { background-color: #cbd5e0; border-radius: 10px; }
-
-        .card-back h3 { color: var(--text-light); margin-top: 0; font-size: 14px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 12px; }
-        .card-back p { font-size: 15px; line-height: 1.6; color: var(--text-dark); margin-bottom: 15px; }
-        .card-back ul { padding-left: 20px; margin: 0; }
-        .card-back li { font-size: 15px; line-height: 1.6; color: var(--text-dark); margin-bottom: 8px; }
-
-        /* Модальное окно */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            z-index: 100; opacity: 0; visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-
-        .modal-box {
-            background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px;
-            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transform: scale(0.9); transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .modal-overlay.active .modal-box { transform: scale(1); }
-
-        .modal-icon { font-size: 60px; color: var(--warning-soft); margin-bottom: 20px; }
-        .modal-title { font-size: 22px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-dark); }
-        .modal-text { font-size: 16px; color: var(--text-light); margin-bottom: 25px; line-height: 1.5; }
-        
-        .modal-buttons { display: flex; gap: 15px; justify-content: center; }
-        .modal-btn {
-            border: none; padding: 12px 25px; border-radius: 50px; font-size: 16px; font-weight: 700;
-            cursor: pointer; transition: all 0.2s; font-family: inherit; flex: 1;
-        }
-        .btn-cancel { background: #edf2f7; color: var(--text-dark); }
-        .btn-cancel:hover { background: #e2e8f0; }
-        .btn-confirm { background: var(--success-soft); color: white; box-shadow: 0 4px 15px rgba(102, 187, 106, 0.4); }
-        .btn-confirm:hover { background: #57a65b; transform: translateY(-2px); }
-
+        /* Voting Header */
+        header { background: white; padding: 15px 25px; border-radius: 16px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .header-btn { border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; margin-left:5px;}
     </style>
 </head>
 <body>
 
-<header>
-    <h1>
-        <i class="fa-solid fa-comments" style="color: var(--primary-soft)"></i> Повестка
-        <div class="status-indicator" id="connectionStatus">
-            <i class="fa-solid fa-circle-notch fa-spin"></i> Подключение...
-        </div>
-    </h1>
-    <div class="header-controls">
-        <button class="btn-control btn-show-all" id="showAllBtn">
-            <i class="fa-solid fa-eye"></i> Показать все
-        </button>
-        <button class="btn-control btn-reset" id="resetBtn">
-            <i class="fa-solid fa-trash-can"></i> Сброс
-        </button>
-    </div>
-</header>
+<div id="creatorView" class="container">
+    <h1>🛠️ Конструктор Повестки</h1>
+    
+    <div class="dashboard-grid">
+        
+        <div class="panel">
+            <h2>Добавить новую карточку</h2>
+            <div class="editor-layout">
+                
+                <div>
+                    <div style="background:#eef2ff; color:#4f46e5; padding:5px 10px; border-radius:6px; display:inline-block; font-weight:bold; font-size:12px; margin-bottom:15px;">СТОРОНА 1 (Лицо)</div>
+                    
+                    <div class="form-group">
+                        <label>Название вопроса</label>
+                        <input type="text" id="inpTitle" placeholder="Например: Бюджет 2024">
+                    </div>
 
-<main class="cards-container" id="cardsContainer">
-    </main>
+                    <div class="form-group">
+                        <label>Время (минуты/часы)</label>
+                        <input type="text" id="inpTime" placeholder="Например: 15 мин">
+                    </div>
 
-<div class="modal-overlay" id="deleteModal">
-    <div class="modal-box">
-        <i class="fa-solid fa-circle-question modal-icon"></i>
-        <h2 class="modal-title">Завершить вопрос?</h2>
-        <p class="modal-text" id="modalQuestionText">Вы уверены?</p>
-        <div class="modal-buttons">
-            <button class="modal-btn btn-cancel" id="cancelDeleteBtn">Отмена</button>
-            <button class="modal-btn btn-confirm" id="confirmDeleteBtn">Завершить</button>
+                    <div class="form-group">
+                        <label>Иконка или Рисунок</label>
+                        <input type="text" id="inpImgUrl" placeholder="Ссылка на картинку (необязательно)" style="display:none; margin-bottom:10px;">
+                        
+                        <div class="icon-grid" id="iconSelector">
+                            </div>
+                        <div class="url-input-toggle" onclick="toggleUrlInput()">+ Вставить ссылку на картинку (лого/флаг)</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="background:#f0fdf4; color:#15803d; padding:5px 10px; border-radius:6px; display:inline-block; font-weight:bold; font-size:12px; margin-bottom:15px;">СТОРОНА 2 (Оборот)</div>
+                    
+                    <div class="form-group">
+                        <label>Описание вопроса</label>
+                        <textarea id="inpDesc" placeholder="О чем этот вопрос? Контекст..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ожидаемый результат</label>
+                        <textarea id="inpExpect" placeholder="Чего мы хотим достичь? (Решение, План, Идеи...)"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-add-card" onclick="addCardToList()">
+                <i class="fa-solid fa-plus-circle"></i> ДОБАВИТЬ В СПИСОК
+            </button>
         </div>
+
+        <div class="panel">
+            <h2>Ваш список вопросов (<span id="countDisplay">0</span>)</h2>
+            <div id="previewList" class="preview-list">
+                <div style="text-align:center; color:#94a3b8; padding:20px;">Список пока пуст. Добавьте карточки сверху.</div>
+            </div>
+
+            <div class="create-section">
+                <label>Придумайте короткую ссылку (ID встречи)</label>
+                <input type="text" id="meetingSlug" class="slug-input" placeholder="team-meeting-nov">
+                <button class="btn-publish" onclick="publishMeeting()">СОЗДАТЬ ВСТРЕЧУ 🚀</button>
+            </div>
+        </div>
+
     </div>
+</div>
+
+<div id="votingView" class="container hidden">
+    <header>
+        <div style="font-weight:800; font-size:20px; display:flex; gap:10px; align-items:center;">
+            <i class="fa-solid fa-layer-group" style="color:var(--primary)"></i> 
+            <span id="meetingTitleDisplay">Meeting</span>
+        </div>
+        <div>
+            <button class="header-btn" style="background:#e0f2fe; color:#0284c7" onclick="shareLink()">🔗 Ссылка</button>
+            <button class="header-btn" style="background:#fef2f2; color:#ef4444" id="resetBtn">🗑️ Сброс</button>
+        </div>
+    </header>
+    <div class="cards-container" id="cardsContainer"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getDatabase, ref, onValue, runTransaction, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+    import { getDatabase, ref, onValue, runTransaction, set, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-    // -----------------------------------------------------------
-    // КОНФИГУРАЦИЯ
-    // -----------------------------------------------------------
+    // --- CONFIG ---
     const firebaseConfig = {
       apiKey: "AIzaSyBZuH0pKTmfLbyz9lg1g0cC5S4MM16XpMk",
       authDomain: "cru-moldova-ivan.firebaseapp.com",
@@ -303,343 +219,265 @@
       appId: "1:913901012780:web:aefc6983075e50e4000e89",
       measurementId: "G-2JYYSMTDER"
     };
-    
-    // Инициализация Firebase с обработкой ошибок
-    let db;
-    try {
-      const app = initializeApp(firebaseConfig);
-      db = getDatabase(app);
-    } catch (error) {
-      console.error("Firebase initialization error:", error);
-    }
-    // -----------------------------------------------------------
 
-    const agendaData = [
-        { 
-            id: 1, 
-            color: "#4a90e2", 
-            icon: "fa-solid fa-list-check", 
-            time: "15 мин", 
-            title: "Обзор всех вопросов", 
-            desc: "Понимать объем вопросов и как они связаны между собой. Будем выбирать вместо вопросы, которые хотим обсудить. Порядок вопросов будет изменен.", 
-            expect: "Синхронизация по повестке." 
-        },
-        { 
-            id: 2, 
-            color: "#ef5350", 
-            customIconHtml: '<div class="flag-pair"><img src="https://flagcdn.com/w80/md.png" class="flag-img" alt="Moldova"><img src="https://flagcdn.com/w80/no.png" class="flag-img" alt="Norway"></div>',
-            time: "30 мин", 
-            title: "Служение в Норвегии", 
-            desc: "Javier объявил что Молдова будет выполнять роль country coach для Норвегии.", 
-            expect: "<ul><li>Начать создание плана отношений Молдова-Норвегия</li><li>Определить ближайшие цели как мы можем им помочь сейчас</li></ul>" 
-        },
-        { 
-            id: 3, 
-            color: "#ffb74d", 
-            customIconHtml: '<img src="https://thefour.com/wp-content/uploads/2024/05/T4_logo_schrift_vert.svg" class="the-four-img" alt="The Four">',
-            time: "40 мин", 
-            title: "Фестиваль TheFour", 
-            desc: "В наших календарях уже стоит дата проекта с BeTheLight. Цель - обучить молодежь современным и релевантным методам благовестия. Желание - вовлечь несколько сотен молодых людей в этот проект. Сделать на высоком уровне. Стас и Иван Гриник - ключевые представители от нас.", 
-            expect: "<ul><li>Договориться о том чего мы хотим для этого проекта. Как лучше всего воспользоваться этой возможностью мобилизовать церковь, развить партнерство..</li><li>Определить: Что NLT и Cru может предложить для реализации этого проекта?</li></ul>" 
-        },
-        { 
-            id: 4, 
-            color: "#66bb6a", 
-            icon: "fa-solid fa-person-running", 
-            time: "30 мин", 
-            title: "AIA Academy", 
-            desc: "Ваня представит текущую реальность - видение, цели, этапы. Проект дошел до очень практичной стадии. Есть возможность запустить проект-пилот в Донченах. Есть несколько партнеров, которые помогают с подготовкой сбора поддержки. Гена согласился быть лидером проекта. Нужно решить если мы решительно настроены и готовы вовлечься в этот проект.", 
-            expect: "<ul><li>Готовы ли мы двигаться быстрыми шагами (философский вопрос)</li><li>Если да, тогда нужно определить: кто конкретно будет частью команды</li><li>Какие ожидания у NLT по отношению к этой команде. Какие границы их полномочий в составлении планов и следующих шагов</li></ul>" 
-        },
-        { 
-            id: 5, 
-            color: "#718096", 
-            icon: "fa-solid fa-building", 
-            time: "1 ч 20 мин", 
-            title: "Bacioi — склад и центр", 
-            desc: "Мы получили смету на перестройку. Очень дорого. Нужно сносить или оставить как есть. Толик, Валера и Ваня имели встречу посвященную обсуждению альтернативных перспектив на этот участок. Мы предлагаем сделать там Конференц Центр для Церквей и Христианских организаций, со складом внутри.", 
-            expect: "<ul><li>Выслушать и обсудить предложение о конференц центре</li><li>Если мы согласны, то выбрать ответственного за этот проект</li><li>Определить ожидания и ближайшие цели, чтобы продвинуться на несколько следующих шагов</li></ul>" 
-        },
-        { 
-            id: 6, 
-            color: "#2d3748", 
-            icon: "fa-solid fa-user-plus", 
-            time: "1 час", 
-            title: "Рекрутинг", 
-            desc: "Нам нужно поставить акцент на этом вопросе. Предложение от Baily о создании \"Год для миссии\" похоже на то что уже начали делать SLM. Как мы можем укрепить и расширить эту стратегию.", 
-            expect: "<ul><li>Ваня расскажет о программе \"год для миссии\"</li><li>Как мы можем расширить эту стратегию за пределы SLM, чтобы вовлечь еще больше людей и получить еще больше потенциала для поиска и рекрутинга новых сотрудников</li><li>Кто ответственный за это?</li><li>Какие ожидания и следующие шаги</li></ul>" 
-        },
-        { 
-            id: 7, 
-            color: "#8e44ad", 
-            icon: "fa-solid fa-handshake", 
-            time: "40 мин", 
-            title: "Развитие партнерства", 
-            desc: "Нужно переходить к практическим шагам в партнерстве для достижения нашего видения. Что мы можем предложить для партнерства, что будет вдохновлять и будет больше чем наши силы по отдельности?", 
-            expect: "<ul><li>Предложение: \"забота о всех пастырях Молдовы\" (counseling, mpd, retreats..)</li><li>Есть ли другие нужды и возможности, которые Бог открывает нам?</li><li>Что мы можем сделать сейчас? С чего начать?</li></ul>" 
-        },
-        { 
-            id: 8, 
-            color: "#4a90e2", 
-            icon: "fa-solid fa-users-gear", 
-            time: "20 мин", 
-            title: "Будущее LDHR", 
-            desc: "Раду предложил нам решить какой LDHR нам нужен в следующем году, чтобы нам было легче выбрать подходящего человека для роли лидера этого служения. Раду уходит, но для того чтобы развивать и готовить людей, нам лучше уже в этом году сформулировать цели и видение будущего этой команды.", 
-            expect: "<ul><li>Обсудить задачу и гипотетические сценарии, чтобы дать пищу для размышлений и молитв</li><li>Договориться о том, когда и как мы будет работать над формированием этого видения</li></ul>" 
-        },
-        { 
-            id: 9, 
-            color: "#ef5350", 
-            icon: "fa-solid fa-id-card", 
-            time: "40 мин", 
-            title: "Федерация коучей", 
-            desc: "Все больше коучей в служении. Некоторые активно используют это в служении, каждый сталкивается с необходимостью брать за услуги деньги + каким-то образом представлять себя. Есть идея, открыть официально в Молдове федерацию христан коучей, для того чтобы дать миссионерам больше инструментов, а также внести ясность в вопрос финансов.", 
-            expect: "<ul><li>Представить видение и объяснить суть вопроса</li><li>Обсудить потенциально как это могло бы выглядеть</li><li>Какие от этого преимущества? Есть ли потенциальные опасности?</li><li>Какие следующие шаги и ответственные лица?</li></ul>" 
-        },
-        { 
-            id: 10, 
-            color: "#66bb6a", 
-            icon: "fa-solid fa-hands-praying", 
-            time: "40 мин", 
-            title: "Молитвенная поддержка", 
-            desc: "У нас растут масштабы, видение и интересы. Есть ли у нас достаточная молитвенная поддержка служения, чтобы быть адектватными на дороге возрастающего духовного противостояния.", 
-            expect: "<ul><li>Каким должно (может быть) быть наше служение в этой сфере?</li><li>В чем нам нужно возрасти чтобы это стало реальностью?</li><li>Какие шаги будут направлять нас в этом росте?</li></ul>" 
-        },
-        { 
-            id: 11, 
-            color: "#ffb74d", 
-            icon: "fa-solid fa-hand-holding-dollar", 
-            time: "40 мин", 
-            title: "Fund Development", 
-            desc: "Большие проекты требуют больших финансов. Как покрыть эти затраты?", 
-            expect: "<ul><li>Предложение: создание стратегии развития отношений от лица команды NLT - все церкви, большие доноры, большие вызовы, стратегия вовлечения их как LIFE partners</li></ul>" 
-        },
-        { 
-            id: 12, 
-            color: "#4a90e2", 
-            icon: "fa-solid fa-book-bible", 
-            time: "15 мин", 
-            title: "IBS Winter", 
-            desc: "Михай спрашивает о том будет ли IBS Зимой.", 
-            expect: "<ul><li>Да или нет. Назвать даты.</li></ul>" 
-        },
-        { 
-            id: 13, 
-            color: "#718096", 
-            icon: "fa-solid fa-calendar-days", 
-            time: "15 мин", 
-            title: "График встреч NLT", 
-            desc: "Планирование встреч.", 
-            expect: "<ul><li>Какой график встреч в этом году?</li></ul>" 
-        }
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // --- STATE ---
+    let tempAgenda = [];
+    let selectedIcon = "fa-comments";
+    const palette = ["#4f46e5", "#ea580c", "#059669", "#db2777", "#2563eb", "#7c3aed"];
+    
+    // --- ICONS LIST ---
+    const icons = [
+        "fa-comments", "fa-bullhorn", "fa-users", "fa-chart-pie", "fa-rocket", 
+        "fa-hand-holding-dollar", "fa-earth-europe", "fa-lightbulb", "fa-handshake", 
+        "fa-calendar-days", "fa-star", "fa-heart", "fa-bolt", "fa-book"
     ];
 
-    const container = document.getElementById('cardsContainer');
-    const statusEl = document.getElementById('connectionStatus');
-    // Используем v7_final, чтобы сбросить прошлые тесты
-    let myVotes = JSON.parse(localStorage.getItem('my_votes_v7_final')) || {};
+    // --- INIT CREATOR ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const mId = urlParams.get('id');
 
-    let cardIdToDelete = null;
-    const modal = document.getElementById('deleteModal');
-    const modalText = document.getElementById('modalQuestionText');
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-
-    function openDeleteModal(id, title) {
-        cardIdToDelete = id;
-        modalText.innerHTML = `Завершить обсуждение вопроса <b>"${title}"</b> и скрыть его?`;
-        modal.classList.add('active');
+    if (mId) {
+        document.getElementById('creatorView').classList.add('hidden');
+        document.getElementById('votingView').classList.remove('hidden');
+        document.getElementById('meetingTitleDisplay').innerText = mId;
+        initVoting(mId);
+    } else {
+        initIconGrid();
     }
 
-    function closeDeleteModal() {
-        modal.classList.remove('active');
-        cardIdToDelete = null;
+    // --- CREATOR FUNCTIONS ---
+    function initIconGrid() {
+        const grid = document.getElementById('iconSelector');
+        grid.innerHTML = '';
+        icons.forEach(icon => {
+            const div = document.createElement('div');
+            div.className = `icon-option ${icon === selectedIcon ? 'selected' : ''}`;
+            div.innerHTML = `<i class="fa-solid ${icon}"></i>`;
+            div.onclick = () => selectIcon(div, icon);
+            grid.appendChild(div);
+        });
     }
 
-    cancelDeleteBtn.addEventListener('click', closeDeleteModal);
-    confirmDeleteBtn.addEventListener('click', () => {
-        if (cardIdToDelete) {
-            hideCard(cardIdToDelete);
-            closeDeleteModal();
+    window.selectIcon = (el, iconClass) => {
+        document.querySelectorAll('.icon-option').forEach(e => e.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedIcon = iconClass;
+        // Очищаем поле URL если выбрали иконку
+        document.getElementById('inpImgUrl').value = '';
+    }
+
+    window.toggleUrlInput = () => {
+        const input = document.getElementById('inpImgUrl');
+        input.style.display = input.style.display === 'none' ? 'block' : 'none';
+    }
+
+    window.addCardToList = () => {
+        const title = document.getElementById('inpTitle').value;
+        const time = document.getElementById('inpTime').value;
+        const desc = document.getElementById('inpDesc').value;
+        const expect = document.getElementById('inpExpect').value;
+        const customUrl = document.getElementById('inpImgUrl').value;
+
+        if(!title) return alert("Введите название вопроса!");
+
+        tempAgenda.push({
+            id: Date.now(), // временно для списка
+            title,
+            time: time || "15 мин",
+            desc,
+            expect,
+            icon: selectedIcon,
+            customUrl: customUrl, // Если есть ссылка, она перекроет иконку
+            color: palette[tempAgenda.length % palette.length]
+        });
+
+        // Очистка формы
+        document.getElementById('inpTitle').value = "";
+        document.getElementById('inpTime').value = "";
+        document.getElementById('inpDesc').value = "";
+        document.getElementById('inpExpect').value = "";
+        document.getElementById('inpImgUrl').value = "";
+        
+        renderPreview();
+    };
+
+    function renderPreview() {
+        const list = document.getElementById('previewList');
+        document.getElementById('countDisplay').innerText = tempAgenda.length;
+        
+        if(tempAgenda.length === 0) {
+            list.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:20px;">Список пока пуст.</div>';
+            return;
         }
-    });
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeDeleteModal();
-    });
 
-    function renderCards() {
-        container.innerHTML = '';
+        list.innerHTML = '';
+        tempAgenda.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            
+            let iconDisplay = `<i class="fa-solid ${item.icon}"></i>`;
+            if(item.customUrl) iconDisplay = `<img src="${item.customUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+
+            div.innerHTML = `
+                <div class="preview-icon">${iconDisplay}</div>
+                <div class="preview-info">
+                    <div class="preview-title">${item.title}</div>
+                    <span class="preview-time">${item.time}</span>
+                </div>
+                <button class="btn-delete" onclick="removeCard(${index})"><i class="fa-solid fa-trash"></i></button>
+            `;
+            list.appendChild(div);
+        });
+    }
+
+    window.removeCard = (index) => {
+        tempAgenda.splice(index, 1);
+        renderPreview();
+    }
+
+    window.publishMeeting = async () => {
+        const slug = document.getElementById('meetingSlug').value.trim() || 'meeting-' + Math.floor(Math.random()*10000);
+        
+        if(tempAgenda.length === 0) return alert("Добавьте хотя бы одну карточку!");
+
+        // Переиндексируем ID для порядка
+        const finalAgenda = tempAgenda.map((item, idx) => ({
+            ...item,
+            id: idx + 1
+        }));
+
+        await set(ref(db, `meetings/${slug}/agenda`), finalAgenda);
+        window.location.href = `?id=${slug}`;
+    }
+
+
+    // --- VOTING FUNCTIONS (VIEW) ---
+    async function initVoting(meetingId) {
+        const agendaRef = ref(db, `meetings/${meetingId}/agenda`);
+        const snapshot = await get(agendaRef);
+        
+        if (!snapshot.exists()) {
+            document.getElementById('cardsContainer').innerHTML = '<h2>Встреча не найдена</h2>';
+            return;
+        }
+
+        const agendaData = snapshot.val();
+        const container = document.getElementById('cardsContainer');
+        const myVotes = JSON.parse(localStorage.getItem(`votes_${meetingId}`)) || {};
+
         agendaData.forEach(item => {
+            // Определяем, что показывать в шапке (Иконку или Картинку)
+            let visualHeaderContent = `<i class="topic-icon fa-solid ${item.icon}"></i>`;
+            if (item.customUrl) {
+                visualHeaderContent = `<img src="${item.customUrl}" class="custom-img-icon" alt="icon">`;
+            }
+
             const isVoted = myVotes[item.id] ? 'voted' : '';
             const btnText = myVotes[item.id] ? 'Голос отдан' : 'Голосовать';
-            const thumbIcon = myVotes[item.id] ? 'fa-solid fa-check' : 'fa-regular fa-thumbs-up';
-            const iconHtml = item.customIconHtml ? item.customIconHtml : `<i class="topic-icon ${item.icon}"></i>`;
+            const iconClass = myVotes[item.id] ? 'fa-solid fa-check' : 'fa-regular fa-thumbs-up';
 
-            const cardHTML = `
-                <div class="card-wrapper" id="card-${item.id}" onclick="this.classList.toggle('flipped')">
-                    <div class="card-flipper">
-                        <div class="card-front">
-                            <div class="card-visual-header" style="background: ${item.color}">
-                                <button class="complete-btn" id="complete-${item.id}" title="Завершить вопрос">
-                                    <i class="fa-solid fa-check"></i>
-                                </button>
-                                <div class="topic-icon-container">
-                                    ${iconHtml}
-                                </div>
-                                <h2 class="card-title">${item.title}</h2>
-                                <span class="card-time-badge">${item.time}</span>
-                            </div>
-                            <div class="card-body-front">
-                                <div class="click-hint">
-                                    <i class="fa-solid fa-rotate"></i> Нажми, чтобы перевернуть
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <button class="vote-btn ${isVoted}" id="btn-${item.id}">
-                                    <i class="${thumbIcon}" id="icon-${item.id}"></i>
-                                    <span id="text-${item.id}">${btnText}</span>
-                                    <span class="vote-count-badge" id="count-${item.id}">0</span>
-                                </button>
-                            </div>
+            const html = `
+             <div class="card-wrapper" id="card-${item.id}" onclick="this.classList.toggle('flipped')">
+                <div class="card-flipper">
+                    <div class="card-front">
+                        <div class="card-visual-header" style="background: ${item.color}">
+                            ${visualHeaderContent}
+                            <h2 class="card-title">${item.title}</h2>
+                            <span class="card-time">${item.time}</span>
                         </div>
-                        <div class="card-back">
-                            <div class="card-back-header">
-                                <h2 style="color: ${item.color}">${item.title}</h2>
-                            </div>
-                            <div class="card-back-content">
-                                <h3>Описание</h3>
-                                <p>${item.desc}</p>
-                                <h3>Ожидания</h3>
-                                <div>${item.expect}</div>
-                            </div>
+                        <div class="card-body">
+                             <div style="text-align:center; color:#cbd5e1; font-size:13px; margin-top:50px;">
+                                <i class="fa-solid fa-rotate"></i> Нажми, чтобы перевернуть
+                             </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="vote-btn ${isVoted}" id="btn-${item.id}">
+                                <i class="${iconClass}" id="icon-${item.id}"></i>
+                                <span id="text-${item.id}">${btnText}</span>
+                                <span class="vote-count-badge" id="count-${item.id}">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-body" style="border-top: 8px solid ${item.color}">
+                            <h3 style="color:${item.color}">ОПИСАНИЕ</h3>
+                            <p>${(item.desc || '').replace(/\n/g, '<br>')}</p>
+                            
+                            <h3 style="color:${item.color}; margin-top:20px;">ОЖИДАНИЯ</h3>
+                            <p>${(item.expect || '').replace(/\n/g, '<br>')}</p>
                         </div>
                     </div>
                 </div>
+             </div>
             `;
-            container.insertAdjacentHTML('beforeend', cardHTML);
+            container.insertAdjacentHTML('beforeend', html);
 
+            // Logic
             setTimeout(() => {
                 document.getElementById(`btn-${item.id}`).addEventListener('click', (e) => {
                     e.stopPropagation();
-                    toggleVote(item.id);
+                    toggleVote(item.id, meetingId);
                 });
-                document.getElementById(`complete-${item.id}`).addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openDeleteModal(item.id, item.title);
-                });
-            }, 0);
+            },0);
         });
+
+        // Live Data
+        onValue(ref(db, `meetings/${meetingId}/votes`), (snap) => {
+            const votes = snap.val() || {};
+            agendaData.forEach(item => {
+                const count = votes[item.id] || 0;
+                document.getElementById(`count-${item.id}`).innerText = count;
+            });
+        });
+
+        // Reset
+        document.getElementById('resetBtn').addEventListener('click', () => {
+             if(confirm("Сбросить голоса?")) { 
+                 set(ref(db, `meetings/${meetingId}/votes`), {}); 
+                 localStorage.removeItem(`votes_${meetingId}`); 
+                 location.reload(); 
+             }
+        });
+        window.shareLink = () => { navigator.clipboard.writeText(window.location.href); alert("Ссылка скопирована!"); };
     }
 
-    renderCards();
+    function toggleVote(itemId, mId) {
+        const myVotes = JSON.parse(localStorage.getItem(`votes_${mId}`)) || {};
+        const itemRef = ref(db, `meetings/${mId}/votes/${itemId}`);
+        const btn = document.getElementById(`btn-${itemId}`);
+        const icon = document.getElementById(`icon-${itemId}`);
+        const text = document.getElementById(`text-${itemId}`);
 
-    const dbRef = ref(db);
-    onValue(dbRef, (snapshot) => {
-        const data = snapshot.val() || {};
-        const votes = data.votes || {};
-        const hidden = data.hidden || {};
-        
-        statusEl.innerHTML = '<i class="fa-solid fa-wifi"></i> Онлайн';
-        statusEl.style.background = "#e8f5e9"; statusEl.style.color = "#66bb6a";
-        
-        let maxVotes = -1;
-        
-        // 1. Скрываем карты
-        agendaData.forEach(item => {
-            const card = document.getElementById(`card-${item.id}`);
-            const isHidden = hidden[item.id] === true;
-            
-            if (isHidden) {
-                card.classList.add('hidden-card');
-            } else {
-                card.classList.remove('hidden-card');
-                const count = votes[item.id] || 0;
-                if (count > maxVotes) maxVotes = count;
-            }
-        });
-
-        // 2. Обновляем счетчики
-        agendaData.forEach(item => {
-            const isHidden = hidden[item.id] === true;
-            if (isHidden) return;
-
-            const count = votes[item.id] || 0;
-            const badge = document.getElementById(`count-${item.id}`);
-            const completeBtn = document.getElementById(`complete-${item.id}`);
-            
-            if(badge && badge.innerText != count) {
-                badge.innerText = count;
-                badge.style.transform = "scale(1.3)";
-                setTimeout(() => badge.style.transform = "scale(1)", 200);
-            }
-
-            if (maxVotes > 0 && count === maxVotes) {
-                completeBtn.style.display = 'flex';
-            } else {
-                completeBtn.style.display = 'none';
-            }
-        });
-
-    }, (error) => {
-        statusEl.innerHTML = 'Ошибка сети';
-        statusEl.style.background = "#fee2e2"; statusEl.style.color = "#ef5350";
-    });
-
-    // --- ОБНОВЛЕННАЯ ФУНКЦИЯ ГОЛОСОВАНИЯ (БЕЗ УХОДА В МИНУС) ---
-    function toggleVote(id) {
-        const itemRef = ref(db, `votes/${id}`);
-        const btn = document.getElementById(`btn-${id}`);
-        const icon = document.getElementById(`icon-${id}`);
-        const text = document.getElementById(`text-${id}`);
-
-        if (myVotes[id]) {
-            // СНИМАЕМ ГОЛОС (Безопасно)
-            runTransaction(itemRef, (currentVote) => {
-                const val = currentVote || 0;
-                return val > 0 ? val - 1 : 0;
-            });
-
-            delete myVotes[id];
-            localStorage.setItem('my_votes_v7_final', JSON.stringify(myVotes));
-
+        if (myVotes[itemId]) {
+            runTransaction(itemRef, (c) => (c || 0) > 0 ? c - 1 : 0);
+            delete myVotes[itemId];
             btn.classList.remove('voted');
             icon.className = 'fa-regular fa-thumbs-up';
             text.innerText = 'Голосовать';
         } else {
-            // ДОБАВЛЯЕМ ГОЛОС
-            runTransaction(itemRef, (currentVote) => {
-                const val = currentVote || 0;
-                return val + 1;
-            });
-
-            myVotes[id] = true;
-            localStorage.setItem('my_votes_v7_final', JSON.stringify(myVotes));
-
+            runTransaction(itemRef, (c) => (c || 0) + 1);
+            myVotes[itemId] = true;
             btn.classList.add('voted');
             icon.className = 'fa-solid fa-check';
             text.innerText = 'Голос отдан';
         }
+        localStorage.setItem(`votes_${mId}`, JSON.stringify(myVotes));
     }
-
-    function hideCard(id) {
-        set(ref(db, `hidden/${id}`), true);
-    }
-
-    document.getElementById('resetBtn').addEventListener('click', () => {
-        if(confirm("Сбросить голоса?")) {
-            set(ref(db, 'votes'), {});
-            localStorage.removeItem('my_votes_v7_final');
-            location.reload(); 
-        }
-    });
-
-    document.getElementById('showAllBtn').addEventListener('click', () => {
-        if(confirm("Вернуть завершенные вопросы?")) {
-            set(ref(db, 'hidden'), null);
-        }
-    });
 
 </script>
-
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
