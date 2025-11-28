@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cru Agenda</title>
+    <title>Cru Agenda Tool</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
+            /* CRU BRAND PALETTE */
             --cru-gold: #f9b625;
             --cru-gold-hover: #dca01e;
             --cru-charcoal: #212121;
@@ -86,7 +87,35 @@
         input:focus, textarea:focus { border-color: var(--cru-gold); background: #fff; outline: none; }
         textarea { min-height: 80px; resize: vertical; }
 
-        .preview-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; max-height: 260px; overflow-y:auto; }
+        /* ICON SELECTION GRID */
+        .icon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); 
+            gap: 8px; 
+            max-height: 200px; 
+            overflow-y: auto;
+            padding-right: 5px;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: #ddd #f0f0f0;
+        }
+        .icon-grid::-webkit-scrollbar { width: 6px; }
+        .icon-grid::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 10px; }
+
+        .icon-opt { 
+            height: 45px; display: flex; align-items: center; justify-content: center; 
+            border: 1px solid #eee; cursor: pointer; color: #999; border-radius: 4px;
+            font-size: 18px; transition: 0.2s;
+        }
+        .icon-opt:hover { background: #f9f9f9; color: var(--cru-charcoal); border-color: #ccc; }
+        .icon-opt.selected { 
+            background: var(--cru-charcoal); 
+            color: var(--cru-gold); 
+            border-color: var(--cru-charcoal); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .preview-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; max-height: 400px; overflow-y:auto; }
         .preview-item {
             display: flex; align-items: center; justify-content: space-between;
             padding: 12px 15px; background: #fafafa; border-radius: 4px; border-left: 3px solid var(--cru-charcoal);
@@ -100,7 +129,7 @@
         .cards-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
         
         .card-wrapper {
-            flex: 1 1 300px; max-width: 350px; min-width: 280px; height: 540px; /* Еще чуть выше */
+            flex: 1 1 300px; max-width: 350px; min-width: 280px; height: 540px;
             perspective: 1000px; cursor: pointer;
             transition: all 0.5s ease;
         }
@@ -131,36 +160,18 @@
             content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--cru-gold);
         }
 
-        .topic-icon { font-size: 48px; margin-bottom: 15px; color: var(--cru-gold); }
-        .custom-img { 
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 15px;
-            filter: none;
-        }
+        .topic-icon { font-size: 64px; margin-bottom: 20px; color: var(--cru-gold); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
         
         .card-title { 
-            font-size: 24px; /* Крупно */
-            font-weight: 800; 
-            margin: 0; line-height: 1.2; 
-            text-transform: uppercase; 
+            font-size: 24px; font-weight: 800; margin: 0; line-height: 1.2; text-transform: uppercase; 
         }
         
-        /* ВРЕМЯ - Ярко и четко */
+        /* ВРЕМЯ */
         .card-time { 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center;
-            gap: 8px;
-            margin-top: 15px; 
-            font-size: 20px; /* Очень крупно */
-            font-weight: 800; 
-            color: var(--cru-gold); 
-            border: 2px solid var(--cru-gold); 
-            background: rgba(255,255,255,0.05);
-            padding: 8px 20px; 
-            border-radius: 50px;
-            letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 15px; font-size: 20px; font-weight: 800; color: var(--cru-gold); 
+            border: 2px solid var(--cru-gold); background: rgba(255,255,255,0.05);
+            padding: 8px 20px; border-radius: 50px; letter-spacing: 0.5px;
         }
 
         .card-body { flex-grow: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; }
@@ -228,56 +239,6 @@
         .btn-modal-confirm { flex: 1; background: var(--cru-charcoal); color: white; }
         .btn-modal-confirm:hover { background: #000; }
 
-        /* Icons Select Grid */
-        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 8px; }
-        .icon-opt { 
-            height: 40px; display: flex; align-items: center; justify-content: center; 
-            border: 1px solid #eee; cursor: pointer; color: #999; border-radius: 4px;
-        }
-        .icon-opt:hover, .icon-opt.selected { background: var(--cru-charcoal); color: var(--cru-gold); border-color: var(--cru-charcoal); }
-
-        /* IMAGE PRESETS GRID */
-        .img-preset-grid {
-            margin-top: 8px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 8px;
-        }
-
-        .img-preset {
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
-            background: #fafafa;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            transition: 0.2s;
-        }
-
-        .img-preset img {
-            width: 100%;
-            height: 50px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .img-preset-label {
-            font-size: 10px;
-            padding: 4px 6px;
-            text-align: center;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .img-preset:hover,
-        .img-preset.selected {
-            border-color: var(--cru-gold);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
     </style>
 </head>
 <body>
@@ -305,10 +266,8 @@
                 <input type="text" id="inpTime" placeholder="30 мин">
             </div>
             <div class="form-group">
-                <label>Иконка и рисунок</label>
-                <input type="text" id="inpImg" placeholder="Ссылка на картинку (URL) - опционально" style="margin-bottom:10px; font-size:12px;">
+                <label>Иконка темы</label>
                 <div class="icon-grid" id="iconGrid"></div>
-                <div class="img-preset-grid" id="imgPresetGrid"></div>
             </div>
             <div class="form-group">
                 <label>Описание (Лицевая сторона)</label>
@@ -379,20 +338,19 @@
     // State
     let localAgenda = [];
     let selectedIcon = "fa-comments";
-    const iconList = ["fa-comments", "fa-bullhorn", "fa-users", "fa-chart-pie", "fa-rocket", "fa-lightbulb", "fa-handshake", "fa-calendar-days", "fa-earth-americas"];
-
-    // ОБНОВЛЕННЫЙ НАБОР РИСУНКОВ (Контекст служения/Миссии)
-    const imagePresets = [
-        { label: "Обсуждение",   url: "https://images.pexels.com/photos/3277800/pexels-photo-3277800.jpeg" }, // Группа общается неформально
-        { label: "Команда",      url: "https://images.pexels.com/photos/461049/pexels-photo-461049.jpeg" },   // Живая группа людей
-        { label: "Молитва",      url: "https://images.pexels.com/photos/161276/prayer-faith-religion-christian-161276.jpeg" }, // Руки в молитве
-        { label: "Партнерство",  url: "https://images.pexels.com/photos/460736/pexels-photo-460736.jpeg" },   // Рукопожатие/деревья
-        { label: "Финансы",      url: "https://images.pexels.com/photos/128867/coins-currency-investment-insurance-128867.jpeg" }, // Росток/монеты
-        { label: "Планирование", url: "https://images.pexels.com/photos/210660/pexels-photo-210660.jpeg" },   // Блокнот/записи
-        { label: "Лидерство",    url: "https://images.pexels.com/photos/552785/pexels-photo-552785.jpeg" },   // Компас (символ направления)
-    ];
-    let selectedPresetIndex = null;
     
+    // БОЛЬШОЙ СПИСОК ИКОНОК (Служение, Лидерство, Планирование)
+    const iconList = [
+        "fa-comments", "fa-bullhorn", "fa-users", "fa-user-group", 
+        "fa-chart-pie", "fa-chart-line", "fa-bullseye", "fa-compass",
+        "fa-rocket", "fa-lightbulb", "fa-handshake", "fa-hands-holding-circle",
+        "fa-calendar-days", "fa-clock", "fa-list-check",
+        "fa-earth-americas", "fa-location-dot", "fa-plane",
+        "fa-book-bible", "fa-cross", "fa-heart", "fa-dove",
+        "fa-hand-holding-dollar", "fa-coins", "fa-piggy-bank",
+        "fa-shield-halved", "fa-key", "fa-building", "fa-star"
+    ];
+
     // Routing
     const params = new URLSearchParams(window.location.search);
     const mId = params.get('id');
@@ -409,7 +367,6 @@
 
     // --- CREATOR LOGIC ---
     function initCreator() {
-        // Иконки
         const grid = document.getElementById('iconGrid');
         iconList.forEach(icon => {
             const el = document.createElement('div');
@@ -421,26 +378,6 @@
                 selectedIcon = icon;
             };
             grid.appendChild(el);
-        });
-
-        // Галерея рисунков
-        const imgGrid = document.getElementById('imgPresetGrid');
-        const imgInput = document.getElementById('inpImg');
-
-        imagePresets.forEach((preset, index) => {
-            const wrap = document.createElement('div');
-            wrap.className = 'img-preset';
-            wrap.innerHTML = `
-                <img src="${preset.url}" alt="${preset.label}">
-                <div class="img-preset-label">${preset.label}</div>
-            `;
-            wrap.onclick = () => {
-                document.querySelectorAll('.img-preset').forEach(el => el.classList.remove('selected'));
-                wrap.classList.add('selected');
-                selectedPresetIndex = index;
-                imgInput.value = preset.url;
-            };
-            imgGrid.appendChild(wrap);
         });
     }
 
@@ -454,13 +391,13 @@
             time: document.getElementById('inpTime').value || "15 мин",
             desc: document.getElementById('inpDesc').value,
             expect: document.getElementById('inpExpect').value,
-            icon: selectedIcon,
-            img: document.getElementById('inpImg').value.trim()
+            icon: selectedIcon
         });
         
         document.getElementById('inpTitle').value = "";
         document.getElementById('inpDesc').value = "";
         document.getElementById('inpExpect').value = "";
+        
         renderPreview();
     };
 
@@ -472,7 +409,13 @@
             const div = document.createElement('div');
             div.className = 'preview-item';
             div.innerHTML = `
-                <div><span class="preview-title">${item.title}</span> <span class="preview-time">${item.time}</span></div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid ${item.icon}" style="color:#f9b625"></i>
+                    <div>
+                        <span class="preview-title">${item.title}</span> 
+                        <span class="preview-time">${item.time}</span>
+                    </div>
+                </div>
                 <i class="fa-solid fa-trash del-icon" onclick="removeCard(${idx})"></i>
             `;
             list.appendChild(div);
@@ -507,8 +450,7 @@
 
         data.forEach(item => {
             let iconHtml = `<i class="topic-icon fa-solid ${item.icon}"></i>`;
-            if (item.img) iconHtml = `<img src="${item.img}" class="custom-img">`;
-
+            
             const btnClass = myVotes[item.id] ? 'vote-btn voted' : 'vote-btn';
             const btnIcon = myVotes[item.id] ? 'fa-solid fa-check' : 'fa-regular fa-thumbs-up';
             const btnText = myVotes[item.id] ? 'ГОЛОС ОТДАН' : 'ГОЛОСОВАТЬ';
