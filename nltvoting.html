@@ -3,306 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cru Agenda Builder</title>
+    <title>Cru Agenda</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* CRU COLOR PALETTE */
+            /* CRU BRAND PALETTE */
             --cru-gold: #f9b625;
-            --cru-gold-hover: #e5a00d;
-            --cru-dark: #212121; /* Almost black */
-            --cru-gray: #f4f4f4; /* Background */
-            --cru-blue: #007398;
-            --text-main: #3b3b3b;
-            --text-light: #6e6e6e;
+            --cru-gold-hover: #dca01e;
+            --cru-charcoal: #212121;
+            --cru-gray-bg: #f7f7f7;
+            --text-main: #333333;
+            --text-light: #777777;
             --white: #ffffff;
-            --border-radius: 8px; /* Cru uses slightly squarer corners usually */
+            
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            --radius: 8px;
         }
 
         body {
             font-family: 'Open Sans', sans-serif;
-            background-color: var(--cru-gray);
+            background-color: var(--cru-gray-bg);
             margin: 0;
             padding: 20px;
             color: var(--text-main);
-            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, .card-title, .preview-title, label {
+        h1, h2, h3, button, input, label, .card-title {
             font-family: 'Montserrat', sans-serif;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; }
+        .container { max-width: 1150px; margin: 0 auto; }
         .hidden { display: none !important; }
 
-        /* --- DASHBOARD STYLES (Modern & Clean) --- */
-        .header-logo {
-            text-align: center; margin-bottom: 40px;
-        }
-        .header-logo h1 {
-            font-weight: 800; font-size: 28px; color: var(--cru-dark); text-transform: uppercase; letter-spacing: 1px;
-            display: inline-block; border-bottom: 4px solid var(--cru-gold); padding-bottom: 5px;
-        }
-
-        .dashboard-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; }
-        @media(max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
+        /* --- UI COMPONENTS --- */
         
+        /* 1. HEADER */
+        .app-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; margin-bottom: 40px; flex-wrap: wrap; gap: 20px;
+        }
+        
+        .logo {
+            font-weight: 800; font-size: 24px; color: var(--cru-charcoal);
+            text-transform: uppercase; letter-spacing: 1px; border-bottom: 3px solid var(--cru-gold);
+            padding-bottom: 5px;
+        }
+
+        .controls { display: flex; gap: 12px; }
+
+        .btn {
+            border: none; padding: 10px 20px; border-radius: 4px; 
+            font-weight: 700; font-size: 13px; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        
+        .btn-gold { background: var(--cru-gold); color: var(--cru-charcoal); }
+        .btn-gold:hover { background: var(--cru-gold-hover); transform: translateY(-1px); }
+        
+        .btn-outline { background: transparent; border: 2px solid #ddd; color: var(--text-light); }
+        .btn-outline:hover { border-color: var(--cru-charcoal); color: var(--cru-charcoal); background: white;}
+
+        .btn-danger-ghost { background: #fff0f0; color: #d32f2f; }
+        .btn-danger-ghost:hover { background: #ffebee; }
+
+        /* 2. CREATOR DASHBOARD */
+        .dashboard-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        @media(max-width: 800px) { .dashboard-layout { grid-template-columns: 1fr; } }
+
         .panel {
-            background: var(--white); border-radius: var(--border-radius); 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05); padding: 35px;
-            border: 1px solid #eee;
+            background: var(--white); padding: 35px; border-radius: var(--radius);
+            box-shadow: var(--card-shadow); border-top: 4px solid var(--cru-gold);
         }
 
-        h2 { 
-            font-size: 20px; color: var(--cru-dark); margin-top: 0; margin-bottom: 25px; 
-            font-weight: 700; display: flex; align-items: center; gap: 10px;
-        }
+        .panel h2 { margin-top: 0; font-size: 18px; color: var(--cru-charcoal); margin-bottom: 25px; }
 
-        /* FORM STYLES */
         .form-group { margin-bottom: 20px; }
-        label { display: block; font-size: 12px; font-weight: 700; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        label { display: block; font-size: 11px; font-weight: 700; color: #999; margin-bottom: 8px; text-transform: uppercase; }
         
         input, textarea {
-            width: 100%; padding: 12px 15px; 
-            border: 1px solid #ddd; background: #fafafa;
-            border-radius: 4px; font-family: inherit; font-size: 15px; 
-            transition: 0.3s; box-sizing: border-box; color: var(--cru-dark);
+            width: 100%; padding: 12px; border: 1px solid #e0e0e0; background: #fafafa;
+            border-radius: 4px; font-size: 14px; color: var(--text-main);
+            transition: 0.3s; box-sizing: border-box; font-family: 'Open Sans', sans-serif;
         }
-        input:focus, textarea:focus { 
-            border-color: var(--cru-gold); background: #fff; outline: none; 
-            box-shadow: 0 0 0 3px rgba(249, 182, 37, 0.2);
-        }
-        textarea { resize: vertical; min-height: 100px; }
+        input:focus, textarea:focus { border-color: var(--cru-gold); background: #fff; outline: none; }
+        textarea { min-height: 80px; resize: vertical; }
 
-        /* ICON GRID */
-        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 8px; margin-top: 10px; }
-        .icon-option {
-            height: 45px; display: flex; align-items: center; justify-content: center;
-            border: 1px solid #eee; border-radius: 4px; cursor: pointer;
-            font-size: 18px; color: var(--text-light); transition: 0.2s;
-        }
-        .icon-option:hover { background: #fff8e1; border-color: var(--cru-gold); color: var(--cru-dark); }
-        .icon-option.selected { background: var(--cru-gold); color: var(--cru-dark); border-color: var(--cru-gold); font-weight: bold; }
-
-        .url-input-toggle { font-size: 12px; color: var(--cru-blue); cursor: pointer; margin-top: 8px; font-weight: 600; }
-        .url-input-toggle:hover { text-decoration: underline; }
-
-        /* BUTTONS (Cru Style) */
-        .btn-primary {
-            width: 100%; background: var(--cru-gold); color: var(--cru-dark); border: none;
-            padding: 16px; border-radius: 4px; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: 0.2s; text-transform: uppercase; font-family: 'Montserrat', sans-serif;
-        }
-        .btn-primary:hover { background: var(--cru-gold-hover); transform: translateY(-1px); }
-
-        .btn-secondary {
-            width: 100%; background: var(--cru-dark); color: white; border: none;
-            padding: 16px; border-radius: 4px; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;
-            cursor: pointer; transition: 0.2s; text-transform: uppercase; font-family: 'Montserrat', sans-serif;
-        }
-        .btn-secondary:hover { background: #333; }
-
-        /* LIST PREVIEW */
         .preview-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         .preview-item {
-            display: flex; align-items: center; gap: 15px; padding: 12px 15px;
-            background: #fff; border-left: 4px solid var(--cru-gold); 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-radius: 0 4px 4px 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 15px; background: #fafafa; border-radius: 4px; border-left: 3px solid var(--cru-charcoal);
         }
-        .preview-title { font-weight: 700; color: var(--cru-dark); font-size: 14px; }
-        .preview-time { font-size: 11px; color: #888; text-transform: uppercase; margin-top: 2px;}
-        .btn-delete { color: #ccc; background: none; border: none; cursor: pointer; font-size: 16px; padding: 5px; margin-left: auto; transition: 0.2s;}
-        .btn-delete:hover { color: #d32f2f; }
+        .preview-title { font-weight: 700; font-size: 14px; }
+        .preview-time { font-size: 12px; color: #888; margin-left: 10px; }
+        .del-icon { cursor: pointer; color: #ccc; transition: 0.2s; }
+        .del-icon:hover { color: #d32f2f; }
 
-        .create-section { margin-top: 30px; text-align: center; border-top: 1px solid #eee; padding-top: 30px;}
-        .slug-input { 
-            font-size: 18px; font-weight: bold; text-align: center; max-width: 100%; margin-bottom: 20px; 
-            border: 2px solid var(--cru-gold); background: #fffcf5;
-        }
-
-        /* --- VOTING VIEW --- */
-        .voting-header {
-            background: var(--white); padding: 15px 30px; border-radius: var(--border-radius); 
-            margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--cru-gold);
-        }
-        .meeting-title { font-weight: 800; font-size: 20px; color: var(--cru-dark); text-transform: uppercase; }
+        /* 3. CARDS (VOTING) */
+        .cards-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
         
-        .header-btn { 
-            border: 1px solid #ddd; background: white; color: var(--text-main);
-            padding: 8px 18px; border-radius: 4px; font-weight: 600; cursor: pointer; 
-            margin-left: 10px; transition: 0.2s; font-size: 13px;
+        .card-wrapper {
+            flex: 1 1 300px; max-width: 350px; min-width: 280px; height: 480px;
+            perspective: 1000px; cursor: pointer;
+            transition: all 0.5s ease;
         }
-        .header-btn:hover { background: #f4f4f4; border-color: #ccc; }
-        .header-btn.danger { color: #d32f2f; border-color: #ffcdd2; background: #fffaf0; }
-        .header-btn.danger:hover { background: #ffebee; }
+        /* Анимация скрытия */
+        .card-wrapper.hidden-card { 
+            transform: scale(0.9); opacity: 0; pointer-events: none; height: 0; margin: 0; overflow: hidden; 
+        }
 
-        .cards-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
-
-        /* --- CARD DESIGN (PREMIUM) --- */
-        .card-wrapper { flex: 1 1 300px; max-width: 360px; min-width: 280px; height: 500px; perspective: 1000px; cursor: pointer; }
-        .card-wrapper.hidden-card { display: none; }
-        
-        .card-flipper { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); transform-style: preserve-3d; border-radius: var(--border-radius); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .card-flipper {
+            position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-style: preserve-3d; border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+        }
         .card-wrapper.flipped .card-flipper { transform: rotateY(180deg); }
 
-        .card-front, .card-back { 
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-            border-radius: var(--border-radius); background: white; display: flex; flex-direction: column; overflow: hidden; 
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: var(--radius); background: white; display: flex; flex-direction: column; overflow: hidden;
         }
         .card-back { transform: rotateY(180deg); background: #fff; border: 1px solid #eee; }
 
-        .card-visual-header { 
-            padding: 40px 25px; text-align: center; color: white; flex-shrink: 0; position: relative; 
-            /* Subtle texture overlay */
-            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+        /* HEADER CARD STYLE (Dark Charcoal + Gold) */
+        .card-header-visual {
+            background-color: var(--cru-charcoal);
+            padding: 30px 20px; text-align: center; color: white;
+            position: relative; flex-shrink: 0;
         }
+        .card-header-visual::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--cru-gold);
+        }
+
+        .topic-icon { font-size: 48px; margin-bottom: 15px; color: var(--cru-gold); }
+        .custom-img { height: 50px; object-fit: contain; margin-bottom: 15px; filter: brightness(0) invert(1); } /* Make white */
         
-        .topic-icon { font-size: 54px; margin-bottom: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-        .custom-img-icon { height: 60px; width: auto; object-fit: contain; margin-bottom: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-        
-        .card-title { font-size: 22px; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .card-title { font-size: 20px; font-weight: 700; margin: 0; line-height: 1.3; text-transform: uppercase; }
         .card-time { 
-            background: rgba(33,33,33, 0.7); color: var(--cru-gold);
-            padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; 
-            display: inline-block; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;
+            display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 700; 
+            letter-spacing: 1px; color: #999; border: 1px solid #555; padding: 4px 10px; border-radius: 20px;
         }
 
-        .card-body { flex-grow: 1; padding: 30px; overflow-y: auto; }
-        .click-hint { 
-            text-align: center; color: #ccc; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: auto; padding-bottom: 10px; font-weight: 600;
-        }
-        
-        .card-footer { padding: 25px; display: flex; justify-content: center; border-top: 1px solid #f9f9f9; background: #fff; }
+        .card-body { flex-grow: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .hint-text { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-top: auto; padding-top: 10px;}
 
-        /* VOTE BUTTON */
-        .vote-btn { 
-            background: white; border: 2px solid #eee; color: var(--text-light); 
+        .card-footer { padding: 25px; display: flex; justify-content: center; border-top: 1px solid #f5f5f5; }
+
+        /* VOTE BUTTON STYLE */
+        .vote-btn {
+            background: white; border: 2px solid #eee; color: #999;
             padding: 12px 30px; border-radius: 50px; font-weight: 700; font-size: 14px;
             cursor: pointer; display: flex; gap: 10px; align-items: center; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 0.5px;
+            font-family: 'Montserrat', sans-serif;
         }
-        .vote-btn:hover { border-color: var(--cru-gold); color: var(--cru-dark); }
+        .vote-btn:hover { border-color: var(--cru-charcoal); color: var(--cru-charcoal); }
         
-        .vote-btn.voted { 
-            background: var(--cru-gold); border-color: var(--cru-gold); color: var(--cru-dark); 
-            box-shadow: 0 5px 15px rgba(249, 182, 37, 0.4);
+        .vote-btn.voted {
+            background: var(--cru-gold); border-color: var(--cru-gold); color: var(--cru-charcoal);
+            box-shadow: 0 4px 15px rgba(249, 182, 37, 0.3);
         }
-        .vote-count-badge { background: rgba(0,0,0,0.1); color: inherit; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 800;}
+        .vote-count { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 10px; font-size: 12px; }
 
-        /* BACK SIDE TEXT */
-        .card-back-header {
-            padding: 20px 30px; border-bottom: 1px solid #eee;
+        /* COMPLETE CHECKMARK (The requested feature) */
+        .leader-badge {
+            position: absolute; top: 15px; right: 15px;
+            width: 36px; height: 36px; background: var(--cru-gold); color: var(--cru-charcoal);
+            border-radius: 50%; display: none; /* Hidden by default */
+            align-items: center; justify-content: center; font-size: 18px;
+            cursor: pointer; z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
         }
-        .card-back-header h2 { margin: 0; font-size: 18px; color: var(--cru-dark); }
+        .leader-badge:hover { transform: scale(1.15); background: white; }
 
-        .card-back h3 { 
-            color: var(--cru-gold); font-size: 12px; font-weight: 800; letter-spacing: 1px; 
-            text-transform: uppercase; margin-bottom: 10px; margin-top: 0;
+        /* BACK SIDE */
+        .card-back-content { padding: 30px; text-align: left; }
+        .section-label { 
+            color: var(--cru-gold); font-size: 11px; font-weight: 800; letter-spacing: 1px; 
+            text-transform: uppercase; margin-bottom: 8px; display: block; 
         }
-        .card-back p { font-size: 15px; color: var(--text-main); margin-bottom: 25px; font-weight: 400; }
-        .card-back ul { padding-left: 20px; margin-bottom: 20px; }
-        .card-back li { margin-bottom: 8px; font-size: 14px; }
+        .text-block { font-size: 14px; line-height: 1.6; margin-bottom: 25px; color: #444; }
 
-        /* CHECKMARK OVERLAY */
-        .complete-btn {
-            position: absolute; top: 15px; right: 15px; width: 40px; height: 40px;
-            background: var(--white); color: #27ae60; border-radius: 50%; border: none;
-            font-size: 20px; cursor: pointer; display: none; align-items: center; justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 10;
+        /* --- MODAL (Beautiful Overlay) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(33, 33, 33, 0.6); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000;
         }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-box {
+            background: white; width: 90%; max-width: 400px; padding: 40px;
+            border-radius: 8px; text-align: center; transform: translateY(20px);
+            transition: 0.3s; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-top: 5px solid var(--cru-gold);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+
+        .modal-icon-lg { font-size: 50px; color: var(--cru-gold); margin-bottom: 20px; }
+        .modal-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: var(--cru-charcoal); }
+        .modal-desc { font-size: 15px; color: #666; margin-bottom: 30px; }
+        
+        .modal-actions { display: flex; gap: 15px; }
+        .btn-modal-cancel { flex: 1; background: #f0f0f0; color: #333; }
+        .btn-modal-confirm { flex: 1; background: var(--cru-charcoal); color: white; }
+        .btn-modal-confirm:hover { background: #000; }
+
+        /* Icons Select Grid */
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 8px; }
+        .icon-opt { 
+            height: 40px; display: flex; align-items: center; justify-content: center; 
+            border: 1px solid #eee; cursor: pointer; color: #999; border-radius: 4px;
+        }
+        .icon-opt:hover, .icon-opt.selected { background: var(--cru-charcoal); color: var(--cru-gold); border-color: var(--cru-charcoal); }
 
     </style>
 </head>
 <body>
 
-<div id="creatorView" class="container">
-    <div class="header-logo">
-        <h1>Agenda Builder</h1>
+<div class="container app-header">
+    <div class="logo">Cru Agenda</div>
+    <div id="creatorControls" class="controls">
+        </div>
+    <div id="votingControls" class="controls hidden">
+        <button class="btn btn-gold" onclick="shareLink()"><i class="fa-solid fa-link"></i> Ссылка</button>
+        <button class="btn btn-outline" id="showAllBtn"><i class="fa-solid fa-box-archive"></i> Архив вопросов</button>
+        <button class="btn btn-danger-ghost" id="resetBtn"><i class="fa-solid fa-rotate-right"></i> Сброс</button>
     </div>
-    
-    <div class="dashboard-grid">
-        
-        <div class="panel">
-            <h2><i class="fa-solid fa-pen-to-square" style="color:var(--cru-gold)"></i> Новая карточка</h2>
-            
-            <div class="form-group">
-                <label>Название вопроса</label>
-                <input type="text" id="inpTitle" placeholder="Пример: Стратегия 2025">
-            </div>
+</div>
 
+<div id="creatorView" class="container">
+    <div class="dashboard-layout">
+        <div class="panel">
+            <h2><i class="fa-solid fa-pen"></i> Создание вопроса</h2>
+            <div class="form-group">
+                <label>Заголовок</label>
+                <input type="text" id="inpTitle" placeholder="Название темы...">
+            </div>
             <div class="form-group">
                 <label>Время</label>
-                <input type="text" id="inpTime" placeholder="Пример: 30 мин">
+                <input type="text" id="inpTime" placeholder="30 мин">
             </div>
-
             <div class="form-group">
                 <label>Иконка</label>
-                <input type="text" id="inpImgUrl" placeholder="Ссылка на картинку (https://...)" style="display:none; margin-bottom:10px;">
-                <div class="icon-grid" id="iconSelector"></div>
-                <div class="url-input-toggle" onclick="toggleUrlInput()">Использовать свою картинку (URL)</div>
+                <input type="text" id="inpImg" placeholder="Ссылка на картинку (URL) - опционально" style="margin-bottom:10px; font-size:12px;">
+                <div class="icon-grid" id="iconGrid"></div>
             </div>
-
             <div class="form-group">
-                <label>Описание (Контекст)</label>
-                <textarea id="inpDesc" placeholder="О чем пойдет речь?"></textarea>
+                <label>Описание (Лицевая сторона)</label>
+                <textarea id="inpDesc" placeholder="Краткая суть..."></textarea>
             </div>
-
             <div class="form-group">
-                <label>Ожидаемый результат</label>
-                <textarea id="inpExpect" placeholder="Какое решение нужно принять?"></textarea>
+                <label>Ожидания (Оборотная сторона)</label>
+                <textarea id="inpExpect" placeholder="Результат обсуждения..."></textarea>
             </div>
-
-            <button class="btn-primary" onclick="addCardToList()">
-                <i class="fa-solid fa-plus"></i> Добавить вопрос
+            <button class="btn btn-gold" style="width:100%; justify-content:center;" onclick="addCard()">
+                <i class="fa-solid fa-plus"></i> Добавить
             </button>
         </div>
 
         <div class="panel">
-            <h2><i class="fa-solid fa-list-ul" style="color:var(--cru-gold)"></i> Список вопросов (<span id="countDisplay">0</span>)</h2>
-            <div id="previewList" class="preview-list">
-                <div style="text-align:center; color:#ccc; padding:40px 0; font-size: 14px;">
-                    <i class="fa-regular fa-folder-open" style="font-size:30px; display:block; margin-bottom:10px;"></i>
-                    Список пуст
-                </div>
-            </div>
-
-            <div class="create-section">
-                <label>ID Встречи (ссылка)</label>
-                <input type="text" id="meetingSlug" class="slug-input" placeholder="team-meeting-name">
-                <button class="btn-secondary" onclick="publishMeeting()">Создать встречу</button>
+            <h2>Список (<span id="countDisplay">0</span>)</h2>
+            <div id="previewList" class="preview-list"></div>
+            
+            <div style="margin-top: 40px; text-align: center; border-top: 1px solid #eee; padding-top: 30px;">
+                <label>ID Встречи (для ссылки)</label>
+                <input type="text" id="slugInput" style="text-align:center; font-weight:bold; letter-spacing:1px; margin-bottom:15px;" placeholder="team-meeting">
+                <button class="btn btn-secondary" style="width:100%; justify-content:center;" onclick="publish()">
+                    Создать встречу
+                </button>
             </div>
         </div>
-
     </div>
 </div>
 
 <div id="votingView" class="container hidden">
-    <div class="voting-header">
-        <div class="meeting-title">
-            <span style="color:var(--cru-gold); margin-right:5px;">///</span> 
-            <span id="meetingTitleDisplay">Meeting</span>
+    <h2 style="text-align:center; margin-bottom:30px; color:#999; text-transform:uppercase; letter-spacing:2px; font-size:14px;">
+        <span id="viewTitle">ID</span>
+    </h2>
+    <div class="cards-grid" id="cardsGrid">
         </div>
-        <div>
-            <button class="header-btn" onclick="shareLink()"><i class="fa-solid fa-link"></i> Ссылка</button>
-            <button class="header-btn" id="showAllBtn"><i class="fa-solid fa-eye"></i> Архив</button>
-            <button class="header-btn danger" id="resetBtn"><i class="fa-solid fa-rotate-right"></i> Сброс</button>
+</div>
+
+<div class="modal-overlay" id="finishModal">
+    <div class="modal-box">
+        <i class="fa-solid fa-circle-check modal-icon-lg"></i>
+        <div class="modal-title">Завершить обсуждение?</div>
+        <div class="modal-desc">Вопрос "<span id="modalTopicName" style="font-weight:bold"></span>" будет скрыт из общего списка.</div>
+        <div class="modal-actions">
+            <button class="btn btn-modal-cancel" onclick="closeModal()">Отмена</button>
+            <button class="btn btn-modal-confirm" onclick="confirmFinish()">Завершить</button>
         </div>
     </div>
-    <div class="cards-container" id="cardsContainer"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getDatabase, ref, onValue, runTransaction, set, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-    // -----------------------------------------------------------
-    // КОНФИГУРАЦИЯ FIREBASE
-    // -----------------------------------------------------------
+    // --- CONFIG ---
     const firebaseConfig = {
       apiKey: "AIzaSyBZuH0pKTmfLbyz9lg1g0cC5S4MM16XpMk",
       authDomain: "cru-moldova-ivan.firebaseapp.com",
@@ -313,294 +316,273 @@
       appId: "1:913901012780:web:aefc6983075e50e4000e89",
       measurementId: "G-2JYYSMTDER"
     };
-    // -----------------------------------------------------------
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // --- STATE ---
-    let tempAgenda = [];
+    // State
+    let localAgenda = [];
     let selectedIcon = "fa-comments";
+    const iconList = ["fa-comments", "fa-bullhorn", "fa-users", "fa-chart-pie", "fa-rocket", "fa-lightbulb", "fa-handshake", "fa-calendar-days", "fa-earth-americas"];
     
-    // Палитра Cru: спокойные, профессиональные цвета для шапок карточек
-    const palette = [
-        "#007398", // Cru Blue
-        "#212121", // Cru Dark
-        "#3B3B3B", // Dark Gray
-        "#546E7A", // Slate
-        "#00695C", // Deep Teal
-        "#AD1457", // Professional Berry (Accent)
-        "#455A64"  // Blue Grey
-    ];
-    
-    const icons = [
-        "fa-comments", "fa-bullhorn", "fa-users", "fa-chart-pie", "fa-rocket", 
-        "fa-hand-holding-dollar", "fa-earth-europe", "fa-lightbulb", "fa-handshake", 
-        "fa-calendar-days", "fa-star", "fa-heart", "fa-bolt", "fa-book"
-    ];
-
-    // --- ROUTING ---
-    const urlParams = new URLSearchParams(window.location.search);
-    const mId = urlParams.get('id');
+    // Routing
+    const params = new URLSearchParams(window.location.search);
+    const mId = params.get('id');
 
     if (mId) {
         document.getElementById('creatorView').classList.add('hidden');
         document.getElementById('votingView').classList.remove('hidden');
-        document.getElementById('meetingTitleDisplay').innerText = mId;
+        document.getElementById('votingControls').classList.remove('hidden');
+        document.getElementById('viewTitle').innerText = mId;
         initVoting(mId);
     } else {
-        initIconGrid();
+        initCreator();
     }
 
-    // --- CREATOR FUNCTIONS ---
-    function initIconGrid() {
-        const grid = document.getElementById('iconSelector');
-        grid.innerHTML = '';
-        icons.forEach(icon => {
-            const div = document.createElement('div');
-            div.className = `icon-option ${icon === selectedIcon ? 'selected' : ''}`;
-            div.innerHTML = `<i class="fa-solid ${icon}"></i>`;
-            div.onclick = () => selectIcon(div, icon);
-            grid.appendChild(div);
+    // --- CREATOR LOGIC ---
+    function initCreator() {
+        const grid = document.getElementById('iconGrid');
+        iconList.forEach(icon => {
+            const el = document.createElement('div');
+            el.className = `icon-opt ${icon === selectedIcon ? 'selected' : ''}`;
+            el.innerHTML = `<i class="fa-solid ${icon}"></i>`;
+            el.onclick = () => {
+                document.querySelectorAll('.icon-opt').forEach(i => i.classList.remove('selected'));
+                el.classList.add('selected');
+                selectedIcon = icon;
+            };
+            grid.appendChild(el);
         });
     }
 
-    window.selectIcon = (el, iconClass) => {
-        document.querySelectorAll('.icon-option').forEach(e => e.classList.remove('selected'));
-        el.classList.add('selected');
-        selectedIcon = iconClass;
-        document.getElementById('inpImgUrl').value = '';
-    }
-
-    window.toggleUrlInput = () => {
-        const input = document.getElementById('inpImgUrl');
-        input.style.display = input.style.display === 'none' ? 'block' : 'none';
-        if(input.style.display === 'block') input.focus();
-    }
-
-    window.addCardToList = () => {
+    window.addCard = () => {
         const title = document.getElementById('inpTitle').value;
-        const time = document.getElementById('inpTime').value;
-        const desc = document.getElementById('inpDesc').value;
-        const expect = document.getElementById('inpExpect').value;
-        const customUrl = document.getElementById('inpImgUrl').value;
-
-        if(!title) return alert("Введите название вопроса!");
-
-        tempAgenda.push({
+        if (!title) return alert("Введите название!");
+        
+        localAgenda.push({
             id: Date.now(),
             title,
-            time: time || "15 мин",
-            desc,
-            expect,
+            time: document.getElementById('inpTime').value || "15 мин",
+            desc: document.getElementById('inpDesc').value,
+            expect: document.getElementById('inpExpect').value,
             icon: selectedIcon,
-            customUrl: customUrl,
-            color: palette[tempAgenda.length % palette.length]
+            img: document.getElementById('inpImg').value
         });
-
-        // Reset inputs
+        
+        // Clear
         document.getElementById('inpTitle').value = "";
-        document.getElementById('inpTime').value = "";
         document.getElementById('inpDesc').value = "";
         document.getElementById('inpExpect').value = "";
-        document.getElementById('inpImgUrl').value = "";
-        
         renderPreview();
     };
 
     function renderPreview() {
         const list = document.getElementById('previewList');
-        document.getElementById('countDisplay').innerText = tempAgenda.length;
-        
-        if(tempAgenda.length === 0) {
-            list.innerHTML = '<div style="text-align:center; color:#999; padding:20px;">Список пуст</div>';
-            return;
-        }
-
+        document.getElementById('countDisplay').innerText = localAgenda.length;
         list.innerHTML = '';
-        tempAgenda.forEach((item, index) => {
+        localAgenda.forEach((item, idx) => {
             const div = document.createElement('div');
             div.className = 'preview-item';
-            
-            let iconDisplay = `<i class="fa-solid ${item.icon}"></i>`;
-            if(item.customUrl) iconDisplay = `<img src="${item.customUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-
             div.innerHTML = `
-                <div style="width:30px; text-align:center; color:${item.color}">${iconDisplay}</div>
-                <div style="flex-grow:1">
-                    <div class="preview-title">${item.title}</div>
-                    <div class="preview-time">${item.time}</div>
-                </div>
-                <button class="btn-delete" onclick="removeCard(${index})"><i class="fa-solid fa-times"></i></button>
+                <div><span class="preview-title">${item.title}</span> <span class="preview-time">${item.time}</span></div>
+                <i class="fa-solid fa-trash del-icon" onclick="removeCard(${idx})"></i>
             `;
             list.appendChild(div);
         });
     }
 
-    window.removeCard = (index) => {
-        tempAgenda.splice(index, 1);
-        renderPreview();
-    }
+    window.removeCard = (idx) => { localAgenda.splice(idx, 1); renderPreview(); };
 
-    window.publishMeeting = async () => {
-        const slug = document.getElementById('meetingSlug').value.trim() || 'meeting-' + Math.floor(Math.random()*10000);
-        if(tempAgenda.length === 0) return alert("Добавьте вопросы!");
-
-        const finalAgenda = tempAgenda.map((item, idx) => ({ ...item, id: idx + 1 }));
-        await set(ref(db, `meetings/${slug}/agenda`), finalAgenda);
-        window.location.href = `?id=${slug}`;
-    }
-
-
-    // --- VOTING VIEW ---
-    async function initVoting(meetingId) {
-        const agendaRef = ref(db, `meetings/${meetingId}/agenda`);
-        const snapshot = await get(agendaRef);
+    window.publish = async () => {
+        const slug = document.getElementById('slugInput').value.trim() || 'meeting-' + Math.floor(Math.random()*1000);
+        if (localAgenda.length === 0) return alert("Список пуст");
         
-        if (!snapshot.exists()) {
-            document.getElementById('cardsContainer').innerHTML = '<h3 style="color:#666; text-align:center; width:100%">Встреча не найдена</h3>';
-            return;
-        }
+        // Add index ID
+        const finalData = localAgenda.map((item, i) => ({...item, id: i+1}));
+        await set(ref(db, `meetings/${slug}/agenda`), finalData);
+        window.location.href = `?id=${slug}`;
+    };
 
-        const agendaData = snapshot.val();
-        const container = document.getElementById('cardsContainer');
-        const myVotes = JSON.parse(localStorage.getItem(`votes_${meetingId}`)) || {};
+    // --- VOTING LOGIC ---
+    let myVotes = {};
+    let activeModalId = null;
 
-        agendaData.forEach(item => {
-            let visualHeaderContent = `<i class="topic-icon fa-solid ${item.icon}"></i>`;
-            if (item.customUrl) {
-                // Если картинка the four или флаг - не инвертируем цвет (убираем filter) если это фото, 
-                // но для SVG лого часто нужна инверсия. Здесь оставим чистое изображение.
-                visualHeaderContent = `<img src="${item.customUrl}" class="custom-img-icon" alt="icon">`;
-            }
+    async function initVoting(id) {
+        const snap = await get(ref(db, `meetings/${id}/agenda`));
+        if (!snap.exists()) return document.getElementById('cardsGrid').innerHTML = "Встреча не найдена";
+        
+        const data = snap.val();
+        myVotes = JSON.parse(localStorage.getItem(`votes_${id}`)) || {};
+        const container = document.getElementById('cardsGrid');
 
-            const isVoted = myVotes[item.id] ? 'voted' : '';
-            const btnText = myVotes[item.id] ? 'ГОЛОС ПРИНЯТ' : 'ГОЛОСОВАТЬ';
-            const iconClass = myVotes[item.id] ? 'fa-solid fa-check' : 'fa-regular fa-thumbs-up';
+        data.forEach(item => {
+            // Check icon type (FontAwesome or Image)
+            let iconHtml = `<i class="topic-icon fa-solid ${item.icon}"></i>`;
+            if (item.img) iconHtml = `<img src="${item.img}" class="custom-img">`;
 
-            const html = `
-             <div class="card-wrapper" id="card-${item.id}" onclick="this.classList.toggle('flipped')">
+            const btnClass = myVotes[item.id] ? 'vote-btn voted' : 'vote-btn';
+            const btnIcon = myVotes[item.id] ? 'fa-solid fa-check' : 'fa-regular fa-thumbs-up';
+            const btnText = myVotes[item.id] ? 'ГОЛОС ОТДАН' : 'ГОЛОСОВАТЬ';
+
+            const card = document.createElement('div');
+            card.className = 'card-wrapper';
+            card.id = `card-${item.id}`;
+            card.innerHTML = `
                 <div class="card-flipper">
                     <div class="card-front">
-                        <div class="card-visual-header" style="background: ${item.color}">
-                            <button class="complete-btn" id="complete-${item.id}" title="Завершить">
+                        <div class="card-header-visual">
+                            <div class="leader-badge" id="leader-${item.id}" title="Завершить обсуждение">
                                 <i class="fa-solid fa-check"></i>
-                            </button>
-                            ${visualHeaderContent}
-                            <h2 class="card-title">${item.title}</h2>
+                            </div>
+                            
+                            ${iconHtml}
+                            <h3 class="card-title">${item.title}</h3>
                             <span class="card-time">${item.time}</span>
                         </div>
                         <div class="card-body">
-                             <div class="click-hint">
-                                <i class="fa-solid fa-rotate"></i> Нажми на карточку, чтобы узнать детали
-                             </div>
+                             <div class="click-hint"><i class="fa-solid fa-rotate"></i> Нажми для деталей</div>
                         </div>
                         <div class="card-footer">
-                            <button class="vote-btn ${isVoted}" id="btn-${item.id}">
-                                <i class="${iconClass}" id="icon-${item.id}"></i>
-                                <span id="text-${item.id}">${btnText}</span>
-                                <span class="vote-count-badge" id="count-${item.id}">0</span>
+                            <button class="${btnClass}" id="btn-${item.id}">
+                                <i class="${btnIcon}" id="icon-${item.id}"></i>
+                                <span id="txt-${item.id}">${btnText}</span>
+                                <span class="vote-count" id="count-${item.id}">0</span>
                             </button>
                         </div>
                     </div>
                     <div class="card-back">
-                        <div class="card-back-header">
-                            <h2 style="color: ${item.color}">${item.title}</h2>
-                        </div>
-                        <div class="card-body">
-                            <h3>Контекст</h3>
-                            <p>${(item.desc || 'Нет описания').replace(/\n/g, '<br>')}</p>
+                        <div class="card-back-content">
+                            <span class="section-label">Контекст</span>
+                            <div class="text-block">${(item.desc || '').replace(/\n/g, '<br>')}</div>
                             
-                            <h3>Ожидания</h3>
-                            <p>${(item.expect || '...').replace(/\n/g, '<br>')}</p>
+                            <span class="section-label">Ожидания</span>
+                            <div class="text-block">${(item.expect || '').replace(/\n/g, '<br>')}</div>
                         </div>
                     </div>
                 </div>
-             </div>
             `;
-            container.insertAdjacentHTML('beforeend', html);
+            
+            // Flip logic
+            card.onclick = (e) => {
+                // Don't flip if clicking buttons
+                if (e.target.closest('button') || e.target.closest('.leader-badge')) return;
+                card.classList.toggle('flipped');
+            };
 
-            setTimeout(() => {
-                document.getElementById(`btn-${item.id}`).addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleVote(item.id, meetingId);
-                });
-                document.getElementById(`complete-${item.id}`).addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if(confirm("Скрыть этот вопрос из обсуждения?")) {
-                        set(ref(db, `meetings/${meetingId}/hidden/${item.id}`), true);
-                    }
-                });
-            },0);
+            container.appendChild(card);
+
+            // Bind Events
+            document.getElementById(`btn-${item.id}`).onclick = () => toggleVote(item.id, id);
+            
+            // Bind Modal Trigger
+            document.getElementById(`leader-${item.id}`).onclick = (e) => {
+                e.stopPropagation();
+                openModal(item.id, item.title);
+            };
         });
 
-        // Realtime Listeners
-        onValue(ref(db, `meetings/${meetingId}`), (snap) => {
-            const data = snap.val() || {};
-            const votes = data.votes || {};
-            const hidden = data.hidden || {};
-            let max = -1;
+        // Listen for Realtime Updates
+        onValue(ref(db, `meetings/${id}`), (snapshot) => {
+            const val = snapshot.val() || {};
+            const votes = val.votes || {};
+            const hidden = val.hidden || {};
+            let maxVotes = 0;
 
-            agendaData.forEach(i => {
-                const card = document.getElementById(`card-${i.id}`);
-                const isHidden = hidden[i.id] === true;
-                if(isHidden) card.classList.add('hidden-card');
-                else {
-                    card.classList.remove('hidden-card');
-                    if((votes[i.id] || 0) > max) max = votes[i.id] || 0;
+            // 1. Calculate Max Votes among VISIBLE cards
+            data.forEach(item => {
+                if (!hidden[item.id]) {
+                    const c = votes[item.id] || 0;
+                    if (c > maxVotes) maxVotes = c;
                 }
             });
 
-            agendaData.forEach(i => {
-                if(hidden[i.id]) return;
-                const count = votes[i.id] || 0;
-                document.getElementById(`count-${i.id}`).innerText = count;
-                
-                const completeBtn = document.getElementById(`complete-${i.id}`);
-                // Показываем галочку лидеру, если есть голоса
-                completeBtn.style.display = (max > 0 && count === max) ? 'flex' : 'none';
+            // 2. Update UI
+            data.forEach(item => {
+                const cardEl = document.getElementById(`card-${item.id}`);
+                const countEl = document.getElementById(`count-${item.id}`);
+                const badgeEl = document.getElementById(`leader-${item.id}`);
+                const voteCount = votes[item.id] || 0;
+
+                // Hide/Show
+                if (hidden[item.id]) {
+                    cardEl.classList.add('hidden-card');
+                } else {
+                    cardEl.classList.remove('hidden-card');
+                }
+
+                // Update Count
+                countEl.innerText = voteCount;
+
+                // Show Badge only if Leader AND has votes
+                if (maxVotes > 0 && voteCount === maxVotes && !hidden[item.id]) {
+                    badgeEl.style.display = 'flex';
+                } else {
+                    badgeEl.style.display = 'none';
+                }
             });
         });
 
-        document.getElementById('resetBtn').addEventListener('click', () => {
-             if(confirm("Сбросить все голоса для этой встречи?")) { 
-                 set(ref(db, `meetings/${meetingId}/votes`), {}); 
-                 localStorage.removeItem(`votes_${meetingId}`); 
-                 location.reload(); 
-             }
-        });
-
-        document.getElementById('showAllBtn').addEventListener('click', () => {
-            if(confirm("Показать скрытые/завершенные вопросы?")) {
-                set(ref(db, `meetings/${meetingId}/hidden`), null);
+        // Controls
+        document.getElementById('resetBtn').onclick = () => {
+            if(confirm("Сбросить голоса?")) {
+                set(ref(db, `meetings/${id}/votes`), {});
+                localStorage.removeItem(`votes_${id}`);
+                location.reload();
             }
-        });
-        
+        };
+
+        document.getElementById('showAllBtn').onclick = () => {
+             if(confirm("Вернуть скрытые карточки?")) {
+                 set(ref(db, `meetings/${id}/hidden`), null);
+             }
+        };
+
         window.shareLink = () => { navigator.clipboard.writeText(window.location.href); alert("Ссылка скопирована!"); };
     }
 
-    function toggleVote(itemId, mId) {
-        const myVotes = JSON.parse(localStorage.getItem(`votes_${mId}`)) || {};
-        const itemRef = ref(db, `meetings/${mId}/votes/${itemId}`);
+    // --- VOTING ACTION ---
+    function toggleVote(itemId, meetingId) {
+        const itemRef = ref(db, `meetings/${meetingId}/votes/${itemId}`);
         const btn = document.getElementById(`btn-${itemId}`);
         const icon = document.getElementById(`icon-${itemId}`);
-        const text = document.getElementById(`text-${itemId}`);
+        const txt = document.getElementById(`txt-${itemId}`);
 
         if (myVotes[itemId]) {
+            // Remove
             runTransaction(itemRef, (c) => (c || 0) > 0 ? c - 1 : 0);
             delete myVotes[itemId];
             btn.classList.remove('voted');
             icon.className = 'fa-regular fa-thumbs-up';
-            text.innerText = 'ГОЛОСОВАТЬ';
+            txt.innerText = 'ГОЛОСОВАТЬ';
         } else {
+            // Add
             runTransaction(itemRef, (c) => (c || 0) + 1);
             myVotes[itemId] = true;
             btn.classList.add('voted');
             icon.className = 'fa-solid fa-check';
-            text.innerText = 'ГОЛОС ПРИНЯТ';
+            txt.innerText = 'ГОЛОС ОТДАН';
         }
-        localStorage.setItem(`votes_${mId}`, JSON.stringify(myVotes));
+        localStorage.setItem(`votes_${meetingId}`, JSON.stringify(myVotes));
     }
+
+    // --- MODAL LOGIC ---
+    window.openModal = (id, title) => {
+        activeModalId = id;
+        document.getElementById('modalTopicName').innerText = title;
+        document.getElementById('finishModal').classList.add('active');
+    };
+
+    window.closeModal = () => {
+        document.getElementById('finishModal').classList.remove('active');
+        activeModalId = null;
+    };
+
+    window.confirmFinish = () => {
+        if (activeModalId && mId) {
+            set(ref(db, `meetings/${mId}/hidden/${activeModalId}`), true);
+            closeModal();
+        }
+    };
 
 </script>
 </body>
