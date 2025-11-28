@@ -9,7 +9,6 @@
     
     <style>
         :root {
-            /* CRU BRAND PALETTE */
             --cru-gold: #f9b625;
             --cru-gold-hover: #dca01e;
             --cru-charcoal: #212121;
@@ -38,9 +37,7 @@
         .container { max-width: 1150px; margin: 0 auto; }
         .hidden { display: none !important; }
 
-        /* --- UI COMPONENTS --- */
-        
-        /* 1. HEADER */
+        /* HEADER */
         .app-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 0; margin-bottom: 40px; flex-wrap: wrap; gap: 20px;
@@ -60,17 +57,14 @@
             text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s;
             display: flex; align-items: center; gap: 8px;
         }
-        
         .btn-gold { background: var(--cru-gold); color: var(--cru-charcoal); }
         .btn-gold:hover { background: var(--cru-gold-hover); transform: translateY(-1px); }
-        
         .btn-outline { background: transparent; border: 2px solid #ddd; color: var(--text-light); }
         .btn-outline:hover { border-color: var(--cru-charcoal); color: var(--cru-charcoal); background: white;}
-
         .btn-danger-ghost { background: #fff0f0; color: #d32f2f; }
         .btn-danger-ghost:hover { background: #ffebee; }
 
-        /* 2. CREATOR DASHBOARD */
+        /* CREATOR DASHBOARD */
         .dashboard-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         @media(max-width: 800px) { .dashboard-layout { grid-template-columns: 1fr; } }
 
@@ -102,15 +96,14 @@
         .del-icon { cursor: pointer; color: #ccc; transition: 0.2s; }
         .del-icon:hover { color: #d32f2f; }
 
-        /* 3. CARDS (VOTING) */
+        /* CARDS (VOTING) */
         .cards-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
         
         .card-wrapper {
-            flex: 1 1 300px; max-width: 350px; min-width: 280px; height: 520px; /* Увеличили высоту */
+            flex: 1 1 300px; max-width: 350px; min-width: 280px; height: 540px; /* Еще чуть выше */
             perspective: 1000px; cursor: pointer;
             transition: all 0.5s ease;
         }
-        /* Анимация скрытия */
         .card-wrapper.hidden-card { 
             transform: scale(0.9); opacity: 0; pointer-events: none; height: 0; margin: 0; overflow: hidden; 
         }
@@ -128,7 +121,7 @@
         }
         .card-back { transform: rotateY(180deg); background: #fff; border: 1px solid #eee; }
 
-        /* HEADER CARD STYLE */
+        /* CARD HEADER */
         .card-header-visual {
             background: linear-gradient(135deg, var(--cru-charcoal) 0%, #000000 60%);
             padding: 30px 20px; text-align: center; color: white;
@@ -143,29 +136,29 @@
             height: 80px;
             object-fit: contain;
             margin-bottom: 15px;
-            filter: none; /* цветной рисунок */
+            filter: none;
         }
         
         .card-title { 
-            font-size: 22px; /* Увеличен */
+            font-size: 24px; /* Крупно */
             font-weight: 800; 
-            margin: 0; line-height: 1.3; 
+            margin: 0; line-height: 1.2; 
             text-transform: uppercase; 
         }
         
-        /* СТИЛЬ ВРЕМЕНИ (Обновленный) */
+        /* ВРЕМЯ - Ярко и четко */
         .card-time { 
             display: inline-flex; 
             align-items: center; 
             justify-content: center;
             gap: 8px;
             margin-top: 15px; 
-            font-size: 18px; /* Крупный шрифт */
+            font-size: 20px; /* Очень крупно */
             font-weight: 800; 
-            color: var(--cru-gold); /* Золотой цвет */
-            border: 2px solid var(--cru-gold); /* Золотая рамка */
+            color: var(--cru-gold); 
+            border: 2px solid var(--cru-gold); 
             background: rgba(255,255,255,0.05);
-            padding: 8px 16px; 
+            padding: 8px 20px; 
             border-radius: 50px;
             letter-spacing: 0.5px;
         }
@@ -175,7 +168,7 @@
 
         .card-footer { padding: 25px; display: flex; justify-content: center; border-top: 1px solid #f5f5f5; }
 
-        /* VOTE BUTTON STYLE */
+        /* VOTE BUTTON */
         .vote-btn {
             background: white; border: 2px solid #eee; color: #999;
             padding: 14px 35px; border-radius: 50px; font-weight: 700; font-size: 15px;
@@ -190,7 +183,7 @@
         }
         .vote-count { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 10px; font-size: 12px; }
 
-        /* COMPLETE CHECKMARK (Leader) */
+        /* LEADER BADGE */
         .leader-badge {
             position: absolute; top: 15px; right: 15px;
             width: 36px; height: 36px; background: var(--cru-gold); color: var(--cru-charcoal);
@@ -208,10 +201,9 @@
             color: var(--cru-gold); font-size: 12px; font-weight: 800; letter-spacing: 1px; 
             text-transform: uppercase; margin-bottom: 8px; display: block; 
         }
-        /* Увеличен шрифт описания */
         .text-block { font-size: 16px; line-height: 1.6; margin-bottom: 25px; color: #333; font-weight: 400;}
 
-        /* --- MODAL (Overlay) --- */
+        /* MODAL */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(33, 33, 33, 0.6); backdrop-filter: blur(8px);
@@ -231,7 +223,6 @@
         .modal-icon-lg { font-size: 50px; color: var(--cru-gold); margin-bottom: 20px; }
         .modal-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: var(--cru-charcoal); }
         .modal-desc { font-size: 15px; color: #666; margin-bottom: 30px; }
-        
         .modal-actions { display: flex; gap: 15px; }
         .btn-modal-cancel { flex: 1; background: #f0f0f0; color: #333; }
         .btn-modal-confirm { flex: 1; background: var(--cru-charcoal); color: white; }
@@ -245,7 +236,7 @@
         }
         .icon-opt:hover, .icon-opt.selected { background: var(--cru-charcoal); color: var(--cru-gold); border-color: var(--cru-charcoal); }
 
-        /* Галерея готовых рисунков */
+        /* IMAGE PRESETS GRID */
         .img-preset-grid {
             margin-top: 8px;
             display: grid;
@@ -293,8 +284,7 @@
 
 <div class="container app-header">
     <div class="logo">Cru Agenda</div>
-    <div id="creatorControls" class="controls">
-        </div>
+    <div id="creatorControls" class="controls"></div>
     <div id="votingControls" class="controls hidden">
         <button class="btn btn-gold" onclick="shareLink()"><i class="fa-solid fa-link"></i> Ссылка</button>
         <button class="btn btn-outline" id="showAllBtn"><i class="fa-solid fa-box-archive"></i> Архив вопросов</button>
@@ -391,15 +381,15 @@
     let selectedIcon = "fa-comments";
     const iconList = ["fa-comments", "fa-bullhorn", "fa-users", "fa-chart-pie", "fa-rocket", "fa-lightbulb", "fa-handshake", "fa-calendar-days", "fa-earth-americas"];
 
-    // Набор готовых рисунков (замени URL на свои)
+    // ОБНОВЛЕННЫЙ НАБОР РИСУНКОВ (Контекст служения/Миссии)
     const imagePresets = [
-        { label: "Обсуждение",   url: "https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg" },
-        { label: "Команда",      url: "https://images.pexels.com/photos/1181400/pexels-photo-1181400.jpeg" },
-        { label: "Молитва",      url: "https://images.pexels.com/photos/846847/pexels-photo-846847.jpeg" },
-        { label: "Партнерство",  url: "https://images.pexels.com/photos/164531/pexels-photo-164531.jpeg" },
-        { label: "Финансы",      url: "https://images.pexels.com/photos/4968633/pexels-photo-4968633.jpeg" },
-        { label: "Планирование", url: "https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg" },
-        { label: "Лидерство",    url: "https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg" },
+        { label: "Обсуждение",   url: "https://images.pexels.com/photos/3277800/pexels-photo-3277800.jpeg" }, // Группа общается неформально
+        { label: "Команда",      url: "https://images.pexels.com/photos/461049/pexels-photo-461049.jpeg" },   // Живая группа людей
+        { label: "Молитва",      url: "https://images.pexels.com/photos/161276/prayer-faith-religion-christian-161276.jpeg" }, // Руки в молитве
+        { label: "Партнерство",  url: "https://images.pexels.com/photos/460736/pexels-photo-460736.jpeg" },   // Рукопожатие/деревья
+        { label: "Финансы",      url: "https://images.pexels.com/photos/128867/coins-currency-investment-insurance-128867.jpeg" }, // Росток/монеты
+        { label: "Планирование", url: "https://images.pexels.com/photos/210660/pexels-photo-210660.jpeg" },   // Блокнот/записи
+        { label: "Лидерство",    url: "https://images.pexels.com/photos/552785/pexels-photo-552785.jpeg" },   // Компас (символ направления)
     ];
     let selectedPresetIndex = null;
     
@@ -471,8 +461,6 @@
         document.getElementById('inpTitle').value = "";
         document.getElementById('inpDesc').value = "";
         document.getElementById('inpExpect').value = "";
-        // URL картинки оставляем — можно несколько карточек с одним рисунком
-
         renderPreview();
     };
 
@@ -624,7 +612,7 @@
 
         document.getElementById('showAllBtn').onclick = () => {
              if(confirm("Вернуть скрытые карточки?")) {
-                 set(ref(db, `meetings/${id}/hidden`), null); // Стереть список скрытых
+                 set(ref(db, `meetings/${id}/hidden`), null); 
              }
         };
 
@@ -642,7 +630,6 @@
         const txt = document.getElementById(`txt-${itemId}`);
 
         if (myVotes[itemId]) {
-            // Remove vote (без ухода в минус)
             runTransaction(itemRef, (c) => {
                 const val = c || 0;
                 return val > 0 ? val - 1 : 0;
@@ -652,7 +639,6 @@
             icon.className = 'fa-regular fa-thumbs-up';
             txt.innerText = 'ГОЛОСОВАТЬ';
         } else {
-            // Add vote
             runTransaction(itemRef, (c) => (c || 0) + 1);
             myVotes[itemId] = true;
             btn.classList.add('voted');
