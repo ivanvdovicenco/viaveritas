@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Via Veritas — Воскресное обслуживание</title>
+
+<style>
+  :root {
+    /* Основная палитра */
+    --vv-accent: #ff880d;
+    --vv-accent-light: #fff0e0;
+    --vv-teal: #62bbbf;
+    --vv-teal-light: #eef9fa;
+    --vv-ink: #1f2a2e;
+    --vv-text: #374151;
+    --vv-muted: #6b7280;
+    --vv-bg: #f3f4f6;
+    --vv-card: #ffffff;
+    --vv-line: #e5e7eb;
+    
+    /* Тени и эффекты */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--vv-bg);
+    color: var(--vv-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- СТРУКТУРА СТРАНИЦЫ --- */
+  .page {
+    max-width: 210mm; /* A4 width standard */
+    min-height: 297mm;
+    margin: 20px auto;
+    padding: 40px;
+    background: var(--vv-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* --- ШАПКА --- */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--vv-line);
+    margin-bottom: 25px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .brand-logo {
+    width: 60px;
+    height: 60px;
+    background: var(--vv-teal-light);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    border: 2px solid var(--vv-teal);
+  }
+
+  .brand-text h2 { margin: 0; font-size: 24px; color: var(--vv-ink); line-height: 1.1; }
+  .brand-text span { color: var(--vv-muted); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .titleblock { text-align: right; }
+  .titleblock h1 { margin: 0; font-size: 22px; color: var(--vv-accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .titleblock .subtitle { font-size: 13px; color: var(--vv-muted); font-weight: 500; margin-top: 5px; }
+
+  /* --- ФАКТЫ (Pills) --- */
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .pill {
+    padding: 6px 14px;
+    background: #fff;
+    border: 1px solid var(--vv-line);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--vv-text);
+    box-shadow: var(--shadow-sm);
+  }
+  .pill b { color: var(--vv-teal); }
+
+  /* --- ЗАГОЛОВКИ СЕКЦИЙ --- */
+  section { margin-bottom: 40px; }
+  h2 {
+    font-size: 18px;
+    color: var(--vv-ink);
+    border-left: 4px solid var(--vv-accent);
+    padding-left: 12px;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* --- БЛОКИ ВНИМАНИЯ (NOTES) --- */
+  .note {
+    background: var(--vv-accent-light);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 136, 13, 0.2);
+  }
+  .note.blue { background: var(--vv-teal-light); border-color: rgba(98, 187, 191, 0.2); }
+  
+  .note .lead { font-weight: 700; color: var(--vv-ink); display: block; margin-bottom: 4px; }
+  .note p { margin: 0; font-size: 14px; }
+  .note .muted { color: var(--vv-muted); font-size: 13px; margin-top: 6px; display: block; }
+
+  /* --- СЕТКА КАРТОЧЕК (General Picture) --- */
+  .grid-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  .overview-card {
+    background: #fff;
+    border: 1px solid var(--vv-line);
+    border-radius: var(--radius);
+    padding: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .overview-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .overview-card .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .overview-card .dept { font-weight: 700; color: var(--vv-ink); }
+  .overview-card .badge { 
+    font-size: 11px; font-weight: 700; padding: 2px 8px; 
+    border-radius: 10px; background: var(--vv-bg); color: var(--vv-muted); 
+  }
+  .overview-card p { margin: 0; font-size: 13px; color: var(--vv-text); }
+
+  /* --- ДЕТАЛЬНЫЕ БЛОКИ ОТДЕЛОВ --- */
+  .dept-block {
+    border: 1px solid var(--vv-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 30px;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    break-inside: avoid; /* Print safe */
+  }
+
+  .dept-header {
+    background: linear-gradient(to right, #fff, var(--vv-bg));
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--vv-line);
+  }
+  .dept-title-group { display: flex; align-items: center; gap: 15px; }
+  .dept-icon { font-size: 24px; background: #fff; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--vv-line); display: grid; place-items: center; }
+  .dept-name h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--vv-ink); text-transform: uppercase; }
+  .dept-name span { font-size: 13px; color: var(--vv-muted); }
+  .dept-meta { text-align: right; font-size: 13px; font-weight: 600; color: var(--vv-teal); background: #fff; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--vv-line); }
+
+  .dept-content { padding: 20px; }
+
+  /* Внутренняя сетка отдела: Описание слева (или сверху), Чек-листы снизу */
+  .dept-description { margin-bottom: 20px; }
+  
+  .callout {
+    background: var(--vv-bg);
+    border-left: 3px solid var(--vv-teal);
+    padding: 12px 15px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-top: 10px;
+  }
+  .callout .mini { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--vv-muted); margin-bottom: 2px; }
+  .callout p { margin: 0 0 8px 0; font-size: 14px; }
+  .callout p:last-child { margin: 0; }
+
+  /* Сетка чек-листов */
+  .check-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .check-panel {
+    background: #fff;
+    border: 1px solid var(--vv-line);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .check-panel h4 { 
+    margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; 
+    color: var(--vv-muted); border-bottom: 1px solid var(--vv-line); padding-bottom: 8px; 
+  }
+  
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { 
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 14px; 
+    line-height: 1.4;
+  }
+  .checkbox {
+    min-width: 16px; height: 16px; border: 2px solid var(--vv-line); border-radius: 4px; margin-top: 2px;
+  }
+
+  ul.bullets { padding-left: 20px; margin: 0; }
+  ul.bullets li { margin-bottom: 6px; }
+
+  /* --- КУЛЬТУРНАЯ ФРАЗА --- */
+  .culture-box {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: var(--vv-teal-light);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--vv-ink);
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  /* --- ДУХОВНАЯ ЧАСТЬ --- */
+  .principles-block {
+    background: linear-gradient(135deg, #fff, var(--vv-teal-light));
+    border: 1px solid var(--vv-teal);
+    border-radius: var(--radius);
+    padding: 25px;
+  }
+  .verse-box {
+    background: rgba(255,255,255,0.7);
+    border-left: 4px solid var(--vv-accent);
+    padding: 15px;
+    margin: 15px 0;
+    font-style: italic;
+    font-family: serif;
+    font-size: 16px;
+  }
+  .footer { text-align: center; margin-top: 40px; color: var(--vv-muted); font-size: 12px; border-top: 1px solid var(--vv-line); padding-top: 20px;}
+
+  /* --- MEDIA QUERIES --- */
+  @media (max-width: 768px) {
+    .page { width: auto; margin: 0; padding: 20px; border-radius: 0; box-shadow: none; }
+    .topbar { flex-direction: column; gap: 20px; align-items: flex-start; }
+    .titleblock { text-align: left; }
+    .check-grid { grid-template-columns: 1fr; }
+    .grid-overview { grid-template-columns: 1fr; }
+  }
+
+  /* --- PRINT SETTINGS --- */
+  @media print {
+    body { background: #fff; }
+    .page { width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
+    .dept-block, .principles-block, .note { break-inside: avoid; page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">✝</div> 
+      <div class="brand-text">
+        <h2>Via Veritas</h2>
+        <span>Документ служения</span>
+      </div>
+    </div>
+
+    <div class="titleblock">
+      <h1>🛠️ Воскресное обслуживание</h1>
+      <div class="subtitle">Кухня • Помещения • Гости • Декор • Склад • Координация</div>
+    </div>
+  </header>
+
+  <!-- KEY FACTS -->
+  <div class="facts">
+    <div class="pill">⏰ Начало служения: <b>16:00</b></div>
+    <div class="pill">🗓️ Посвящение в роли: <b>2 месяца</b></div>
+    <div class="pill">🤝 Цель: <b>порядок • тепло • гостеприимство</b></div>
+  </div>
+
+  <!-- SECTION 1: OVERVIEW -->
+  <section>
+    <h2>1) Общая картина</h2>
+
+    <div class="note">
+      <span class="lead">Суть служения</span>
+      <p>
+        Команда воскресного обслуживания отвечает за практическую и административную часть воскресного собрания,
+        чтобы людям было <b>легко прийти</b>, <b>понятно что происходит</b>, и <b>приятно остаться для общения</b>.
+      </p>
+      <span class="muted">
+        Ключ: мы создаём не «идеальный сервис», а <b>пространство заботы</b>, где людям легче слышать Слово,
+        участвовать в общении и расти в отношениях.
+      </span>
+    </div>
+
+    <div class="grid-overview">
+      <div class="overview-card">
+        <div class="head"><span class="dept">🍵 Кухня</span><span class="badge">общение</span></div>
+        <p>Кофе/чай/перекус, порядок на кухне, правила для детей, завершение.</p>
+      </div>
+      <div class="overview-card">
+        <div class="head"><span class="dept">🚪 Встреча гостей</span><span class="badge">контакт</span></div>
+        <p>Приветствие, ориентация, помощь новым людям, приглашение в зал к 16:00.</p>
+      </div>
+      <div class="overview-card">
+        <div class="head"><span class="dept">🏠 Помещения</span><span class="badge">порядок</span></div>
+        <p>Свет, столы/стулья, туалеты, мусор, закрытие помещений после служения.</p>
+      </div>
+      <div class="overview-card">
+        <div class="head"><span class="dept">🎨 Декор</span><span class="badge">атмосфера</span></div>
+        <p>Сезонное оформление (3 комплекта), подготовка к праздникам, учёт.</p>
+      </div>
+      <div class="overview-card">
+        <div class="head"><span class="dept">📦 Склад</span><span class="badge">ресурсы</span></div>
+        <p>Порядок, хранение, учёт материалов, помощь в инвентаризации.</p>
+      </div>
+      <div class="overview-card">
+        <div class="head"><span class="dept">👤 Координация</span><span class="badge">ритм</span></div>
+        <p>Ротации, закупки, культура служения, связь между отделами.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: DEPARTMENTS -->
+  <section>
+    <h2>2) Отделы служения — детально</h2>
+
+    <!-- KITCHEN BLOCK -->
+    <div class="dept-block">
+      <div class="dept-header">
+        <div class="dept-title-group">
+          <div class="dept-icon">🍵</div>
+          <div class="dept-name">
+            <h3>Кухня</h3>
+            <span>Гостеприимство • порядок • атмосфера</span>
+          </div>
+        </div>
+        <div class="dept-meta">
+          Приход: ≈15:00<br>Старт: 16:00
+        </div>
+      </div>
+      <div class="dept-content">
+        <div class="dept-description">
+          <p><b>Суть:</b> Кухня помогает людям остаться для общения после служения: кофе/чай/перекус — как форма заботы и гостеприимства.</p>
+          <ul class="bullets">
+            <li>Некоторые приходят раньше и могут взять чай/кофе.</li>
+            <li>В 16:00 нужно мягко попросить всех перейти в зал.</li>
+            <li>После служения взрослые общаются на кухне/в зале; дети возвращаются и часто просят какао.</li>
+          </ul>
+          
+          <div class="callout">
+             <div class="mini">Правило кухни (дети)</div>
+             <p>Детям нельзя выносить еду/напитки из кухни (пятна, мусор, проливания).</p>
+             
+             <div class="mini" style="margin-top:8px">Какао</div>
+             <p>Лучше готовить заранее (2 термоса). Разливать после служения. Пьют только на кухне.</p>
+
+             <div class="mini" style="margin-top:8px">Дверь у принтера</div>
+             <p>Во время служения дверь со стороны принтера закрыта.</p>
+          </div>
+        </div>
+
+        <div class="check-grid">
+          <div class="check-panel">
+            <h4>🕘 До служения (≈15:00)</h4>
+            <ul class="checks">
+              <li><div class="checkbox"></div>Проверить посудомойку (пусто/чисто)</li>
+              <li><div class="checkbox"></div>Подготовить кофемашину</li>
+              <li><div class="checkbox"></div>Налить фильтрованную воду</li>
+              <li><div class="checkbox"></div>Выставить: чай, кофе, молоко, сахар, стаканчики, салфетки</li>
+              <li><div class="checkbox"></div>Подготовить снеки/печенье</li>
+              <li><div class="checkbox"></div>Подготовить хлеб и вино для преломления</li>
+              <li><div class="checkbox"></div>Нарезать принесённые угощения</li>
+              <li><div class="checkbox"></div>Подготовить какао (термосы)</li>
+            </ul>
+          </div>
+          <div class="check-panel">
+            <h4>☕ После служения + Завершение</h4>
+            <ul class="checks">
+              <li><div class="checkbox"></div>Активно предлагать чай/кофе</li>
+              <li><div class="checkbox"></div>Какао детям: раздача только на кухне</li>
+              <li><div class="checkbox"></div>Следить за разливами/мусором</li>
+              <li><div class="checkbox"></div>Промыть кофемашину</li>
+              <li><div class="checkbox"></div>Загрузить посудомойку</li>
+              <li><div class="checkbox"></div>Убрать барную стойку, вымыть раковину</li>
+              <li><div class="checkbox"></div>Собрать скатерти (если нужно — в стирку)</li>
+              <li><div class="checkbox"></div>Вынести мусор, поставить новые пакеты</li>
+              <li><div class="checkbox"></div>Сделать список того, что заканчивается</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="culture-box">
+          «Через простые вещи мы показываем любовь Христа»
+        </div>
+      </div>
+    </div>
+
+    <!-- ROOMS BLOCK -->
+    <div class="dept-block">
+      <div class="dept-header">
+        <div class="dept-title-group">
+          <div class="dept-icon">🏠</div>
+          <div class="dept-name">
+            <h3>Готовность помещений</h3>
+            <span>Свет • порядок • комфорт</span>
+          </div>
+        </div>
+        <div class="dept-meta">
+          Фокус: Чисто/Светло
+        </div>
+      </div>
+      <div class="dept-content">
+        <div class="dept-description">
+          <p><b>Суть:</b> Помещения должны быть подготовлены так, чтобы людям было приятно и спокойно находиться в церкви.</p>
+        </div>
+
+        <div class="check-grid">
+          <div class="check-panel">
+            <h4>✅ До служения</h4>
+            <ul class="checks">
+              <li><div class="checkbox"></div>Проверить комнаты (окна/порядок)</li>
+              <li><div class="checkbox"></div>Включить свет везде (зал, коридор, кухня, туалеты)</li>
+              <li><div class="checkbox"></div>Включить вентиляцию при необходимости</li>
+              <li><div class="checkbox"></div>Заправить мусорки новыми пакетами</li>
+              <li><div class="checkbox"></div>Туалеты: бумага/салфетки/порядок</li>
+              <li><div class="checkbox"></div>Расставить столы и стулья в зале</li>
+              <li><div class="checkbox"></div>Застелить столы скатертями</li>
+            </ul>
+          </div>
+          <div class="check-panel">
+            <h4>🧹 После служения</h4>
+            <ul class="checks">
+              <li><div class="checkbox"></div>Убрать зал/коридор/комнаты</li>
+              <li><div class="checkbox"></div>Собрать и унести скатерти</li>
+              <li><div class="checkbox"></div>Вынести мусор, заменить пакеты</li>
+              <li><div class="checkbox"></div>Проверить окна/двери, закрыть</li>
+              <li><div class="checkbox"></div>Выключить свет</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="culture-box">
+          «Порядок в доме помогает миру в сердце»
+        </div>
+      </div>
+    </div>
+
+    <!-- GREETERS BLOCK -->
+    <div class="dept-block">
+      <div class="dept-header">
+        <div class="dept-title-group">
+          <div class="dept-icon">🚪</div>
+          <div class="dept-name">
+            <h3>Встреча гостей</h3>
+            <span>Лицо церкви • первый контакт</span>
+          </div>
+        </div>
+        <div class="dept-meta">
+          Старт: 15:30
+        </div>
+      </div>
+      <div class="dept-content">
+        <div class="dept-description">
+          <p><b>Суть:</b> Встречающие создают первое впечатление и помогают людям понять: здесь рады и здесь безопасно. Задача: приветствие + ориентация + мягкое сопровождение.</p>
+          
+          <div class="callout">
+            <div class="mini">Дежурные фразы</div>
+            <ul class="bullets" style="font-size: 14px; margin-top: 5px;">
+              <li>«Добро пожаловать в церковь Via Veritas!»</li>
+              <li>«Вы сегодня первый раз у нас? Очень рады вам»</li>
+              <li>«Детская программа — после прославления. Я покажу, куда идти»</li>
+              <li>«Если хотите — после служения можно остаться на чай/кофе»</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="check-grid">
+          <div class="check-panel">
+            <h4>🕞 До служения (15:30)</h4>
+            <ul class="checks">
+              <li><div class="checkbox"></div>Опрятный вид</li>
+              <li><div class="checkbox"></div>Флаг с логотипом + поднять роллеты</li>
+              <li><div class="checkbox"></div>Быть у входа, открывать дверь</li>
+              <li><div class="checkbox"></div>Знать расположение комнат (туалеты, детские)</li>
+            </ul>
+          </div>
+          <div class="check-panel">
+            <h4>🚶 Во время прихода людей</h4>
+            <ul class="checks">
+              <li><div class="checkbox"></div>Приветствовать каждого</li>
+              <li><div class="checkbox"></div>Особое внимание новым людям</li>
+              <li><div class="checkbox"></div>Стоять до конца прославления</li>
+              <li><div class="checkbox"></div>В 16:00 пригласить тех, кто в коридоре, в зал</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="culture-box">
+          «С порога — любовь. С первых минут — принятие»
+        </div>
+      </div>
+    </div>
+
+    <!-- DECOR BLOCK -->
+    <div class="dept-block">
+      <div class="dept-header">
+        <div class="dept-title-group">
+          <div class="dept-icon">🎨</div>
+          <div class="dept-name">
+            <h3>Декор</h3>
+            <span>Атмосфера • сезонность • благодарность</span>
+          </div>
+        </div>
+        <div class="dept-meta">
+          План: за 1 месяц
+        </div>
+      </div>
+      <div class="dept-content">
+        <p><b>Суть:</b> Декор делает помещение уютным и «живым», помогая радости и вниманию к людям.</p>
+        <ul class="bullets" style="margin-bottom:15px;">
+           <li>За месяц до праздника — концепция</li>
+           <li>За 2 недели — начать украшать</li>
+           <li>3 комплекта: Осень • Рождество • Пасха/Весна</li>
+           <li>Инвентаризация + фото-каталог</li>
+           <li>На каждую встречу — минимальный декор на столы</li>
+        </ul>
+        <div class="callout">
+          <div class="mini">Полезно</div>
+          <p>Фото-альбом «Декор (наборы)» + список предметов — экономит время и сохраняет порядок.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORAGE BLOCK -->
+    <div class="dept-block">
+      <div class="dept-header">
+        <div class="dept-title-group">
+          <div class="dept-icon">📦</div>
+          <div class="dept-name">
+            <h3>Склад</h3>
+            <span>Хранение • порядок • учёт</span>
+          </div>
+        </div>
+        <div class="dept-meta">
+          Цель: всё на месте
+        </div>
+      </div>
+      <div class="dept-content">
+         <p><b>Суть:</b> Порядок на складе, знание мест хранения, помощь отделам.</p>
+         <ul class="bullets">
+            <li>Порядок на складе</li>
+            <li>Знать, где что лежит</li>
+            <li>Помогать отделам получать/возвращать материалы</li>
+            <li>Периодически обновлять инвентаризацию</li>
+         </ul>
+      </div>
+    </div>
+
+    <!-- COORDINATOR BLOCK -->
+    <div class="dept-block">
+      <div class="dept-header">
+        <div class="dept-title-group">
+          <div class="dept-icon">👤</div>
+          <div class="dept-name">
+            <h3>Координатор служения</h3>
+            <span>Координация • культура • закупки</span>
+          </div>
+        </div>
+        <div class="dept-meta">
+          Ротации: 2 месяца
+        </div>
+      </div>
+      <div class="dept-content">
+         <ul class="bullets">
+            <li>Утвердить роли на 2 месяца</li>
+            <li>Проверять готовность отделов (коротко)</li>
+            <li>Вести список закупок и следить за запасами</li>
+            <li>Сообщать о крупных расходах заранее</li>
+         </ul>
+         <div class="culture-box">
+           «Мы служим людям так, чтобы им было легче встретиться с Богом»
+         </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SECTION 3: PRINCIPLES (Renumbered) -->
+  <section>
+    <h2>3) Библейская основа и культура</h2>
+    
+    <div class="principles-block">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:15px;">
+        <h3 style="margin:0; color:var(--vv-ink);">Мы служим «как для Господа»</h3>
+        <span style="color:var(--vv-muted); font-weight:700;">Колоссянам 3:23</span>
+      </div>
+      
+      <div class="verse-box">
+        «И всё, что делаете, делайте от души, как для Господа, а не для человеков».
+      </div>
+
+      <ul class="bullets" style="margin-bottom:20px;">
+        <li><b>Гостеприимство:</b> «Тепло» — это служение людям, а не «опция». <span style="color:var(--vv-muted)">(Рим. 12:13)</span></li>
+        <li><b>Порядок:</b> порядок помогает миру и вниманию к Слову. <span style="color:var(--vv-muted)">(1 Кор. 14:40)</span></li>
+        <li><b>Дух команды:</b> мы не просто делаем задачи — мы показываем любовь и создаём пространство для отношений.</li>
+      </ul>
+
+      <div class="callout" style="background:rgba(255,255,255,0.6); border-color: var(--vv-accent);">
+        <div class="mini" style="color:var(--vv-accent);">Фразы, которые держат культуру</div>
+        <p>• «Люди важнее задач»</p>
+        <p>• «Простое, но с любовью»</p>
+        <p>• «Служим так, чтобы человеку было легче остаться и поговорить»</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    © Via Veritas • Воскресное обслуживание • версия 30.12.2025
+  </footer>
+
+</div>
+
+</body>
+</html>
