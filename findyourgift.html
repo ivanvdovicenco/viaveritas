@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Виа Веритас — Профиль служения</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg: var(--tg-theme-bg-color, #ffffff);
+            --text: var(--tg-theme-text-color, #000000);
+            --hint: var(--tg-theme-hint-color, #999999);
+            --link: var(--tg-theme-link-color, #2481cc);
+            --button: var(--tg-theme-button-color, #2481cc);
+            --button-text: var(--tg-theme-button-text-color, #ffffff);
+            --secondary: var(--tg-theme-secondary-bg-color, #f0f0f0);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+            -webkit-user-select: none;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; margin-bottom: 10px; }
+        .header p { color: var(--hint); font-size: 14px; }
+
+        .card {
+            background-color: var(--secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-text { font-size: 18px; font-weight: 600; margin-bottom: 15px; }
+
+        /* Стили для шкалы 1-5 */
+        .scale-options { display: flex; justify-content: space-between; gap: 5px; }
+        .scale-btn {
+            flex: 1;
+            padding: 12px 5px;
+            border: 1px solid var(--hint);
+            background: var(--bg);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .scale-btn.active { background: var(--button); color: var(--button-text); border-color: var(--button); }
+
+        /* Стили для выбора (Режим/Жизнь) */
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            border: 1px solid var(--hint);
+            background: var(--bg);
+            color: var(--text);
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .option-btn:active, .option-btn.active { background: var(--secondary); border-color: var(--button); }
+
+        .progress {
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+            margin-bottom: 20px;
+        }
+        .progress-fill { height: 100%; background: var(--button); transition: width 0.3s; }
+
+        #result-screen { display: none; }
+        .result-title { font-size: 22px; font-weight: bold; color: var(--link); margin-bottom: 5px; }
+        .result-subtitle { font-size: 16px; margin-bottom: 20px; color: var(--hint); }
+        .result-section { margin-bottom: 20px; border-bottom: 1px solid var(--secondary); padding-bottom: 15px; }
+        .result-section h3 { font-size: 18px; margin-bottom: 10px; }
+
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--button);
+            color: var(--button-text);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .gift-bar {
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 4px;
+            margin: 5px 0 15px;
+            overflow: hidden;
+        }
+        .gift-bar-fill { height: 100%; background: var(--button); }
+        .gift-label { display: flex; justify-content: space-between; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="start-screen">
+        <div class="header">
+            <h1>Профиль служения</h1>
+            <p>Виа Веритас — Кишинев [cite: 1, 227]</p>
+        </div>
+        <div class="card">
+            Этот тест поможет определить ваш духовный дар, естественный режим труда и функцию в жизни. 
+            Результат покажет ваш уникальный архетип из 18 возможных[cite: 4, 10].
+        </div>
+        <button class="btn-main" onclick="startTest()">Начать тест</button>
+    </div>
+
+    <div id="test-screen" style="display: none;">
+        <div class="progress"><div id="progress-fill" class="progress-fill" style="width: 0%;"></div></div>
+        <div id="question-container"></div>
+    </div>
+
+    <div id="result-screen">
+        <div class="header">
+            <div id="res-archetype" class="result-title"></div>
+            <div id="res-gift-mode" class="result-subtitle"></div>
+        </div>
+
+        <div class="result-section">
+            <h3>Ваш профиль [cite: 198, 199]</h3>
+            <div id="res-description"></div>
+        </div>
+
+        <div class="result-section">
+            <h3>Шкала даров [cite: 200]</h3>
+            <div id="gifts-chart"></div>
+        </div>
+
+        <div class="result-section">
+            <h3>Жизнь как служение [cite: 204]</h3>
+            <div id="res-intersection"></div>
+        </div>
+
+        <div class="result-section">
+            <h3>Рекомендованные служения [cite: 205]</h3>
+            <ul id="res-ministries"></ul>
+        </div>
+
+        <div class="card" style="font-size: 13px;">
+            <strong>Важно:</strong> Дар ≠ должность. Это предрасположенность сердца, а не назначение[cite: 185, 187].
+        </div>
+
+        <button class="btn-main" onclick="copyResult()">Скопировать результат</button>
+        <button class="btn-main" style="background: var(--secondary); color: var(--text);" onclick="location.reload()">Пройти заново</button>
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    // Данные из документа
+    const giftsData = {
+        'Апостол': { ids: [1,2,3], score: 0 },
+        'Пророк': { ids: [4,5,6], score: 0 },
+        'Евангелист': { ids: [7,8,9], score: 0 },
+        'Попечитель': { ids: [10,11,12], score: 0 },
+        'Учитель': { ids: [13,14,15], score: 0 },
+        'Служитель': { ids: [16,17,18], score: 0 }
+    };
+
+    const questions = [
+        // Дары (1-18) [cite: 44-63]
+        { id: 1, text: "Мне нравится начинать новое — проекты, инициативы, которых не было.", type: "scale" },
+        { id: 2, text: "Я готов выйти за рамки привычного ради людей, далеких от церкви.", type: "scale" },
+        { id: 3, text: "Меня вдохновляет строить сообщество и идти к видению.", type: "scale" },
+        { id: 4, text: "Я остро чувствую, когда в группе что-то идет не туда духовно.", type: "scale" },
+        { id: 5, text: "Молитва и ходатайство за других приносят мне глубокое удовлетворение.", type: "scale" },
+        { id: 6, text: "Я не могу молчать, когда вижу несоответствие — мне важно говорить правду.", type: "scale" },
+        { id: 7, text: "Мне легко говорить о своей вере с людьми, которые не верят.", type: "scale" },
+        { id: 8, text: "Я регулярно думаю о конкретных людях, которые пока не знают Христа.", type: "scale" },
+        { id: 9, text: "Когда кто-то принимает Христа — это для меня самая большая радость.", type: "scale" },
+        { id: 10, text: "Мне важно знать, как у людей в общине дела по-настоящему.", type: "scale" },
+        { id: 11, text: "Я замечаю, когда кто-то чувствует себя одиноким, и хочу это изменить.", type: "scale" },
+        { id: 12, text: "Я готов долгосрочно сопровождать кого-то в трудный период.", type: "scale" },
+        { id: 13, text: "Мне нравится глубоко изучать Библию и делиться открытиями.", type: "scale" },
+        { id: 14, text: "Я получаю удовольствие, когда объясняю сложное просто и понятно.", type: "scale" },
+        { id: 15, text: "Мне важно, чтобы люди понимали «почему», а не только «что делать».", type: "scale" },
+        { id: 16, text: "Я получаю удовлетворение, когда всё работает без сбоев.", type: "scale" },
+        { id: 17, text: "Мне комфортнее поддерживать за кулисами, чем быть в центре внимания.", type: "scale" },
+        { id: 18, text: "Мне нравится видимый физический результат труда — что можно потрогать.", type: "scale" },
+        
+        // Режим (19-21) [cite: 65-74]
+        { id: 19, text: "Какая роль в команде тебе привычна?", type: "choice", options: [
+            { text: "Вести и нести ответственность (Фронт)", val: "Фронт" },
+            { text: "Надежно делать свою часть (Опора)", val: "Опора" },
+            { text: "Связывать людей между собой (Мост)", val: "Мост" }
+        ]},
+        { id: 20, text: "Какая работа тебя заряжает больше?", type: "choice", options: [
+            { text: "Видимый результат, который могу показать (Фронт)", val: "Фронт" },
+            { text: "Тихая работа, о которой мало кто знает (Опора)", val: "Опора" },
+            { text: "Встречи, разговоры, отношения (Мост)", val: "Мост" }
+        ]},
+        { id: 21, text: "Где ты чувствуешь себя лучше всего?", type: "choice", options: [
+            { text: "Перед группой, с микрофоном (Фронт)", val: "Фронт" },
+            { text: "За кулисами, в подготовке (Опора)", val: "Опора" },
+            { text: "Один-на-один или в малой группе (Мост)", val: "Мост" }
+        ]},
+
+        // Функция (22) [cite: 77-82]
+        { id: 22, text: "Какая функция лучше всего описывает твою деятельность?", type: "choice", options: [
+            { text: "Создание — приношу в мир новое", val: "Создание" },
+            { text: "Возделывание — ращу то, что уже есть", val: "Возделывание" },
+            { text: "Обмен — связываю одно с другим", val: "Обмен" },
+            { text: "Хранение — оберегаю и поддерживаю", val: "Хранение" }
+        ]}
+    ];
+
+    // База текстов архетипов [cite: 87-132]
+    const archetypes = {
+        "АпостолФронт": { name: "Первопроходец", desc: "Начинаешь новое и ведешь за собой. Готов войти туда, где еще ничего нет. [cite: 88]", min: ["Евангелизация (лидер)", "Запуск новых инициатив [cite: 89]"] },
+        "АпостолОпора": { name: "Фундамент", desc: "Строишь не вспышками, а постоянством. Создаешь структуры, на которых держится сообщество. [cite: 90]", min: ["Стратегия и развитие", "Подготовка новых форматов [cite: 91]"] },
+        "АпостолМост": { name: "Связной", desc: "Запускаешь новое через людей и связи. Видишь, как соединить тех, кто порознь. [cite: 92]", min: ["Связь между группами", "Евангелизация через отношения [cite: 93]"] },
+        "ПророкФронт": { name: "Голос", desc: "Говоришь то, что другие боятся. Помогаешь общине видеть правду. [cite: 95]", min: ["Прославление (ведение)", "Ученичество с вызовом [cite: 96]"] },
+        "ПророкОпора": { name: "Молитвенник", desc: "Главное служение — молитва. Поддерживаешь церковь там, где работа невидима. [cite: 97]", min: ["Молитвенное служение", "Ходатайство за церковь [cite: 98]"] },
+        "ПророкМост": { name: "Проводник", desc: "Помогаешь людям самим слышать Бога через чуткое присутствие и вопросы. [cite: 99]", min: ["Менторство", "Ученичество (глубокое) [cite: 100]"] },
+        "ЕвангелистФронт": { name: "Проповедник", desc: "Легко говоришь о вере публично. Твоя жизнь — приглашение многим. [cite: 102]", min: ["Евангелизация (выходы)", "Приглашение новых людей [cite: 103]"] },
+        "ЕвангелистОпора": { name: "Свидетель", desc: "Делишься верой через то, как живешь в повседневности. [cite: 104]", min: ["Свидетельство через жизнь", "Приглашение через отношения [cite: 105]"] },
+        "ЕвангелистМост": { name: "Гостеприимец", desc: "Приводишь людей ко Христу через стол, дружбу и кофе. [cite: 106]", min: ["Прием гостей", "Евангелизация через связи [cite: 107]"] },
+        "ПопечительФронт": { name: "Наставник", desc: "Ведешь людей активно, неся ответственность за их духовный рост. [cite: 109]", min: ["Лидер домашней церкви", "Менторство [cite: 110]"] },
+        "ПопечительОпора": { name: "Опекун", desc: "Замечаешь тех, кого другие упустили. Тихая забота о нуждающихся. [cite: 111]", min: ["Забота и посещение", "Молитва за нужды [cite: 112]"] },
+        "ПопечительМост": { name: "Друг", desc: "Служишь через глубокие отношения один-на-один. Люди открываются тебе. [cite: 114]", min: ["Ученичество 1-на-1", "Менторство [cite: 115]"] },
+        "УчительФронт": { name: "Проповедник-Учитель", desc: "Объясняешь Писание перед группой. Помогаешь видеть Бога яснее. [cite: 117]", min: ["Служение детям (ведение)", "Ведение домашних церквей [cite: 118]"] },
+        "УчительОпора": { name: "Исследователь", desc: "Готовишь глубоко: изучаешь, пишешь. Основа для тех, кто выступает. [cite: 119]", min: ["Подготовка материалов", "Изучение и исследование [cite: 121]"] },
+        "УчительМост": { name: "Объяснитель", desc: "Естественно разбираешь Писание в личном разговоре или малой группе. [cite: 122]", min: ["Ученичество", "Малые группы [cite: 124]"] },
+        "СлужительФронт": { name: "Организатор", desc: "Видишь процесс целиком. Делаешь так, чтобы всё работало. [cite: 127]", min: ["Организация встреч", "Координация служений [cite: 128]"] },
+        "СлужительОпора": { name: "Мастер", desc: "Твои руки делают церковь теплой. Подготовка зала, звук, уют. [cite: 129]", min: ["Техническое служение", "Подготовка зала и уборка [cite: 130]"] },
+        "СлужительМост": { name: "Координатор", desc: "Соединяешь людей и задачи, чтобы никто не остался в стороне. [cite: 131]", min: ["Координация людей", "Гостеприимство [cite: 132]"] }
+    };
+
+    // Пересечения дара и функции [cite: 133-183]
+    const intersections = {
+        "АпостолСоздание": "Твой дар и функция совпадают — работа уже миссионерская по природе. [cite: 136]",
+        "АпостолВозделывание": "Твой дар начинателя может запустить внутри существующего пространства (школы, команды) новую инициативу. [cite: 138]",
+        "АпостолОбмен": "Связывай людей ради Царства: верующих с неверующими, опытных с молодыми. [cite: 140]",
+        "АпостолХранение": "Даже в хранящей работе Бог может положить на сердце начать молитвенную группу или дело милосердия. [cite: 141]",
+        "ПророкСоздание": "Искусство и творчество — твой язык. Через него говорит Бог. [cite: 144]",
+        "ПророкВозделывание": "Пророческое наставничество: растишь людей и вовремя говоришь им правду от Бога. [cite: 147]",
+        "ПророкОбмен": "Ты часто первый, кто слышит, что на самом деле происходит в человеке при встрече. [cite: 149]",
+        "ПророкХранение": "Ты видишь боль тех, кого не видит никто. Твоя молитва за них — настоящее служение. [cite: 151]",
+        "ЕвангелистСоздание": "Твой продукт или творение — приглашение к разговору для тех, до кого не дойдет проповедь. [cite: 153]",
+        "ЕвангелистВозделывание": "Твои ученики или подопечные — твой миссионерский круг. У тебя есть их доверие. [cite: 154]",
+        "ЕвангелистОбмен": "Ты встречаешь сотни людей. Твоя работа — уже миссионерский выход. [cite: 155]",
+        "ЕвангелистХранение": "Ты рядом с людьми в моменты уязвимости. Твое слово о надежде будет первым, что они услышат. [cite: 156]",
+        "ПопечительСоздание": "Ты создаешь пространство (бизнес, дом), в котором людям хорошо. [cite: 158]",
+        "ПопечительВозделывание": "Твоя работа и есть забота о росте других. Твои подопечные — твоя паства. [cite: 160]",
+        "ПопечительОбмен": "Через каждую встречу ты можешь увидеть, кто устал или в беде. Дар работает внутри деятельности. [cite: 162]",
+        "ПопечительХранение": "Эта функция и твой дар — одно и то же. Охранять и ухаживать. [cite: 164]",
+        "УчительСоздание": "Твое творчество по природе педагогическое: книги, программы, объясняющие продукты. [cite: 170]",
+        "УчительВозделывание": "Возможность не только передать знание, но и направить человека к Богу. [cite: 171]",
+        "УчительОбмен": "Способность объяснять сложное просто может служить церкви напрямую. [cite: 173]",
+        "УчительХранение": "Ты объясняешь правила и смыслы новичкам. Это невидимое учительство. [cite: 174]",
+        "СлужительСоздание": "Ты создаешь то, что работает надежно. Внимание к деталям — ценный дар. [cite: 176]",
+        "СлужительВозделывание": "Растишь людей через организацию пространства вокруг них (школа, больница). [cite: 178]",
+        "СлужительОбмен": "Логистика и координация — это служение в действии. [cite: 180]",
+        "СлужительХранение": "Твоя работа и дар — одно. Поддерживать и охранять в центре призвания. [cite: 182]"
+    };
+
+    let currentStep = 0;
+    let modeAnswers = [];
+    let selectedFunction = "";
+
+    function startTest() {
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('test-screen').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = questions[currentStep];
+        const container = document.getElementById('question-container');
+        const progress = ((currentStep) / questions.length) * 100;
+        document.getElementById('progress-fill').style.width = progress + '%';
+
+        let html = `<div class="question-text">${q.text}</div>`;
+
+        if (q.type === 'scale') {
+            html += `<div class="scale-options">`;
+            for (let i = 1; i <= 5; i++) {
+                html += `<button class="scale-btn" onclick="next(${i})">${i}</button>`;
+            }
+            html += `</div><div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--hint)">
+                <span>Совсем не про меня</span><span>Очень сильно про меня</span>
+            </div>`;
+        } else {
+            q.options.forEach(opt => {
+                html += `<button class="option-btn" onclick="next('${opt.val}')">${opt.text}</button>`;
+            });
+        }
+
+        container.innerHTML = html;
+    }
+
+    function next(answer) {
+        // Логика записи ответов
+        if (currentStep < 18) {
+            const giftName = Object.keys(giftsData).find(g => giftsData[g].ids.includes(currentStep + 1));
+            giftsData[giftName].score += answer;
+        } else if (currentStep < 21) {
+            modeAnswers.push(answer);
+        } else {
+            selectedFunction = answer;
+        }
+
+        currentStep++;
+        if (currentStep < questions.length) {
+            showQuestion();
+        } else {
+            calculateResult();
+        }
+    }
+
+    function calculateResult() {
+        // 1. Определяем главный дар
+        let mainGift = Object.keys(giftsData).reduce((a, b) => giftsData[a].score > giftsData[b].score ? a : b);
+        
+        // 2. Определяем режим (самый частый) 
+        const modeCounts = {};
+        modeAnswers.forEach(m => modeCounts[m] = (modeCounts[m] || 0) + 1);
+        let mainMode = modeAnswers[0]; // По умолчанию первый, если все разные 
+        for (let m in modeCounts) { if (modeCounts[m] > (modeCounts[mainMode] || 0)) mainMode = m; }
+
+        // 3. Получаем архетип
+        const archKey = mainGift + mainMode;
+        const arch = archetypes[archKey];
+
+        // 4. Отрисовка
+        document.getElementById('test-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        
+        document.getElementById('res-archetype').innerText = arch.name;
+        document.getElementById('res-gift-mode').innerText = `${mainGift} • ${mainMode}`;
+        document.getElementById('res-description').innerText = arch.desc;
+        
+        // Шкала даров [cite: 200]
+        let giftsHtml = "";
+        for (let g in giftsData) {
+            const percent = (giftsData[g].score / 15) * 100;
+            giftsHtml += `
+                <div class="gift-label"><span>${g}</span><span>${giftsData[g].score}/15</span></div>
+                <div class="gift-bar"><div class="gift-bar-fill" style="width: ${percent}%"></div></div>
+            `;
+        }
+        document.getElementById('gifts-chart').innerHTML = giftsHtml;
+
+        // Пересечение [cite: 204]
+        const interText = intersections[mainGift + selectedFunction] || "Ваш дар проявляется в вашей уникальной деятельности.";
+        document.getElementById('res-intersection').innerHTML = `<strong>${selectedFunction}:</strong> ${interText}`;
+
+        // Служения [cite: 205]
+        document.getElementById('res-ministries').innerHTML = arch.min.map(m => `<li>${m}</li>`).join('');
+    }
+
+    function copyResult() {
+        const archName = document.getElementById('res-archetype').innerText;
+        const giftMode = document.getElementById('res-gift-mode').innerText;
+        const text = `Мой результат теста "Виа Веритас":\nАрхетип: ${archName}\n(${giftMode})\nФункция: ${selectedFunction}\n\n"Дар — это не должность, а предрасположенность сердца".`;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            tg.showAlert("Результат скопирован! Отправьте его своему лидеру.");
+        });
+    }
+</script>
+
+</body>
+</html>
