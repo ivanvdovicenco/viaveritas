@@ -698,11 +698,11 @@
 
         <div class="intro-stats">
             <div class="stat-item">
-                <span class="stat-number">24</span>
-                <span class="stat-label">вопроса</span>
+                <span class="stat-number">36</span>
+                <span class="stat-label">вопросов</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number">~8</span>
+                <span class="stat-number">~12</span>
                 <span class="stat-label">минут</span>
             </div>
             <div class="stat-item">
@@ -757,6 +757,8 @@
         </div>
 
         <div id="archetype-full-card"></div>
+
+        <div id="second-gift-block"></div>
 
         <div class="result-section">
             <div class="section-title">Карта даров</div>
@@ -868,44 +870,61 @@ const QUESTIONS = [
     { id: 17, gift: 'Служитель', text: 'Мне комфортнее поддерживать за кулисами, чем быть в центре внимания', type: 'scale' },
     { id: 18, gift: 'Служитель', text: 'Мне нравится видимый физический результат труда — что можно потрогать', type: 'scale' },
     
-    // Вопросы 19-21: режим
-    { id: 19, text: 'Какая роль в команде тебе привычна?', type: 'choice', options: [
+    // Новые вопросы 19-30: опыт и плод (по 2 на каждый дар)
+    { id: 19, gift: 'Апостол', text: 'Я уже запускал что-то новое — служение, инициативу, группу — чего раньше не было', type: 'scale' },
+    { id: 20, gift: 'Апостол', text: 'Когда я узнаю о людях, до которых никто не доходит, мне трудно успокоиться, пока не сделаю шаг', type: 'scale' },
+    { id: 21, gift: 'Пророк', text: 'Люди обращаются ко мне за молитвой в переломные моменты — они чувствуют, что это поможет', type: 'scale' },
+    { id: 22, gift: 'Пророк', text: 'Мне приходилось говорить кому-то неудобную правду — и потом оказывалось, что это было нужно', type: 'scale' },
+    { id: 23, gift: 'Евангелист', text: 'За последний год я рассказывал о своей вере кому-то неверующему — и это было для меня естественно', type: 'scale' },
+    { id: 24, gift: 'Евангелист', text: 'Когда я узнаю о чьём-то обращении ко Христу — даже чужом — это меня по-настоящему заряжает', type: 'scale' },
+    { id: 25, gift: 'Попечитель', text: 'Люди в трудные периоды часто обращаются именно ко мне — я не знаю почему, просто так получается', type: 'scale' },
+    { id: 26, gift: 'Попечитель', text: 'Я готов отложить свои планы, если узнаю, что кому-то рядом сейчас плохо', type: 'scale' },
+    { id: 27, gift: 'Учитель', text: 'Когда я изучаю Библию, я почти всегда думаю: «как бы объяснить это другому человеку?»', type: 'scale' },
+    { id: 28, gift: 'Учитель', text: 'Люди говорили мне, что мои объяснения Писания помогли им увидеть что-то, чего они раньше не замечали', type: 'scale' },
+    { id: 29, gift: 'Служитель', text: 'Я замечаю организационные сбои раньше других — и у меня сразу появляется идея, как исправить', type: 'scale' },
+    { id: 30, gift: 'Служитель', text: 'Я брался за незаметную работу, которую никто не хотел делать — и делал её хорошо', type: 'scale' },
+
+    // Вопросы 31-33: режим
+    { id: 31, text: 'Какая роль в команде тебе привычна?', type: 'choice', options: [
         { text: 'Вести и нести ответственность', value: 'Фронт' },
         { text: 'Надёжно делать свою часть', value: 'Опора' },
         { text: 'Связывать людей между собой', value: 'Мост' }
     ]},
-    { id: 20, text: 'Какая работа тебя заряжает больше?', type: 'choice', options: [
+    { id: 32, text: 'Какая работа тебя заряжает больше?', type: 'choice', options: [
         { text: 'Видимый результат, который могу показать', value: 'Фронт' },
         { text: 'Тихая работа, о которой мало кто знает', value: 'Опора' },
         { text: 'Встречи, разговоры, отношения', value: 'Мост' }
     ]},
-    { id: 21, text: 'Где ты чувствуешь себя лучше всего?', type: 'choice', options: [
+    { id: 33, text: 'Где ты чувствуешь себя лучше всего?', type: 'choice', options: [
         { text: 'Перед группой, с микрофоном', value: 'Фронт' },
         { text: 'За кулисами, в подготовке', value: 'Опора' },
         { text: 'Один-на-один или в малой группе', value: 'Мост' }
     ]},
     
-    // Вопрос 22: функция
-    { id: 22, text: 'Какая функция лучше всего описывает твою основную деятельность?', type: 'choice', hint: 'Одна профессия может попадать в разные функции — выбери ту, как ты её живёшь', options: [
-        { text: 'Создание — приношу в мир новое', value: 'Создание' },
-        { text: 'Возделывание — ращу то, что уже есть', value: 'Возделывание' },
-        { text: 'Обмен — связываю одно с другим', value: 'Обмен' },
-        { text: 'Хранение — оберегаю и поддерживаю', value: 'Хранение' }
+    // Вопросы 34-36: жизненный контекст (для блока "Жизнь как служение")
+    { id: 34, text: 'Где проходит большая часть твоей недели?', type: 'choice',
+      hint: 'Речь о реальном времени — работа, учёба, дом, что угодно', options: [
+        { text: 'Дома или в небольшом кругу близких', value: 'Дома' },
+        { text: 'На работе среди коллег или клиентов', value: 'Коллеги' },
+        { text: 'В разных местах, много незнакомых людей', value: 'Разные' },
+        { text: 'В основном один — за компьютером, в мастерской, на природе', value: 'Один' }
     ]},
     
-    // Вопрос 23: хобби (мультивыбор 1-3)
-    { id: 23, text: 'Что ты любишь делать помимо работы?', type: 'multi', hint: 'Выбери 1–3 варианта — то, что тебя реально радует', options: [
-        'Кулинария', 'Музыка / пение', 'Спорт', 'Рукоделие', 'Технологии',
-        'Чтение / письмо', 'Приём гостей', 'Работа с детьми', 'Садоводство', 'Путешествия'
+    { id: 35, text: 'Кто главный «получатель» того, что ты делаешь?', type: 'choice',
+      hint: 'Подумай о своей основной деятельности — работе, учёбе или служении', options: [
+        { text: 'Дети или молодёжь', value: 'Дети' },
+        { text: 'Люди в трудной ситуации — больные, нуждающиеся, одинокие', value: 'Уязвимые' },
+        { text: 'Взрослые в профессиональном контексте', value: 'Профессионалы' },
+        { text: 'Вещи, процессы или данные — не люди напрямую', value: 'Вещи' },
+        { text: 'Самые разные люди, постоянно новые', value: 'Разные' }
     ]},
     
-    // Вопрос 24: этап жизни
-    { id: 24, text: 'На каком жизненном этапе ты сейчас?', type: 'choice', options: [
-        { text: 'Студент', value: 'Студент' },
-        { text: 'Молодой взрослый без детей', value: 'Молодой взрослый' },
-        { text: 'Семья с маленькими детьми', value: 'Семья с маленькими' },
-        { text: 'Семья с подросшими детьми', value: 'Семья с подросшими' },
-        { text: 'Старший возраст / пенсия', value: 'Старший возраст' }
+    { id: 36, text: 'Что чаще всего остаётся после твоей работы?', type: 'choice',
+      hint: 'Что ты реально производишь — не на бумаге, а по ощущению', options: [
+        { text: 'Что-то созданное — продукт, текст, проект, событие', value: 'Создал' },
+        { text: 'Что-то улучшенное — то, что уже было, стало лучше', value: 'Улучшил' },
+        { text: 'Знание или навык, переданный другому человеку', value: 'Передал' },
+        { text: 'Человек, которому стало лучше или легче', value: 'Помог' }
     ]}
 ];
 
@@ -1172,8 +1191,8 @@ let testStartTime = null;
 // ============================================
 function startTest() {
     // Рандомизируем вопросы 1-18 (по дарам)
-    const giftQuestions = QUESTIONS.slice(0, 18);
-    const otherQuestions = QUESTIONS.slice(18);
+    const giftQuestions = QUESTIONS.slice(0, 30);
+    const otherQuestions = QUESTIONS.slice(30);
     
     // Перемешиваем вопросы по дарам
     for (let i = giftQuestions.length - 1; i > 0; i--) {
@@ -1211,7 +1230,7 @@ function renderQuestion() {
     
     // Формируем HTML вопроса
     let html = '<div class="question-card fade-in">';
-    html += `<div class="question-number">Вопрос ${currentQuestion + 1} из 24</div>`;
+    html += `<div class="question-number">Вопрос ${currentQuestion + 1} из 36</div>`;
     html += `<div class="question-text">${q.text}</div>`;
     
     if (q.hint) {
@@ -1335,12 +1354,12 @@ function updateNavButtons() {
 function updateProgress() {
     const percent = ((currentQuestion + 1) / questionOrder.length) * 100;
     document.getElementById('progress-fill').style.width = percent + '%';
-    document.getElementById('progress-text').textContent = `${currentQuestion + 1} из 24`;
+    document.getElementById('progress-text').textContent = `${currentQuestion + 1} из 36`;
     
     // Определяем этап
     let stage = 'Дар';
-    if (currentQuestion >= 18 && currentQuestion < 21) stage = 'Стиль';
-    if (currentQuestion >= 21) stage = 'Дело';
+    if (currentQuestion >= 30 && currentQuestion < 33) stage = 'Стиль';
+    if (currentQuestion >= 33) stage = 'Дело';
     document.getElementById('stage-label').textContent = stage;
 }
 
@@ -1387,7 +1406,7 @@ function calculateResults() {
         'Служитель': 0
     };
     
-    questionOrder.slice(0, 18).forEach(q => {
+    questionOrder.slice(0, 30).forEach(q => {
         const score = answers[q.id] || 0;
         giftScores[q.gift] += score;
     });
@@ -1396,9 +1415,14 @@ function calculateResults() {
     let topGift = Object.keys(giftScores).reduce((a, b) => 
         giftScores[a] > giftScores[b] ? a : b
     );
+
+    // Определяем второй дар
+    const sortedGifts = Object.keys(giftScores).sort((a, b) => giftScores[b] - giftScores[a]);
+    const secondGift = sortedGifts[1];
+    const gapBetweenTop = giftScores[topGift] - giftScores[secondGift];
     
     // Определяем режим (чаще всего встречается)
-    const modeAnswers = [answers[19], answers[20], answers[21]];
+    const modeAnswers = [answers[31], answers[32], answers[33]];
     const modeCounts = {};
     modeAnswers.forEach(m => {
         if (m) modeCounts[m] = (modeCounts[m] || 0) + 1;
@@ -1410,12 +1434,36 @@ function calculateResults() {
         }
     }
     
-    // Функция жизни
-    const lifeFunction = answers[22];
-    
-    // Хобби и этап
-    const hobbies = answers[23] || [];
-    const lifeStage = answers[24];
+    // Выводим функцию из трёх ответов о контексте
+    const funcScores = { 'Создание': 0, 'Возделывание': 0, 'Обмен': 0, 'Хранение': 0 };
+
+    const q34map = {
+        'Дома':    'Хранение',
+        'Коллеги': 'Обмен',
+        'Разные':  'Обмен',
+        'Один':    'Создание'
+    };
+    const q35map = {
+        'Дети':          'Возделывание',
+        'Уязвимые':      'Хранение',
+        'Профессионалы': 'Обмен',
+        'Вещи':          'Создание',
+        'Разные':        'Обмен'
+    };
+    const q36map = {
+        'Создал':  'Создание',
+        'Улучшил': 'Возделывание',
+        'Передал': 'Возделывание',
+        'Помог':   'Хранение'
+    };
+
+    if (answers[34] && q34map[answers[34]]) funcScores[q34map[answers[34]]] += 1;
+    if (answers[35] && q35map[answers[35]]) funcScores[q35map[answers[35]]] += 1;
+    if (answers[36] && q36map[answers[36]]) funcScores[q36map[answers[36]]] += 1;
+
+    const lifeFunction = Object.keys(funcScores).reduce((a, b) =>
+        funcScores[a] >= funcScores[b] ? a : b
+    );
     
     // Архетип
     const archetypeKey = topGift + topMode;
@@ -1428,6 +1476,8 @@ function calculateResults() {
     // Сохраняем результат
     const result = {
         gift: topGift,
+        secondGift,
+        gapBetweenTop,
         mode: topMode,
         archetype: archetype.name,
         archetypeKey,
@@ -1435,8 +1485,6 @@ function calculateResults() {
         ministries: archetype.ministries,
         lifeFunction,
         intersection,
-        hobbies,
-        lifeStage,
         giftScores,
         timestamp: Date.now(),
         duration: Math.round((Date.now() - testStartTime) / 1000)
@@ -1494,6 +1542,32 @@ function displayResults(result) {
         cardHtml += `</div>`;
         document.getElementById('archetype-full-card').innerHTML = cardHtml;
     }
+
+    // Блок второго дара / неопределённости
+    const secondGiftData = GIFTS[result.secondGift];
+    const secondArchetypeKey = result.secondGift + result.mode;
+    const secondArchetype = ARCHETYPES[secondArchetypeKey];
+    let secondGiftHtml = '';
+
+    if (result.gapBetweenTop <= 3 && secondArchetype) {
+        // Близкие дары — показываем блок неопределённости
+        secondGiftHtml = `<div class="result-section" style="border-left: 4px solid ${secondGiftData.color}; background: ${secondGiftData.bg};">`;
+        secondGiftHtml += `<div class="section-title" style="color:${secondGiftData.color};">Второй дар — ${result.secondGift} (${result.giftScores[result.secondGift]}/25)</div>`;
+        secondGiftHtml += `<div class="section-content">`;
+        secondGiftHtml += `<strong>Твои два ведущих дара очень близки — это нормально.</strong> Многие люди живут на пересечении. `;
+        secondGiftHtml += `Если профиль <em>${result.archetype}</em> резонирует не полностью, попробуй прочитать описание <strong>${secondArchetype.name}</strong> (${result.secondGift} · ${result.mode}):<br><br>`;
+        secondGiftHtml += secondArchetype.desc;
+        secondGiftHtml += `<br><br><em>Покажи оба результата кому-то, кто тебя хорошо знает. Его мнение точнее теста.</em>`;
+        secondGiftHtml += `</div></div>`;
+    } else if (secondArchetype) {
+        // Дары разошлись — показываем просто второй дар кратко
+        secondGiftHtml = `<div class="result-section">`;
+        secondGiftHtml += `<div class="section-title">Вторичный дар — ${result.secondGift}</div>`;
+        secondGiftHtml += `<div class="section-content">`;
+        secondGiftHtml += `<strong>${secondArchetype.name}</strong> (${result.secondGift} · ${result.mode}) — ${secondArchetype.desc}`;
+        secondGiftHtml += `</div></div>`;
+    }
+    document.getElementById('second-gift-block').innerHTML = secondGiftHtml;
     
     // Карта даров
     let charHtml = '';
@@ -1503,13 +1577,13 @@ function displayResults(result) {
     
     sortedGifts.forEach(gift => {
         const score = result.giftScores[gift];
-        const percent = (score / 15) * 100;
+        const percent = (score / 25) * 100;
         const color = GIFTS[gift].color;
         
         charHtml += '<div class="gift-bar slide-in">';
         charHtml += '<div class="gift-header">';
         charHtml += `<span class="gift-name">${gift}</span>`;
-        charHtml += `<span class="gift-score">${score}/15</span>`;
+        charHtml += `<span class="gift-score">${score}/25</span>`;
         charHtml += '</div>';
         charHtml += '<div class="gift-track">';
         charHtml += `<div class="gift-fill" style="width: 0%; background: ${color};" data-width="${percent}%"></div>`;
@@ -1527,10 +1601,7 @@ function displayResults(result) {
     }, 300);
     
     // Жизнь как служение
-    let lifeText = `<strong>${result.lifeFunction}:</strong> ${result.intersection}`;
-    if (result.hobbies.length > 0) {
-        lifeText += `<br><br>Твои увлечения (${result.hobbies.join(', ').toLowerCase()}) — уже готовый мост к людям вне церкви.`;
-    }
+    const lifeText = `<strong>${result.lifeFunction}:</strong> ${result.intersection}`;
     document.getElementById('result-life').innerHTML = lifeText;
     
     // Служения
@@ -1559,8 +1630,8 @@ function copyResult() {
     text += `📊 Карта даров:\n`;
     Object.keys(r.giftScores).sort((a, b) => r.giftScores[b] - r.giftScores[a]).forEach(gift => {
         const score = r.giftScores[gift];
-        const bars = '▰'.repeat(Math.round(score / 15 * 10)) + '▱'.repeat(10 - Math.round(score / 15 * 10));
-        text += `${bars} ${gift} ${score}/15\n`;
+        const bars = '▰'.repeat(Math.round(score / 25 * 10)) + '▱'.repeat(10 - Math.round(score / 25 * 10));
+        text += `${bars} ${gift} ${score}/25\n`;
     });
     
     text += `\n🌍 Функция в жизни: ${r.lifeFunction}\n\n`;
@@ -1697,7 +1768,7 @@ function saveAsImage() {
     
     Object.keys(r.giftScores).sort((a, b) => r.giftScores[b] - r.giftScores[a]).forEach(gift => {
         const score = r.giftScores[gift];
-        const percent = score / 15;
+        const percent = score / 25;
         const barWidth = 600;
         
         // Название
