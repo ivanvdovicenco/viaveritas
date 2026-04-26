@@ -154,6 +154,128 @@
             line-height: 1.6;
         }
 
+        /* Разворачиваемая методология на старте */
+        .intro-details {
+            background: var(--secondary);
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .intro-details summary {
+            padding: 14px 18px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .intro-details summary::-webkit-details-marker { display: none; }
+
+        .intro-details summary::after {
+            content: '▾';
+            color: var(--hint);
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .intro-details[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .intro-details-content {
+            padding: 4px 18px 18px;
+            font-size: 13px;
+            line-height: 1.65;
+            color: var(--text);
+        }
+
+        .intro-details-content p {
+            margin-bottom: 10px;
+        }
+
+        .intro-details-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Блок стилей выражения в результате */
+        .styles-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 14px 0 16px;
+        }
+
+        .style-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .style-label {
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 130px;
+        }
+
+        .style-track {
+            flex: 1;
+            height: 8px;
+            background: var(--bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .style-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .style-score {
+            font-size: 12px;
+            color: var(--hint);
+            min-width: 36px;
+            text-align: right;
+        }
+
+        .style-interpretation {
+            margin-top: 14px;
+            padding: 14px 16px;
+            background: var(--bg);
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .style-interpretation strong {
+            color: var(--link);
+        }
+
+        /* Блок сопутствующих даров */
+        .related-gifts {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: var(--bg);
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .related-gifts-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--hint);
+            margin-bottom: 6px;
+        }
+
         /* ============================================
            ПРОГРЕСС
            ============================================ */
@@ -693,26 +815,37 @@
 
         <p class="intro-text">
             <strong>Бог уже одарил тебя для служения.</strong><br>
-            Этот тест помогает увидеть, каким даром — и как он проявляется в твоей повседневной жизни.
+            Этот тест помогает увидеть, к какой функции в Теле Бог тебя расположил — и как этот дар уже работает в твоей повседневной жизни.
         </p>
 
         <div class="intro-stats">
             <div class="stat-item">
-                <span class="stat-number">36</span>
-                <span class="stat-label">вопросов</span>
+                <span class="stat-number">44</span>
+                <span class="stat-label">вопроса</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number">~12</span>
+                <span class="stat-number">~15</span>
                 <span class="stat-label">минут</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number">72</span>
-                <span class="stat-label">профиля</span>
+                <span class="stat-number">18</span>
+                <span class="stat-label">архетипов</span>
             </div>
         </div>
 
+        <details class="intro-details">
+            <summary>Что важно понимать о тесте</summary>
+            <div class="intro-details-content">
+                <p><strong>Это категории функций, а не закрытый список даров.</strong> Писание не даёт исчерпывающего перечня — оно даёт несколько разных списков (Еф. 4:11; Рим. 12:6-8; 1 Кор. 12:8-10, 28; 1 Пет. 4:10-11), и они между собой не совпадают. Поэтому задача не «найти свой пункт», а узнать, к какой функции в Теле ты расположен.</p>
+                <p><strong>Шесть категорий.</strong> Пять из Еф. 4:11 — Апостол, Пророк, Евангелист, Попечитель, Учитель — плюс шестая, Служитель, потому что διακονία как отдельная функция настолько ясно проходит через все списки (Рим. 12:7; 1 Кор. 12:28; 1 Пет. 4:11), что не включить её было бы искусственно.</p>
+                <p><strong>«Апостол» — это функция, не авторитет.</strong> Авторитет Двенадцати закрыт. Но апостольская функция — расположенность сердца идти туда, где ещё ничего нет, — продолжается. То же справедливо для пророческой, евангельской, пастырской и учительской функций: это способы, которыми Бог расставляет людей в Теле, а не должности.</p>
+                <p><strong>Внутри категорий живут конкретные дары</strong> — милосердие, раздаяние, гостеприимство, увещание, вера, различение. Тест покажет твою основную функцию, режим, в котором ты её несёшь, и стиль, через который она проявляется.</p>
+                <p><strong>Тест — это начало разговора, не диагноз.</strong> Он измеряет твоё самовосприятие. Дар нуждается в подтверждении общиной — покажи результат лидеру или ментору.</p>
+            </div>
+        </details>
+
         <div class="note-card">
-            💡 <strong>Это не экзамен.</strong> Нет правильных или неправильных ответов. Отвечай так, как есть сейчас, а не как "должно быть".
+            💡 <strong>Это не экзамен.</strong> Нет правильных или неправильных ответов. Отвечай так, как есть сейчас, а не как «должно быть» — и желательно исходя из последних 6-12 месяцев, а не сегодняшнего настроения.
         </div>
 
         <button class="btn btn-primary" onclick="startTest()">Начать тест</button>
@@ -725,7 +858,7 @@
         <div class="progress-wrapper">
             <div class="progress-header">
                 <span class="progress-stage" id="stage-label">Дар</span>
-                <span class="progress-counter" id="progress-text">1 из 24</span>
+                <span class="progress-counter" id="progress-text">1 из 44</span>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
@@ -757,6 +890,8 @@
         </div>
 
         <div id="archetype-full-card"></div>
+
+        <div id="style-block"></div>
 
         <div id="second-gift-block"></div>
 
@@ -847,10 +982,14 @@ const GIFTS = {
 };
 
 // ============================================
-// ДАННЫЕ: ВОПРОСЫ (24)
+// ДАННЫЕ: ВОПРОСЫ (44)
+// 1-30: дар (рандомизируются)
+// 31-33: режим
+// 34-36: контекст
+// 37-44: стиль выражения (рандомизируются)
 // ============================================
 const QUESTIONS = [
-    // Вопросы 1-18: шкала 1-5 (будут рандомизированы)
+    // Вопросы 1-18: предпочтение (по 3 на каждый дар)
     { id: 1, gift: 'Апостол', text: 'Мне нравится начинать новое — проекты, инициативы, которых не было', type: 'scale' },
     { id: 2, gift: 'Апостол', text: 'Я готов выйти за рамки привычного ради людей, далёких от церкви', type: 'scale' },
     { id: 3, gift: 'Апостол', text: 'Меня вдохновляет строить сообщество и идти к видению', type: 'scale' },
@@ -925,7 +1064,19 @@ const QUESTIONS = [
         { text: 'Что-то улучшенное — то, что уже было, стало лучше', value: 'Улучшил' },
         { text: 'Знание или навык, переданный другому человеку', value: 'Передал' },
         { text: 'Человек, которому стало лучше или легче', value: 'Помог' }
-    ]}
+    ]},
+
+    // Вопросы 37-44: стиль выражения дара (по 2 на каждый стиль)
+    // Эти вопросы не определяют главный дар, а показывают, через какой стиль он проявляется.
+    // Стили: милосердие · раздаяние · гостеприимство · увещание (Рим. 12:8; 1 Пет. 4:9)
+    { id: 37, style: 'Милосердие', text: 'Когда кто-то страдает, моё первое побуждение — быть рядом и сопереживать, а не решать или объяснять', type: 'scale' },
+    { id: 38, style: 'Милосердие', text: 'Я долго ношу в сердце чужую боль — она не отпускает меня после первого разговора', type: 'scale' },
+    { id: 39, style: 'Раздаяние', text: 'Мне приносит особую радость отдавать — деньги, ресурсы, возможности — и я делаю это целенаправленно, а не «из остатков»', type: 'scale' },
+    { id: 40, style: 'Раздаяние', text: 'Я часто думаю, как мои ресурсы могут служить Царству — кому, сколько, когда', type: 'scale' },
+    { id: 41, style: 'Гостеприимство', text: 'Мне естественно открывать свой дом или пространство — для друзей, гостей, людей в нужде', type: 'scale' },
+    { id: 42, style: 'Гостеприимство', text: 'Я часто думаю, как сделать встречу или место тёплым для тех, кто пришёл', type: 'scale' },
+    { id: 43, style: 'Увещание', text: 'Я часто оказываюсь тем, кто ободряет других — нахожу нужное слово в трудный момент', type: 'scale' },
+    { id: 44, style: 'Увещание', text: 'Мне легко увидеть, что человек делает правильно, и сказать ему об этом — так, что он этому верит', type: 'scale' }
 ];
 
 // ============================================
@@ -1179,6 +1330,67 @@ const INTERSECTIONS = {
 };
 
 // ============================================
+// ДАННЫЕ: СТИЛИ ВЫРАЖЕНИЯ ДАРА
+// Стили описывают, через какие конкретные дары
+// (Рим. 12:8; 1 Пет. 4:9) проявляется основная функция.
+// ============================================
+const STYLES = {
+    'Милосердие': {
+        color: '#B94040',
+        scripture: 'Рим. 12:8 — «...кто оказывает милость, с радушием»',
+        short: 'сопереживание в боли'
+    },
+    'Раздаяние': {
+        color: '#1D9E75',
+        scripture: 'Рим. 12:8 — «...раздаватель ли, [раздавай] в простоте»',
+        short: 'целенаправленная щедрость'
+    },
+    'Гостеприимство': {
+        color: '#BA7517',
+        scripture: '1 Пет. 4:9 — «Будьте страннолюбивы друг ко другу без ропота»',
+        short: 'открытое пространство'
+    },
+    'Увещание': {
+        color: '#7F77DD',
+        scripture: 'Рим. 12:8 — «...увещатель ли, [увещевай]»',
+        short: 'ободрение к месту'
+    }
+};
+
+// Интерпретации: как стиль окрашивает каждый из шести даров
+const STYLE_INTERSECTIONS = {
+    'АпостолМилосердие': 'Ты идёшь в новое ради тех, кому больно. Твой апостольский импульс — не просто построить, а добраться до тех, кого боль удерживает на обочине.',
+    'АпостолРаздаяние': 'Ты запускаешь новое через ресурсы. Твоя щедрость становится топливом для миссии — деньги, доступ, возможности открывают двери, которые не открыло бы слово.',
+    'АпостолГостеприимство': 'Новое начинается у тебя со стола или порога. Дом, открытый для незнакомых, — это уже миссионерский акт.',
+    'АпостолУвещание': 'Ты запускаешь новое через людей, которых поднимаешь. Видишь потенциал в тех, в ком другие его не видят, и отправляешь их.',
+
+    'ПророкМилосердие': 'Твоё пророческое слово растёт из боли за людей. Ты обличаешь не из правоты, а из плача — и это слышно.',
+    'ПророкРаздаяние': 'Твоё ходатайство переходит в действие. Ты не только молишься о нужде — ты её закрываешь, и это часть твоего пророческого служения.',
+    'ПророкГостеприимство': 'Дом для тебя — это место, где правда говорится за столом. Люди приходят к тебе и слышат то, чего им не скажут где-то ещё.',
+    'ПророкУвещание': 'Твоё пророческое слово больше поднимает, чем рушит. Ты называешь в человеке Бога раньше, чем он сам Его в себе увидел.',
+
+    'ЕвангелистМилосердие': 'Ты благовествуешь через сострадание. Люди слышат от тебя Евангелие, потому что сначала почувствовали, что ты видишь их боль.',
+    'ЕвангелистРаздаяние': 'Ты благовествуешь руками. Помощь, дары, материальная забота открывают уши прежде слов — и слова потом приходят естественно.',
+    'ЕвангелистГостеприимство': 'Стол — твой главный миссионерский инструмент. Многие услышат о Христе у тебя дома прежде, чем где-либо ещё.',
+    'ЕвангелистУвещание': 'Ты благовествуешь через ободрение, не убеждение. Поднимаешь человека — и в этом подъёме открывается место для Евангелия.',
+
+    'ПопечительМилосердие': 'Твоё попечение и есть милосердие в чистом виде. Ты идёшь к боли, не отворачиваясь, и не торопишься «решить» её — просто остаёшься рядом.',
+    'ПопечительРаздаяние': 'Твоя забота не только эмоциональная — она материальная. Ты помогаешь не только разговором, но и тем, что можно потрогать.',
+    'ПопечительГостеприимство': 'Твой дом — это убежище. Люди в кризисе находят у тебя не только разговор, но и место, где можно быть.',
+    'ПопечительУвещание': 'Твоё пастырство выражается в ободрении. Ты не контролируешь — возвращаешь людям веру в себя через слово к месту.',
+
+    'УчительМилосердие': 'Ты учишь не «материал», а человека. Видишь, кому трудно, и подстраиваешься под его темп — это редкое сочетание глубины и чуткости.',
+    'УчительРаздаяние': 'Ты делишься знанием щедро. Отдаёшь время, ресурсы, материалы — без расчёта и без чувства, что что-то теряешь.',
+    'УчительГостеприимство': 'Ты учишь у себя дома или за столом. Малая группа в твоей гостиной — это и есть твоё главное учительство.',
+    'УчительУвещание': 'Твоё учение поднимает. Ты не только объясняешь — ты говоришь человеку «ты можешь это понять», и он начинает видеть себя так.',
+
+    'СлужительМилосердие': 'Твоё служение — это руки, идущие к боли. Ты делаешь не «работу», а заботу через работу.',
+    'СлужительРаздаяние': 'Ты служишь через щедрость. Отдаёшь время, силы, ресурсы целенаправленно — не «из остатков», а как главное.',
+    'СлужительГостеприимство': 'Твоё служение часто принимает форму открытого дома или пространства. Ты создаёшь место, в котором другим хорошо.',
+    'СлужительУвещание': 'Ты служишь словом не реже, чем руками. Твоё ободрение поддерживает тех, кто впереди, и часто без него они бы не выдержали.'
+};
+
+// ============================================
 // СОСТОЯНИЕ ТЕСТА
 // ============================================
 let currentQuestion = 0;
@@ -1190,17 +1402,24 @@ let testStartTime = null;
 // ФУНКЦИИ: НАЧАЛО ТЕСТА
 // ============================================
 function startTest() {
-    // Рандомизируем вопросы 1-18 (по дарам)
-    const giftQuestions = QUESTIONS.slice(0, 30);
-    const otherQuestions = QUESTIONS.slice(30);
-    
+    // Разделяем вопросы на блоки
+    const giftQuestions = QUESTIONS.slice(0, 30);        // 1-30: дар
+    const middleQuestions = QUESTIONS.slice(30, 36);     // 31-36: режим + контекст
+    const expressionQuestions = QUESTIONS.slice(36);     // 37-44: стиль выражения
+
     // Перемешиваем вопросы по дарам
     for (let i = giftQuestions.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [giftQuestions[i], giftQuestions[j]] = [giftQuestions[j], giftQuestions[i]];
     }
-    
-    questionOrder = [...giftQuestions, ...otherQuestions];
+
+    // Перемешиваем вопросы по стилю выражения
+    for (let i = expressionQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [expressionQuestions[i], expressionQuestions[j]] = [expressionQuestions[j], expressionQuestions[i]];
+    }
+
+    questionOrder = [...giftQuestions, ...middleQuestions, ...expressionQuestions];
     
     // Инициализация ответов
     answers = {};
@@ -1230,7 +1449,7 @@ function renderQuestion() {
     
     // Формируем HTML вопроса
     let html = '<div class="question-card fade-in">';
-    html += `<div class="question-number">Вопрос ${currentQuestion + 1} из 36</div>`;
+    html += `<div class="question-number">Вопрос ${currentQuestion + 1} из ${questionOrder.length}</div>`;
     html += `<div class="question-text">${q.text}</div>`;
     
     if (q.hint) {
@@ -1354,12 +1573,13 @@ function updateNavButtons() {
 function updateProgress() {
     const percent = ((currentQuestion + 1) / questionOrder.length) * 100;
     document.getElementById('progress-fill').style.width = percent + '%';
-    document.getElementById('progress-text').textContent = `${currentQuestion + 1} из 36`;
-    
+    document.getElementById('progress-text').textContent = `${currentQuestion + 1} из ${questionOrder.length}`;
+
     // Определяем этап
     let stage = 'Дар';
-    if (currentQuestion >= 30 && currentQuestion < 33) stage = 'Стиль';
-    if (currentQuestion >= 33) stage = 'Дело';
+    if (currentQuestion >= 30 && currentQuestion < 33) stage = 'Режим';
+    else if (currentQuestion >= 33 && currentQuestion < 36) stage = 'Дело';
+    else if (currentQuestion >= 36) stage = 'Стиль';
     document.getElementById('stage-label').textContent = stage;
 }
 
@@ -1410,6 +1630,27 @@ function calculateResults() {
         const score = answers[q.id] || 0;
         giftScores[q.gift] += score;
     });
+
+    // Подсчитываем баллы по стилям выражения (вопросы 37-44)
+    const styleScores = {
+        'Милосердие': 0,
+        'Раздаяние': 0,
+        'Гостеприимство': 0,
+        'Увещание': 0
+    };
+    questionOrder.forEach(q => {
+        if (q.style && answers[q.id]) {
+            styleScores[q.style] += answers[q.id];
+        }
+    });
+
+    // Определяем ведущий стиль (макс 10 за стиль: 2 вопроса по 5)
+    const topStyle = Object.keys(styleScores).reduce((a, b) =>
+        styleScores[a] > styleScores[b] ? a : b
+    );
+    const sortedStyles = Object.keys(styleScores).sort((a, b) => styleScores[b] - styleScores[a]);
+    const secondStyle = sortedStyles[1];
+    const styleGap = styleScores[topStyle] - styleScores[secondStyle];
     
     // Определяем главный дар
     let topGift = Object.keys(giftScores).reduce((a, b) => 
@@ -1486,6 +1727,10 @@ function calculateResults() {
         lifeFunction,
         intersection,
         giftScores,
+        topStyle,
+        secondStyle,
+        styleGap,
+        styleScores,
         timestamp: Date.now(),
         duration: Math.round((Date.now() - testStartTime) / 1000)
     };
@@ -1542,6 +1787,71 @@ function displayResults(result) {
         cardHtml += `</div>`;
         document.getElementById('archetype-full-card').innerHTML = cardHtml;
     }
+
+    // Блок стиля выражения
+    let styleHtml = '';
+    if (result.topStyle && STYLES[result.topStyle]) {
+        const topStyleData = STYLES[result.topStyle];
+        const styleKey = result.gift + result.topStyle;
+        const styleInterp = STYLE_INTERSECTIONS[styleKey];
+        const maxStyleScore = 10; // 2 вопроса × 5 баллов
+
+        styleHtml = `<div class="result-section">`;
+        styleHtml += `<div class="section-title">Стиль выражения</div>`;
+        styleHtml += `<div class="section-content">`;
+        styleHtml += `Через какой конкретный дар проявляется твоя основная функция:`;
+        styleHtml += `</div>`;
+
+        // Шкалы по всем стилям
+        styleHtml += `<div class="styles-grid">`;
+        const sortedStyles = Object.keys(result.styleScores).sort((a, b) =>
+            result.styleScores[b] - result.styleScores[a]
+        );
+        sortedStyles.forEach(style => {
+            const score = result.styleScores[style];
+            const percent = (score / maxStyleScore) * 100;
+            const color = STYLES[style].color;
+            styleHtml += `<div class="style-row">`;
+            styleHtml += `<span class="style-label" style="color:${color};">${style}</span>`;
+            styleHtml += `<div class="style-track"><div class="style-fill" style="width:0%; background:${color};" data-width="${percent}%"></div></div>`;
+            styleHtml += `<span class="style-score">${score}/${maxStyleScore}</span>`;
+            styleHtml += `</div>`;
+        });
+        styleHtml += `</div>`;
+
+        // Интерпретация
+        if (styleInterp) {
+            styleHtml += `<div class="style-interpretation">`;
+            styleHtml += `<strong>${result.gift} · ${result.topStyle}.</strong> ${styleInterp}`;
+            styleHtml += `</div>`;
+        }
+
+        // Если разрыв маленький — упомянуть второй стиль
+        if (result.styleGap <= 2 && result.secondStyle) {
+            const secondStyleKey = result.gift + result.secondStyle;
+            const secondInterp = STYLE_INTERSECTIONS[secondStyleKey];
+            if (secondInterp) {
+                styleHtml += `<div class="style-interpretation" style="margin-top:8px; opacity:0.85;">`;
+                styleHtml += `<strong>Также сильно: ${result.secondStyle}.</strong> ${secondInterp}`;
+                styleHtml += `</div>`;
+            }
+        }
+
+        // Сопутствующие дары — отсылка к карточке архетипа
+        styleHtml += `<div class="related-gifts">`;
+        styleHtml += `<div class="related-gifts-label">📖 Внутри категории</div>`;
+        styleHtml += `Категории APEST + Служитель — это родовые функции. Внутри них живут конкретные дары: милосердие, раздаяние, гостеприимство, увещание, вера, различение, слово мудрости. Те из них, которые чаще встречаются в твоём профиле, перечислены в карточке выше («Дары Писания»). Тест не охватывает всё — манифестационные дары (вера в кризисе, различение в моменте, исцеление) проявляются ситуативно и не ловятся самоотчётом.`;
+        styleHtml += `</div>`;
+        styleHtml += `</div>`;
+    }
+    document.getElementById('style-block').innerHTML = styleHtml;
+
+    // Анимация шкал стилей
+    setTimeout(() => {
+        document.querySelectorAll('.style-fill').forEach(bar => {
+            bar.style.width = bar.getAttribute('data-width');
+        });
+    }, 400);
 
     // Блок второго дара / неопределённости
     const secondGiftData = GIFTS[result.secondGift];
@@ -1636,6 +1946,15 @@ function copyResult() {
     
     text += `\n🌍 Функция в жизни: ${r.lifeFunction}\n\n`;
     text += `💡 Как мой дар уже работает:\n${r.intersection}\n\n`;
+
+    if (r.topStyle) {
+        text += `🎨 Стиль выражения: ${r.topStyle}\n`;
+        const styleKey = r.gift + r.topStyle;
+        if (STYLE_INTERSECTIONS[styleKey]) {
+            text += `${STYLE_INTERSECTIONS[styleKey]}\n\n`;
+        }
+    }
+
     text += `🛠 Служения для старта:\n`;
     r.ministries.forEach(m => text += `• ${m}\n`);
     text += `\n⚠️ Важно помнить:\n`;
