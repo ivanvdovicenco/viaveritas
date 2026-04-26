@@ -11,28 +11,33 @@
            ============================================ */
         :root {
             --bg: var(--tg-theme-bg-color, #ffffff);
-            --text: var(--tg-theme-text-color, #000000);
-            --hint: var(--tg-theme-hint-color, #999999);
-            --link: var(--tg-theme-link-color, #2481cc);
-            --button: var(--tg-theme-button-color, #2481cc);
+            --text: var(--tg-theme-text-color, #1a1a1a);
+            --hint: var(--tg-theme-hint-color, #888888);
+            /* Бренд Via Veritas — оранжевый */
+            --link: #ff880d;
+            --button: var(--tg-theme-button-color, #ff880d);
             --button-text: var(--tg-theme-button-text-color, #ffffff);
-            --secondary: var(--tg-theme-secondary-bg-color, #f4f4f4);
-            
-            /* Цвета даров */
-            --color-apostle: #7F77DD;
-            --color-prophet: #D85A30;
-            --color-evangelist: #1D9E75;
-            --color-shepherd: #BA7517;
-            --color-teacher: #534AB7;
-            --color-servant: #3B6D11;
-            
+            --secondary: var(--tg-theme-secondary-bg-color, #f9f9f9);
+
+            /* Палитра Via Veritas */
+            --brand:       #ff880d;
+            --brand-light: #fff3e6;
+
+            /* Цвета даров — из палитры церкви */
+            --color-apostle:    #b49cff;
+            --color-prophet:    #f87b4f;
+            --color-evangelist: #62bbbf;
+            --color-shepherd:   #c1946b;
+            --color-teacher:    #768f93;
+            --color-servant:    #d3d322;
+
             /* Фоны даров */
-            --bg-apostle: #EEEDFE;
-            --bg-prophet: #FAECE7;
-            --bg-evangelist: #E1F5EE;
-            --bg-shepherd: #FAEEDA;
-            --bg-teacher: #EEEDFE;
-            --bg-servant: #EAF3DE;
+            --bg-apostle:    #f0ecff;
+            --bg-prophet:    #fdf0ec;
+            --bg-evangelist: #e6f6f6;
+            --bg-shepherd:   #f7efe8;
+            --bg-teacher:    #edf1f2;
+            --bg-servant:    #f5f5d5;
         }
 
         * {
@@ -87,16 +92,13 @@
             animation: fadeIn 0.5s ease-out;
         }
 
-        .header-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            background: linear-gradient(135deg, var(--color-apostle), var(--color-evangelist));
-            border-radius: 50%;
+        .header-logo {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
         }
 
         .header h1 {
@@ -145,8 +147,8 @@
         }
 
         .note-card {
-            background: var(--bg-apostle);
-            border-left: 4px solid var(--color-apostle);
+            background: var(--brand-light);
+            border-left: 4px solid var(--brand);
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
@@ -256,26 +258,6 @@
             color: var(--link);
         }
 
-        /* Блок сопутствующих даров */
-        .related-gifts {
-            margin-top: 12px;
-            padding: 12px 14px;
-            background: var(--bg);
-            border-radius: 10px;
-            font-size: 13px;
-            line-height: 1.6;
-            color: var(--text);
-        }
-
-        .related-gifts-label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--hint);
-            margin-bottom: 6px;
-        }
-
         /* ============================================
            ПРОГРЕСС
            ============================================ */
@@ -311,7 +293,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--color-apostle), var(--color-evangelist));
+            background: linear-gradient(90deg, var(--brand), #ffb347);
             border-radius: 10px;
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -578,8 +560,8 @@
         }
 
         .result-section.highlight {
-            background: var(--bg-shepherd);
-            border-left: 4px solid var(--color-shepherd);
+            background: var(--brand-light);
+            border-left: 4px solid var(--brand);
         }
 
         .section-title {
@@ -693,8 +675,8 @@
         }
 
         .btn-share {
-            background: var(--bg-evangelist);
-            color: var(--color-evangelist);
+            background: var(--brand-light);
+            color: var(--brand);
         }
 
         .btn-restart {
@@ -752,15 +734,15 @@
             opacity: 0.55;
         }
 
-        .archetype-section.strength .archetype-section-label { color: #2a7a4f; }
-        .archetype-section.danger .archetype-section-label { color: #b94040; }
-        .archetype-section.growth .archetype-section-label { color: #6b52c8; }
-        .archetype-section.gifts .archetype-section-label { color: #5a6e8a; }
+        .archetype-section.strength .archetype-section-label { color: #62bbbf; }
+        .archetype-section.danger .archetype-section-label { color: #f87b4f; }
+        .archetype-section.growth .archetype-section-label { color: #b49cff; }
+        .archetype-section.gifts .archetype-section-label { color: #768f93; }
 
-        .archetype-section.strength { border-left: 3px solid #2a7a4f; }
-        .archetype-section.danger { border-left: 3px solid #b94040; }
-        .archetype-section.growth { border-left: 3px solid #6b52c8; }
-        .archetype-section.gifts { border-left: 3px solid #5a6e8a; background: var(--secondary); }
+        .archetype-section.strength { border-left: 3px solid #62bbbf; }
+        .archetype-section.danger { border-left: 3px solid #f87b4f; }
+        .archetype-section.growth { border-left: 3px solid #b49cff; }
+        .archetype-section.gifts { border-left: 3px solid #768f93; background: var(--secondary); }
 
         /* ============================================
            СКРЫТИЕ ЭКРАНОВ
@@ -808,9 +790,11 @@
          ============================================ -->
     <div id="start-screen" class="screen active">
         <div class="header">
-            <div class="header-icon">✨</div>
+<div class="header-logo">
+    <img src="logo.png" alt="Via Veritas" height="72">
+</div>
             <h1>Профиль служения</h1>
-            <p class="subtitle">Церковь Via Veritas</p>
+            <p class="subtitle">Via Veritas · Кишинёв</p>
         </div>
 
         <p class="intro-text">
@@ -884,11 +868,6 @@
             <span class="result-badge" id="result-badge"></span>
         </div>
 
-        <div class="result-section">
-            <div class="section-title">Твой профиль</div>
-            <div class="section-content" id="result-description"></div>
-        </div>
-
         <div id="archetype-full-card"></div>
 
         <div id="style-block"></div>
@@ -944,38 +923,38 @@ tg.ready();
 // ============================================
 const GIFTS = {
     'Апостол': {
-        color: '#7F77DD',
-        bg: '#EEEDFE',
+        color: '#b49cff',
+        bg: '#f0ecff',
         emoji: '🌱',
         tag: 'Строитель · Миссионер'
     },
     'Пророк': {
-        color: '#D85A30',
-        bg: '#FAECE7',
+        color: '#f87b4f',
+        bg: '#fdf0ec',
         emoji: '🔥',
         tag: 'Голос · Молитва'
     },
     'Евангелист': {
-        color: '#1D9E75',
-        bg: '#E1F5EE',
+        color: '#62bbbf',
+        bg: '#e6f6f6',
         emoji: '📢',
         tag: 'Благовестие'
     },
     'Попечитель': {
-        color: '#BA7517',
-        bg: '#FAEEDA',
+        color: '#c1946b',
+        bg: '#f7efe8',
         emoji: '🤝',
         tag: 'Забота · Ближний'
     },
     'Учитель': {
-        color: '#534AB7',
-        bg: '#EEEDFE',
+        color: '#768f93',
+        bg: '#edf1f2',
         emoji: '📖',
         tag: 'Слово · Наставничество'
     },
     'Служитель': {
-        color: '#3B6D11',
-        bg: '#EAF3DE',
+        color: '#d3d322',
+        bg: '#f5f5d5',
         emoji: '⚙️',
         tag: 'Служение · Организация'
     }
@@ -1336,22 +1315,22 @@ const INTERSECTIONS = {
 // ============================================
 const STYLES = {
     'Милосердие': {
-        color: '#B94040',
+        color: '#f87b4f',
         scripture: 'Рим. 12:8 — «...кто оказывает милость, с радушием»',
         short: 'сопереживание в боли'
     },
     'Раздаяние': {
-        color: '#1D9E75',
+        color: '#62bbbf',
         scripture: 'Рим. 12:8 — «...раздаватель ли, [раздавай] в простоте»',
         short: 'целенаправленная щедрость'
     },
     'Гостеприимство': {
-        color: '#BA7517',
+        color: '#c1946b',
         scripture: '1 Пет. 4:9 — «Будьте страннолюбивы друг ко другу без ропота»',
         short: 'открытое пространство'
     },
     'Увещание': {
-        color: '#7F77DD',
+        color: '#b49cff',
         scripture: 'Рим. 12:8 — «...увещатель ли, [увещевай]»',
         short: 'ободрение к месту'
     }
@@ -1764,9 +1743,6 @@ function displayResults(result) {
     document.getElementById('result-subtitle').textContent = `${result.gift} · ${result.mode}`;
     document.getElementById('result-badge').textContent = `В функции: ${result.lifeFunction}`;
     
-    // Описание (короткое из ARCHETYPES)
-    document.getElementById('result-description').textContent = result.description;
-
     // Полная карточка архетипа
     const full = ARCHETYPES_FULL[result.archetypeKey];
     if (full) {
@@ -1837,11 +1813,6 @@ function displayResults(result) {
             }
         }
 
-        // Сопутствующие дары — отсылка к карточке архетипа
-        styleHtml += `<div class="related-gifts">`;
-        styleHtml += `<div class="related-gifts-label">📖 Внутри категории</div>`;
-        styleHtml += `Категории APEST + Служитель — это родовые функции. Внутри них живут конкретные дары: милосердие, раздаяние, гостеприимство, увещание, вера, различение, слово мудрости. Те из них, которые чаще встречаются в твоём профиле, перечислены в карточке выше («Дары Писания»). Тест не охватывает всё — манифестационные дары (вера в кризисе, различение в моменте, исцеление) проявляются ситуативно и не ловятся самоотчётом.`;
-        styleHtml += `</div>`;
         styleHtml += `</div>`;
     }
     document.getElementById('style-block').innerHTML = styleHtml;
@@ -1983,146 +1954,158 @@ function copyResult() {
     }
 }
 
-function shareResult() {
-    const r = window.currentResult;
-    const shareText = `Я прошёл тест на духовные дары в Via Veritas!\n\nМой профиль: ${r.archetype} (${r.gift} · ${r.mode})\n\nПройди тест и ты:`;
-    
-    // Используем Telegram share
-    const botUsername = 'via_veritas_bot'; // Замени на свой бот
-    const shareUrl = `https://t.me/share/url?url=https://t.me/${botUsername}&text=${encodeURIComponent(shareText)}`;
-    
-    tg.openTelegramLink(shareUrl);
-}
-
-function saveAsImage() {
+// ============================================
+// ГЕНЕРАЦИЯ КАРТИНКИ (общая для share и save)
+// ============================================
+function generateResultImage(callback) {
     const r = window.currentResult;
     const giftData = GIFTS[r.gift];
-    
+
     const canvas = document.getElementById('result-canvas');
     const ctx = canvas.getContext('2d');
-    
-    // Размеры
+
     const w = 800;
     const h = 1200;
     canvas.width = w;
     canvas.height = h;
-    
-    // Фон с градиентом
+
+    // Фон
     const gradient = ctx.createLinearGradient(0, 0, 0, h);
     gradient.addColorStop(0, giftData.bg);
     gradient.addColorStop(1, '#ffffff');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, w, h);
-    
+
+    // Брендовая полоска сверху
+    ctx.fillStyle = '#ff880d';
+    ctx.fillRect(0, 0, w, 8);
+
     // Заголовок
-    ctx.fillStyle = giftData.color;
-    ctx.font = 'bold 28px -apple-system, sans-serif';
+    ctx.fillStyle = '#ff880d';
+    ctx.font = 'bold 22px -apple-system, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('ПРОФИЛЬ СЛУЖЕНИЯ', w / 2, 60);
-    
-    // Эмодзи (упрощённо - можно заменить на изображение)
+    ctx.fillText('VIA VERITAS · ПРОФИЛЬ СЛУЖЕНИЯ', w / 2, 55);
+
+    // Эмодзи
     ctx.font = '80px Arial';
-    ctx.fillText(giftData.emoji, w / 2, 160);
-    
+    ctx.fillText(giftData.emoji, w / 2, 155);
+
     // Имя архетипа
-    ctx.fillStyle = '#000000';
-    ctx.font = 'bold 48px -apple-system, sans-serif';
-    ctx.fillText(r.archetype, w / 2, 250);
-    
-    // Дар и режим
-    ctx.fillStyle = '#666666';
-    ctx.font = '24px -apple-system, sans-serif';
-    ctx.fillText(`${r.gift} • ${r.mode}`, w / 2, 290);
-    
-    // Функция
+    ctx.fillStyle = '#1a1a1a';
+    ctx.font = 'bold 52px -apple-system, sans-serif';
+    ctx.fillText(r.archetype, w / 2, 240);
+
+    // Дар · Режим
+    ctx.fillStyle = giftData.color;
+    ctx.font = 'bold 24px -apple-system, sans-serif';
+    ctx.fillText(`${r.gift} · ${r.mode}`, w / 2, 278);
+
+    // Функция жизни
+    ctx.fillStyle = '#777777';
     ctx.font = '20px -apple-system, sans-serif';
-    ctx.fillText(`В функции: ${r.lifeFunction}`, w / 2, 330);
-    
+    ctx.fillText(`В функции: ${r.lifeFunction}`, w / 2, 314);
+
+    // Разделитель
+    ctx.strokeStyle = giftData.color + '44';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(50, 338);
+    ctx.lineTo(750, 338);
+    ctx.stroke();
+
     // Описание (многострочный текст)
     ctx.fillStyle = '#333333';
-    ctx.font = '18px -apple-system, sans-serif';
+    ctx.font = '19px -apple-system, sans-serif';
     ctx.textAlign = 'left';
-    const descWords = r.description.split(' ');
+    const words = r.description.split(' ');
     let line = '';
-    let y = 400;
+    let y = 380;
     const maxWidth = 700;
-    const lineHeight = 28;
-    
-    descWords.forEach(word => {
-        const testLine = line + word + ' ';
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth && line !== '') {
-            ctx.fillText(line, 50, y);
+    const lineHeight = 30;
+    words.forEach(word => {
+        const test = line + word + ' ';
+        if (ctx.measureText(test).width > maxWidth && line !== '') {
+            ctx.fillText(line.trim(), 50, y);
             line = word + ' ';
             y += lineHeight;
         } else {
-            line = testLine;
+            line = test;
         }
     });
-    ctx.fillText(line, 50, y);
-    
-    // Служения
-    y += 60;
+    ctx.fillText(line.trim(), 50, y);
+
+    // Служения для старта
+    y += 55;
     ctx.fillStyle = giftData.color;
-    ctx.font = 'bold 20px -apple-system, sans-serif';
-    ctx.fillText('СЛУЖЕНИЯ ДЛЯ СТАРТА:', 50, y);
-    
-    y += 35;
+    ctx.font = 'bold 18px -apple-system, sans-serif';
+    ctx.fillText('СЛУЖЕНИЯ ДЛЯ СТАРТА', 50, y);
+    y += 30;
     ctx.fillStyle = '#333333';
-    ctx.font = '18px -apple-system, sans-serif';
+    ctx.font = '17px -apple-system, sans-serif';
     r.ministries.forEach(m => {
         ctx.fillText('→ ' + m, 50, y);
-        y += 30;
+        y += 28;
     });
-    
-    // Карта даров (мини)
-    y += 40;
+
+    // Карта даров
+    y += 30;
     ctx.fillStyle = giftData.color;
-    ctx.font = 'bold 20px -apple-system, sans-serif';
-    ctx.fillText('КАРТА ДАРОВ:', 50, y);
-    
-    y += 35;
-    const barHeight = 20;
-    const barGap = 10;
-    
-    Object.keys(r.giftScores).sort((a, b) => r.giftScores[b] - r.giftScores[a]).forEach(gift => {
-        const score = r.giftScores[gift];
-        const percent = score / 25;
-        const barWidth = 600;
-        
-        // Название
-        ctx.fillStyle = '#333333';
-        ctx.font = '16px -apple-system, sans-serif';
-        ctx.fillText(gift, 50, y);
-        
-        // Балл
-        ctx.textAlign = 'right';
-        ctx.fillText(`${score}/15`, 750, y);
-        ctx.textAlign = 'left';
-        
-        y += 8;
-        
-        // Трек
-        ctx.fillStyle = '#f0f0f0';
-        ctx.fillRect(50, y, barWidth, barHeight);
-        
-        // Заполнение
-        ctx.fillStyle = GIFTS[gift].color;
-        ctx.fillRect(50, y, barWidth * percent, barHeight);
-        
-        y += barHeight + barGap + 15;
-    });
-    
+    ctx.font = 'bold 18px -apple-system, sans-serif';
+    ctx.fillText('КАРТА ДАРОВ', 50, y);
+    y += 30;
+
+    const barH = 18;
+    const barGap = 12;
+    const barMaxW = 560;
+
+    Object.keys(r.giftScores)
+        .sort((a, b) => r.giftScores[b] - r.giftScores[a])
+        .forEach(gift => {
+            const score = r.giftScores[gift];
+            const pct = score / 25;
+
+            ctx.fillStyle = '#444444';
+            ctx.font = '15px -apple-system, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(gift, 50, y);
+
+            ctx.fillStyle = '#555555';
+            ctx.font = '14px -apple-system, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(`${score}/25`, 750, y);  // ← исправлено с /15 на /25
+            ctx.textAlign = 'left';
+
+            y += 6;
+            ctx.fillStyle = '#e8e8e8';
+            ctx.beginPath();
+            ctx.roundRect(50, y, barMaxW, barH, 5);
+            ctx.fill();
+
+            ctx.fillStyle = GIFTS[gift].color;
+            ctx.beginPath();
+            ctx.roundRect(50, y, barMaxW * pct, barH, 5);
+            ctx.fill();
+
+            y += barH + barGap;
+        });
+
     // Футер
-    y = h - 80;
-    ctx.fillStyle = '#999999';
-    ctx.font = '16px -apple-system, sans-serif';
+    y = h - 70;
+    ctx.fillStyle = '#aaaaaa';
+    ctx.font = '15px -apple-system, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Via Veritas • Тест на дары служения', w / 2, y);
-    ctx.fillText('Кишинёв, Молдова', w / 2, y + 25);
-    
-    // Конвертируем canvas в blob и скачиваем
-    canvas.toBlob(blob => {
+    ctx.fillText('Via Veritas · Кишинёв, Молдова', w / 2, y);
+
+    // Брендовая полоска снизу
+    ctx.fillStyle = '#ff880d';
+    ctx.fillRect(0, h - 8, w, 8);
+
+    canvas.toBlob(callback, 'image/png');
+}
+
+function saveAsImage() {
+    const r = window.currentResult;
+    generateResultImage(blob => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -2131,9 +2114,45 @@ function saveAsImage() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        
         tg.showAlert('✓ Карточка сохранена!\nТеперь можешь отправить её кому угодно.');
-    }, 'image/png');
+    });
+}
+
+function shareResult() {
+    const r = window.currentResult;
+    generateResultImage(blob => {
+        const file = new File([blob], `via_veritas_${r.archetype.toLowerCase().replace(/ /g, '_')}.png`, { type: 'image/png' });
+
+        // Пробуем Web Share API с файлом (работает в мобильном Telegram)
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+                files: [file],
+                title: `Мой профиль служения — ${r.archetype}`,
+                text: `${r.gift} · ${r.mode} · Via Veritas`
+            }).catch(() => {
+                // Пользователь закрыл шторку — ничего не делаем
+            });
+        } else if (navigator.share) {
+            // Share API есть, но без файлов — делимся ссылкой
+            const botUsername = 'via_veritas_bot';
+            navigator.share({
+                title: `Мой профиль служения — ${r.archetype}`,
+                text: `${r.gift} · ${r.mode} · Via Veritas`,
+                url: `https://t.me/${botUsername}`
+            }).catch(() => {});
+        } else {
+            // Fallback: скачиваем и подсказываем
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            tg.showAlert('📷 Картинка сохранена!\nОткрой Telegram, выбери нужный чат и отправь её как фото.');
+        }
+    });
 }
 
 // ============================================
