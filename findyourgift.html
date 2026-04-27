@@ -674,11 +674,6 @@
             color: var(--text);
         }
 
-        .btn-share {
-            background: var(--brand-light);
-            color: var(--brand);
-        }
-
         .btn-send-leader {
             background: var(--brand);
             color: white;
@@ -932,10 +927,9 @@
         </div>
 
         <div class="action-buttons">
-            <button class="btn btn-action btn-save-image" onclick="saveAsImage()">🎨 Сохранить как картинку</button>
-            <button class="btn btn-action btn-send-leader" onclick="sendToLeader()">📨 Отправить лидеру или ментору</button>
-            <button class="btn btn-action btn-copy" onclick="copyResult()">📋 Скопировать текст</button>
-            <button class="btn btn-action btn-share" onclick="shareResult()">✈️ Поделиться</button>
+            <button class="btn btn-action btn-save-image" id="btn-save-image" onclick="saveAsImage(this)">🖼️ Сохранить карточку</button>
+            <button class="btn btn-action btn-send-leader" onclick="sendToLeader()">📨 Написать лидеру или ментору</button>
+            <button class="btn btn-action btn-copy" onclick="copyResult()">📋 Скопировать полный результат</button>
             <button class="btn btn-action btn-restart" onclick="location.reload()">🔄 Пройти заново</button>
         </div>
     </div>
@@ -2223,14 +2217,6 @@ function displayResults(result) {
     // Блок «Бремя и страсть»
     let passionHtml = '';
     if ((result.passionPeople && result.passionPeople.length > 0) || result.passionNeed) {
-        const needLabels = {
-            'P_search':   'Духовный поиск без ответа',
-            'P_lonely':   'Одиночество и брошенность',
-            'P_family':   'Семейные кризисы',
-            'P_poverty':  'Бедность и материальная нужда',
-            'P_addict':   'Зависимости и саморазрушение',
-            'P_doctrine': 'Богословская путаница и поверхностность'
-        };
         passionHtml = `<div class="result-section" style="border-left: 4px solid #ff880d;">`;
         passionHtml += `<div class="section-title">❤️ Твоё бремя</div>`;
         passionHtml += `<div class="section-content">`;
@@ -2238,8 +2224,8 @@ function displayResults(result) {
         if (result.passionPeople.length > 0) {
             passionHtml += `<strong>Тянет к людям:</strong> ${result.passionPeople.join(' · ')}<br>`;
         }
-        if (result.passionNeed && needLabels[result.passionNeed]) {
-            passionHtml += `<strong>Болит сердце за:</strong> ${needLabels[result.passionNeed]}<br>`;
+        if (result.passionNeed && NEED_LABELS[result.passionNeed]) {
+            passionHtml += `<strong>Болит сердце за:</strong> ${NEED_LABELS[result.passionNeed]}<br>`;
         }
         passionHtml += `<br><em>Обсуди с наставником — какие из этих служений возможны в твоей церкви, и как соединить твой дар с этим бременем.</em>`;
         passionHtml += `</div></div>`;
@@ -2332,30 +2318,82 @@ function displayResults(result) {
 }
 
 // ============================================
-// ФУНКЦИИ: ДЕЙСТВИЯ С РЕЗУЛЬТАТОМ
+// КОНСТАНТЫ ДЛЯ РЕЗУЛЬТАТОВ
+// ============================================
+const NEED_LABELS = {
+    'P_search':   'Духовный поиск без ответа',
+    'P_lonely':   'Одиночество и брошенность',
+    'P_family':   'Семейные кризисы',
+    'P_poverty':  'Бедность и материальная нужда',
+    'P_addict':   'Зависимости и саморазрушение',
+    'P_doctrine': 'Богословская путаница и поверхностность'
+};
+
+const NEED_LABELS_LOWER = {
+    'P_search':   'духовный поиск без ответа',
+    'P_lonely':   'одиночество и брошенность',
+    'P_family':   'семейные кризисы',
+    'P_poverty':  'бедность и материальная нужда',
+    'P_addict':   'зависимости и саморазрушение',
+    'P_doctrine': 'богословская путаница и поверхностность'
+};
+
+// ============================================
+// ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ: КОПИРОВАНИЕ В БУФЕР
+// ============================================
+function copyToClipboard(text, successMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+            .then(() => tg.showAlert(successMsg))
+            .catch(() => copyFallback(text, successMsg));
+    } else {
+        copyFallback(text, successMsg);
+    }
+}
+
+function copyFallback(text, successMsg) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+        const ok = document.execCommand('copy');
+        tg.showAlert(ok ? successMsg : 'Не удалось скопировать — попробуй ещё раз.');
+    } catch (e) {
+        tg.showAlert('Не удалось скопировать — попробуй ещё раз.');
+    }
+    document.body.removeChild(textarea);
+}
+
+// ============================================
+// СКОПИРОВАТЬ ПОЛНЫЙ РЕЗУЛЬТАТ
 // ============================================
 function copyResult() {
     const r = window.currentResult;
-    const giftData = GIFTS[r.gift];
-    
+
     let text = `✨ МОЙ ПРОФИЛЬ СЛУЖЕНИЯ\n\n`;
     text += `━━━━━━━━━━━━━━━━\n\n`;
     text += `🎯 Призвание: ${r.archetype}\n`;
     text += `${r.gift} • ${r.mode}\n\n`;
-    
+
     text += `📊 Карта даров:\n`;
     Object.keys(r.giftScores).sort((a, b) => r.giftScores[b] - r.giftScores[a]).forEach(gift => {
         const score = r.giftScores[gift];
-        const bars = '▰'.repeat(Math.round(score / 30 * 10)) + '▱'.repeat(10 - Math.round(score / 30 * 10));
+        const filled = Math.round(score / 30 * 10);
+        const bars = '▰'.repeat(filled) + '▱'.repeat(10 - filled);
         text += `${bars} ${gift} ${score}/30\n`;
     });
-    
+
     text += `\n🌍 Функция в жизни: ${r.lifeFunction}\n\n`;
     const fullData = ARCHETYPES_FULL[r.archetypeKey];
     if (fullData && fullData.mission) {
         text += `🎯 Как служит миссии церкви:\n${fullData.mission}\n\n`;
     }
-    text += `💡 Как мой дар уже работает:\n${r.intersection}\n\n`;
+    if (r.intersection) {
+        text += `💡 Как мой дар уже работает:\n${r.intersection}\n\n`;
+    }
 
     if (r.topStyle) {
         text += `🎨 Стиль выражения: ${r.topStyle}\n`;
@@ -2366,74 +2404,41 @@ function copyResult() {
     }
 
     text += `🛠 Служения для старта:\n`;
-    r.ministries.forEach(m => text += `• ${m}\n`);
+    r.ministries.forEach(m => { text += `• ${m}\n`; });
 
-    // Бремя и страсть
     if ((r.passionPeople && r.passionPeople.length > 0) || r.passionNeed) {
-        const needLabels = {
-            'P_search':   'Духовный поиск без ответа',
-            'P_lonely':   'Одиночество и брошенность',
-            'P_family':   'Семейные кризисы',
-            'P_poverty':  'Бедность и материальная нужда',
-            'P_addict':   'Зависимости и саморазрушение',
-            'P_doctrine': 'Богословская путаница и поверхностность'
-        };
         text += `\n❤️ Моё бремя:\n`;
-        if (r.passionPeople && r.passionPeople.length > 0) {
+        if (r.passionPeople.length > 0) {
             text += `Тянет к людям: ${r.passionPeople.join(' · ')}\n`;
         }
-        if (r.passionNeed && needLabels[r.passionNeed]) {
-            text += `Болит сердце за: ${needLabels[r.passionNeed]}\n`;
+        if (r.passionNeed && NEED_LABELS[r.passionNeed]) {
+            text += `Болит сердце за: ${NEED_LABELS[r.passionNeed]}\n`;
         }
     }
 
-    // Зрелость — только для low/medium
     if (r.maturityLevel === 'low') {
-        text += `\n⚠️ Сначала — основы:\n`;
-        text += `Дар реален, но без основ работает против. Перед поиском служения\n`;
-        text += `по дару — укрепи: чтение Слова, молитва, общение с верующим.\n`;
+        text += `\n⚠️ Сначала — основы:\nДар реален, но без основ работает против. Укрепи: чтение Слова, молитва, общение с верующим.\n`;
     } else if (r.maturityLevel === 'medium') {
-        text += `\n🌱 Растёшь — продолжай:\n`;
-        text += `Основы есть. Углубляйся в Слове, молитве, отношениях со зрелыми верующими.\n`;
+        text += `\n🌱 Растёшь — продолжай:\nОсновы есть. Углубляйся в Слове, молитве, отношениях со зрелыми верующими.\n`;
     }
 
-    text += `\n⚠️ Важно помнить:\n`;
-    text += `Дар — это не должность, а предрасположенность\nсердца, с которой ты живёшь.\n\n`;
+    text += `\n⚠️ Важно помнить:\nДар — это не должность, а предрасположенность сердца, с которой ты живёшь.\n\n`;
     text += `━━━━━━━━━━━━━━━━\n`;
     text += `Via Veritas • Тест на дары служения`;
-    
-    // Копируем в буфер
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-            tg.showAlert('✓ Результат скопирован!\nТеперь можешь переслать его лидеру или сохранить.');
-        });
-    } else {
-        // Fallback для старых браузеров
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            document.execCommand('copy');
-            tg.showAlert('✓ Результат скопирован!');
-        } catch (err) {
-            tg.showAlert('Не удалось скопировать. Попробуйте снова.');
-        }
-        document.body.removeChild(textarea);
-    }
+
+    copyToClipboard(text, '✓ Результат скопирован!\nМожешь переслать лидеру или сохранить.');
 }
 
 // ============================================
-// ОТПРАВКА ЛИДЕРУ ИЛИ МЕНТОРУ
-// Формирует разговорное сообщение в первом лице с просьбой обсудить.
-// Не дублирует copyResult: тут — вход в разговор, а не полный отчёт.
+// НАПИСАТЬ ЛИДЕРУ ИЛИ МЕНТОРУ
+// Разговорное сообщение в первом лице с вопросами для обсуждения.
 // ============================================
 function sendToLeader() {
     const r = window.currentResult;
     const fullData = ARCHETYPES_FULL[r.archetypeKey];
 
     let text = `Привет! Я прошёл тест на дары служения и хочу обсудить с тобой результат.\n\n`;
-    text += `📌 Кратко обо мне:\n`;
+    text += `📌 Кратко:\n`;
     text += `• Архетип: ${r.archetype}\n`;
     text += `• Дар: ${r.gift} · в режиме ${r.mode}`;
     if (r.modeTied && r.tiedModes.length >= 2) {
@@ -2446,72 +2451,112 @@ function sendToLeader() {
     }
     text += `\n`;
     if (r.topStyle) {
-        text += `• Стиль выражения: ${r.topStyle}\n`;
+        text += `• Стиль: ${r.topStyle}\n`;
     }
 
     if (fullData && fullData.motto) {
         text += `\n✦ ${fullData.motto}\n`;
     }
 
-    // Бремя — если выбрал
     if ((r.passionPeople && r.passionPeople.length > 0) || r.passionNeed) {
         text += `\n❤️ Куда тянет сердце:\n`;
         if (r.passionPeople && r.passionPeople.length > 0) {
             text += `• Люди: ${r.passionPeople.join(', ')}\n`;
         }
-        if (r.passionNeed) {
-            const needLabels = {
-                'P_search':   'духовный поиск без ответа',
-                'P_lonely':   'одиночество и брошенность',
-                'P_family':   'семейные кризисы',
-                'P_poverty':  'бедность и материальная нужда',
-                'P_addict':   'зависимости и саморазрушение',
-                'P_doctrine': 'богословская путаница и поверхностность'
-            };
-            if (needLabels[r.passionNeed]) {
-                text += `• Болит за: ${needLabels[r.passionNeed]}\n`;
-            }
+        if (r.passionNeed && NEED_LABELS_LOWER[r.passionNeed]) {
+            text += `• Болит за: ${NEED_LABELS_LOWER[r.passionNeed]}\n`;
         }
     }
 
-    // Шаг этой недели
     if (r.microStep) {
-        text += `\n📅 Шаг этой недели (что собираюсь сделать):\n${r.microStep}\n`;
+        text += `\n📅 Шаг этой недели (планирую):\n${r.microStep}\n`;
     }
 
-    text += `\n❓ О чём хочу спросить тебя:\n`;
-    text += `1. Что ты видишь во мне со стороны — это сходится с результатом?\n`;
+    text += `\n❓ Хочу спросить тебя:\n`;
+    text += `1. Ты видишь это во мне? Сходится?\n`;
     text += `2. Где в нашей общине я могу приложить этот дар?\n`;
     text += `3. С чего лучше начать — и кому стоит сказать?\n`;
 
-    // Предупреждения для honesty
     if (r.maturityLevel === 'low') {
-        text += `\n⚠️ Тест отметил, что мне сначала важно укрепить основы (Слово, молитва, общение со зрелыми). Хочу обсудить, с чего начать.\n`;
+        text += `\n⚠️ Тест отметил, что мне сначала важно укрепить основы. Хочу обсудить, с чего начать.\n`;
     }
     if (r.uniformWarning) {
-        text += `\n⚠️ Тест отметил, что мои ответы были однородными — возможно, результат стоит принимать осторожно.\n`;
+        text += `\n⚠️ Тест отметил, что мои ответы были однородными — возможно, результат стоит принять с оговорками.\n`;
     }
 
     text += `\nСпасибо! Жду твоих мыслей.`;
 
-    // Копируем в буфер — пользователь сам пересылает в Telegram/WhatsApp
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-            tg.showAlert('✓ Сообщение скопировано!\n\nТеперь открой чат с лидером в Telegram или WhatsApp и просто вставь — Cmd/Ctrl+V или долгое нажатие.');
-        });
-    } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            document.execCommand('copy');
-            tg.showAlert('✓ Сообщение скопировано!\n\nОткрой чат с лидером и вставь.');
-        } catch (err) {
-            tg.showAlert('Не удалось скопировать. Попробуй ещё раз.');
-        }
-        document.body.removeChild(textarea);
+    copyToClipboard(
+        text,
+        '✓ Сообщение скопировано!\n\nТеперь открой нужный чат и вставь — долгое нажатие → «Вставить».'
+    );
+}
+
+// ============================================
+// СОХРАНИТЬ КАРТОЧКУ (картинка)
+// Порядок попыток:
+//   1. Web Share API с файлом (мобильный Telegram, iOS, Android)
+//   2. window.open(blobUrl) — открывает картинку, можно сохранить вручную
+//   3. <a>.click() — десктоп
+// ============================================
+function saveAsImage(btnEl) {
+    // Индикатор загрузки на кнопке
+    const origText = btnEl ? btnEl.textContent : '';
+    if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.textContent = '⏳ Генерирую...';
     }
+
+    generateResultImage(blob => {
+        if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.textContent = origText;
+        }
+
+        const r = window.currentResult;
+        const fileName = `via_veritas_${r.archetype.toLowerCase().replace(/ /g, '_')}.png`;
+        const file = new File([blob], fileName, { type: 'image/png' });
+
+        // 1. Пробуем поделиться файлом (лучший вариант на мобильном)
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+                files: [file],
+                title: `Профиль служения — ${r.archetype}`,
+                text: `${r.gift} · ${r.mode} · Via Veritas`
+            }).catch(err => {
+                // Пользователь закрыл шторку — не показываем ошибку
+                if (err.name !== 'AbortError') {
+                    openImageFallback(blob, fileName);
+                }
+            });
+            return;
+        }
+
+        // 2. Открываем картинку в новой вкладке (на мобильном — можно зажать и сохранить)
+        openImageFallback(blob, fileName);
+    });
+}
+
+function openImageFallback(blob, fileName) {
+    const url = URL.createObjectURL(blob);
+
+    // На десктопе — прямая ссылка для скачивания
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobile) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        tg.showAlert('✓ Карточка сохранена!');
+        return;
+    }
+
+    // На мобильном — открываем картинку, инструктируем
+    window.open(url, '_blank');
+    tg.showAlert('📷 Картинка открылась в браузере.\n\nЗажми на неё пальцем → «Сохранить изображение» — и потом отправляй куда хочешь.');
 }
 
 // ============================================
@@ -2661,58 +2706,6 @@ function generateResultImage(callback) {
     ctx.fillRect(0, h - 8, w, 8);
 
     canvas.toBlob(callback, 'image/png');
-}
-
-function saveAsImage() {
-    const r = window.currentResult;
-    generateResultImage(blob => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `via_veritas_${r.archetype.toLowerCase().replace(/ /g, '_')}.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        tg.showAlert('✓ Карточка сохранена!\nТеперь можешь отправить её кому угодно.');
-    });
-}
-
-function shareResult() {
-    const r = window.currentResult;
-    generateResultImage(blob => {
-        const file = new File([blob], `via_veritas_${r.archetype.toLowerCase().replace(/ /g, '_')}.png`, { type: 'image/png' });
-
-        // Пробуем Web Share API с файлом (работает в мобильном Telegram)
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({
-                files: [file],
-                title: `Мой профиль служения — ${r.archetype}`,
-                text: `${r.gift} · ${r.mode} · Via Veritas`
-            }).catch(() => {
-                // Пользователь закрыл шторку — ничего не делаем
-            });
-        } else if (navigator.share) {
-            // Share API есть, но без файлов — делимся ссылкой
-            const botUsername = 'via_veritas_bot';
-            navigator.share({
-                title: `Мой профиль служения — ${r.archetype}`,
-                text: `${r.gift} · ${r.mode} · Via Veritas`,
-                url: `https://t.me/${botUsername}`
-            }).catch(() => {});
-        } else {
-            // Fallback: скачиваем и подсказываем
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = file.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            tg.showAlert('📷 Картинка сохранена!\nОткрой Telegram, выбери нужный чат и отправь её как фото.');
-        }
-    });
 }
 
 // ============================================
